@@ -10,12 +10,12 @@ Gem::Specification.new do |s|
   s.authors     = ["Dan Drinkard"]
   s.email       = ["ddrinkard@sunlightfoundation.com"]
   s.homepage    = "http://datajam.org"
-  s.summary     = "Pluggable real-time chat for datajam"
-  s.description = "Datajam is a CMS for live event management"
+  s.summary     = "A pluggable real-time chat engine for datajam."
+  s.description = "Datajam is a real-time, data-driven platform for reporting on live events."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rack", "1.3.3"
+  s.add_dependency "facets", "~> 2.9"
   s.add_dependency "rails", "~> 3.1.0"
   s.add_dependency "jquery-rails", '~> 0.2'
   s.add_dependency 'mongoid', '~> 2.0'
@@ -24,5 +24,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'carrierwave-mongoid', '~> 0.1.3'
   s.add_dependency 'mongoid_slug', '~> 0.7'
   s.add_dependency 'rack-gridfs', '~> 0.4'
+  s.add_dependency 'uuidtools', '~> 2.1.2'
 
 end

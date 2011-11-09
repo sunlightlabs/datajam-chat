@@ -1,1 +1,0 @@
-class Admin::MessagesController < AdminController
