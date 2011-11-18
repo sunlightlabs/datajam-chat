@@ -24,6 +24,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'carrierwave-mongoid', '~> 0.1.3'
   s.add_dependency 'mongoid_slug', '~> 0.7'
   s.add_dependency 'rack-gridfs', '~> 0.4'
+  s.add_dependency 'bitly', '~>0.6'
   s.add_dependency 'uuidtools', '~> 2.1.2'
 
 end

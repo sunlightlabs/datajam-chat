@@ -3,53 +3,62 @@
  * Rails Messaging Engine
  * @author Dan Drinkard <ddrinkard@sunlightfoundation.com>
  */
-(function(){
+(function($){
 
   require.config({baseUrl: '/javascripts/datajam_chat'});
 
-  // Declare namespace
-  window.DJ || (DJ = {});
-  DJ.Chat = {
-      Models: {}
-    , Views: {}
-    , Collections: {}
-  };
-
-  DJ.Chat.uploadifyOptions = {
-      auto: true
-    , buttonImage: '/images/datajam_chat/attachment.png'
-    , cancelImage: '/javascripts/datajam_chat/vendor/uploadify/uploadify-cancel.png'
-    , swf: '/javascripts/datajam_chat/vendor/uploadify/uploadify.swf'
-    , uploader: '/chats/upload.json'
-    , checkExisting: false
-    , width: 18
-    , height: 18
-  }
-
   // Define modules
   define('common', [
+      'order!vendor/json2'
     , 'order!vendor/underscore'
-    , 'order!vendor/json2'
     , 'order!vendor/backbone'
+    , 'vendor/jquery.imagesloaded'
     , 'vendor/jquery.scrollTo-1.4.2-min'
-  ], function(){});
+    , 'vendor/moment.min'
+  ], function(){
+    window.DJ || (DJ = {});
+    DJ.Chat = {
+        Models: {}
+      , Views: {}
+      , Collections: {}
+    };
+    DJ.Chat.csrf = {
+        csrf_param: $('meta[name=csrf-param]').attr('content')
+      , csrf_token: $('meta[name=csrf-token]').attr('content')
+    }
+  });
+
+  define('upload', [
+      'vendor/jquery.form'
+  ], $.noop);
 
   /**
    * Bootstrap
    */
-  require(['common', 'views/chat'], function(){
+  require(['common', 'views/chat', 'views/moderator_chat'], function(){
 
-    jQuery.noConflict();
-    var $ = jQuery;
+    // mixin capitalize func
+    _.mixin({
+      capitalize : function(string) {
+        return string.charAt(0).toUpperCase() + string.substring(1).toLowerCase();
+      }
+    });
+
+    // Emulate HTTP via _method param
+    Backbone.emulateHTTP = true;
+    Backbone.emulateJSON = true;
 
     $(function(){
       var App = DJ.Chat;
-      $('.datajam-chat-thread').each(function(){
+      $('.datajam-chat-thread').not('.moderator').each(function(){
         $(this).data('chat', new App.Views.Chat({ el: $(this) }));
+      });
+      $('.datajam-chat-thread.moderator').each(function(){
+        $(this).data('chat', new App.Views.ModeratorChat({ el: $(this) }));
       });
     });
 
   });
 
 
-})();
+})(jQuery);

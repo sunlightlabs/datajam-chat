@@ -2,10 +2,10 @@ define('views/chat', [
     'text!templates/chat/show.html'
   , 'text!templates/chat/error.html'
   , 'text!templates/chat/identity.html'
-  , 'text!templates/chat/flash.html'
+  , 'text!templates/common/flash.html'
   , 'text!templates/message/new.html'
   , 'common'
-  , 'vendor/uploadify/jquery.uploadify.min'
+  , 'upload'
   , 'models/chat'
   , 'models/message'
   , 'views/message'
@@ -21,6 +21,8 @@ define('views/chat', [
           , "submit form[name=identify]": "identify"
           , "blur textarea": "handleBlur"
           , "click .destroy-identity": "destroyIdentity"
+          , "click .attach-file": "uploadDialog"
+          , "change #chat_asset": "uploadFile"
           , "focus textarea": "handleFocus"
           , "keydown textarea": "handleKeyDown"
           , "chatWindow:scroll": "handleScroll"
@@ -28,6 +30,7 @@ define('views/chat', [
       , initialize: function(){
           //scope class methods
           _.bindAll(this, 'addMessage'
+                        , 'bindUploadForm'
                         , 'destroy'
                         , 'destroyIdentity'
                         , 'error'
@@ -44,6 +47,8 @@ define('views/chat', [
                         , 'render'
                         , 'resume'
                         , 'submit'
+                        , 'uploadDialog'
+                        , 'uploadFile'
                         );
           this.loading();
 
@@ -68,8 +73,8 @@ define('views/chat', [
 
           this.model.fetch()
             .success(_.bind(function(model){
-              this.collection.url = this.model.url.replace('.json', '/chat_pages/' + model.page._id + '.json');
-              this.collection._newest_seen_page = model.page.next_page || this.collection.url;
+              this.collection.url = this.model.url.replace('.json', '/pages/' + model.page._id + '.json');
+              this.collection._newest_seen_page = this.collection.url;
               this.collection._oldest_seen_page = model.page.prev_page;
               this.collection.ajaxOptions = model.ajaxOptions;
               this.poll();
@@ -79,39 +84,68 @@ define('views/chat', [
 
         }
       , addMessage: function(model){
-          var scroller = this.el.find('.comments-clip')
-           ,  content = scroller.find('.comments');
+          var clipper = this.el.find('.comments-clip')
+            , scroller = clipper.find('.comments')
+            , items = scroller.find('li')
+            , message = new App.Views.Message({
+                   model: model
+              });
+          // reset the timeout to something sane
           this.model.set({interval:this.el.attr('data-interval')}, {'slient': true});
-          new App.Views.Message({
-              model: model
-            , el: '#' + this.el.find('ul').eq(0).attr('id') + '>li'
-            , _anchored: this.model.get('_scroll_anchored')
-          });
-          if(content.height() < scroller.height()) scroller.trigger('scroll');
+
+          // append in order
+          if(items.length && this.collection.indexOf(model) < items.length){
+            items.eq(this.collection.indexOf(model)).before(message.render().el)
+          }else{
+            scroller.append(message.render().el);
+          }
+
+          // fire a scroll message if the window is too short to scroll
+          if(scroller.height() < clipper.height()) clipper.trigger('scroll');
+
           // scroll to bottom of window if we are anchored
           if(this.model.get('_scroll_anchored')){
-            $.when(scroller.find('img').load($.noop)).then(function(){
-              scroller.stop().scrollTo('100%', 100, 'swing');
-            });
+            scroller.find('img').imagesLoaded(_.bind(function(){
+              clipper.stop().scrollTo('100%', 100, 'swing');
+            }, this));
+          }else if(this.anchor){
+            scroller.find('img').imagesLoaded(_.bind(function(){
+              clipper.stop().scrollTo(this.anchor);
+              this.anchor = null;
+            }, this));
           }
         }
+      , bindUploadForm: function(){
+          $('input[type=file]').live('change', _.bind(function(evt){
+
+            return false;
+          }, this));
+        }
       , destroy: function(){
-          this.el.remove();
+          this.el.remove().html('');
         }
       , destroyIdentity: function(evt){
           evt.preventDefault();
           if(this.model.get('display_name')){
             $.ajax({
-                url: '/chats/identity/destroy.json'
+                url: '/chats/identity.json'
               , type: 'post'
               , dataType: 'json'
-              , data: {display_name: this.model.get('display_name')}
+              , data: {display_name: this.model.get('display_name'), _method: 'delete'}
             });
           }
           this.model.set({'display_name': null});
         }
       , error: function(){
           this.el.replaceWith(_.template(errortmpl, {}));
+        }
+      , flash: function(data){
+          var msg = $(_.template(flashtmpl, data));
+          this.el.find('form').eq(0).prepend(msg);
+          msg.hide()
+             .fadeIn()
+             .delay(4000)
+             .fadeOut(function(){$(this).remove()});
         }
       , handleBlur: function(evt){
           this._focusTimeout = setTimeout(_.bind(function(){
@@ -148,6 +182,7 @@ define('views/chat', [
           // page back if user scrolls to the top of the range
           if(clipper.scrollTop() == 0){
             this.loading();
+            this.anchor = scroller.find('li:first');
             $.when(this.prevPage()).then(this.loaded());
           }
         }
@@ -165,7 +200,7 @@ define('views/chat', [
                 }
             }).success(_.bind(function(data){
               if(data.errors){
-                this.flash({type:'error', message:data.errors.join("\n")});
+                this.flash({type:'error', message:data.errors.join("<br/>")});
               }else if(data.display_name){
                 this.model.set({'display_name':data.display_name, '_keep_focus': true});
               }
@@ -180,14 +215,6 @@ define('views/chat', [
         }
       , loaded: function(){
           this.el.removeClass('loading');
-        }
-      , flash: function(data){
-          var msg = $(_.template(flashtmpl, data));
-          this.el.find('form[name=new_message]').prepend(msg);
-          msg.hide()
-             .fadeIn()
-             .delay(4000)
-             .fadeOut(function(){$(this).remove()});
         }
       , pause: function(){
           this.model.set({'paused': true}, {'silent': true});
@@ -209,19 +236,24 @@ define('views/chat', [
       , prevPage: function(){
           if(this.collection._oldest_seen_page){
             var dfd = $.Deferred();
-            this.collection.fetch($.extend({ 'add':true,
-                                             'url': this.collection._oldest_seen_page
-                                           }, this.model.get('ajaxOptions')))
+            this.collection.fetch($.extend({
+                  'add':true
+                , 'url': this.collection._oldest_seen_page
+              }
+              , this.model.get('ajaxOptions')));
             return dfd.promise();
           }else{
             return true;
           }
         }
       , render: function(){
-          var data = this.model.toJSON()
+          var data = _(this.model.toJSON()).extend(App.csrf)
             , html = _.template(showtmpl)
             , identityform = _.template(identitytmpl)
             , submitform = _.template(newmessagetmpl)
+
+          // if the model doesn't have an id, skip for now
+          if(!data.id) return this;
 
           // only redraw the thread if we aren't identified...
           if(!this.el.children().length){
@@ -237,7 +269,7 @@ define('views/chat', [
           this.el.find('form').remove();
           if(this.model.get('display_name')){
             this.el.append(submitform(data));
-            $('#message_asset').uploadify(App.uploadifyOptions);
+            this.bindUploadForm();
           }else{
             this.el.append(identityform(data))
           }
@@ -245,6 +277,8 @@ define('views/chat', [
           if(this.model.get('_keep_focus')){
             this.el.find('textarea, input[type=text]').focus();
           }
+          this.delegateEvents();
+          return this;
         }
       , resume: function(){
           this.model.set({'paused': false}, {'silent': true});
@@ -259,7 +293,8 @@ define('views/chat', [
             message = new App.Models.Message({text: text});
             message.url = this.model.get('_submit_url');
             message.save(null, {
-                success: _.bind(function(data){
+                dataType: 'json'
+              , success: _.bind(function(data){
                   this.el.find('textarea').val('');
                   if(!data.is_public){
                     this.flash({type: 'info', message: 'Your message is awaiting moderation.'});
@@ -269,11 +304,40 @@ define('views/chat', [
                   }
                   this.poll();
                 }, this)
-              , error: _.bind(function(){
-                  this.flash({type: 'error', message: 'There was a problem posting your message.'});
+              , error: _.bind(function(model, xhr){
+                  var errors;
+                  if((errors = JSON.parse(xhr.responseText).errors) && errors.text){
+                    this.flash({type: 'error', message: 'Text ' + errors.text[0]});
+                  }else{
+                    this.flash({type: 'error', message: 'There was a problem posting your message.'});
+                  }
                 }, this)
             });
           }
+        }
+      , uploadDialog: function(evt){
+          evt.preventDefault();
+          $($(evt.target).attr('href')).trigger('click');
+        }
+      , uploadFile: function(evt){
+          if($(evt.target).val()){
+            $(evt.target).parents('form')
+              .ajaxSubmit({
+                  dataType: 'json'
+                , success: _.bind(function(response){
+                    // iframe transport w/ jquery.form doesn't seem to be aware of status codes.
+                    // so, we check for a url attribute to know if it worked.
+                    if(response && response.url){
+                      var textarea = $(evt.target).parents('.input-area').find('textarea');
+                      textarea.val(textarea.val() + location.protocol + '//' + location.host + response.url);
+                      $(evt.target).val('');
+                      textarea.focus();
+                    }else{
+                      this.flash({type:'error', message:'Upload failed. Accepted file types are png, jpg, gif.'});
+                    }
+                  }, this)
+              });
+          };
         }
     });
 });

@@ -19,14 +19,19 @@ define('collections/message', ['common'], function(){
           return this;
         }
       , comparator: function(obj){
-          return obj.updated_at;
+          return Date.parse(obj.get('updated_at'));
         }
       , parse: function(resp, xhr) {
-          // if we are on the oldest seen page, bump it back one
-          if(this._oldest_seen_page && this._oldest_seen_page.match(resp.page._id)){
+          var page = '/chats/' + resp.chat._id + '/pages/' + resp.page._id + '.json';
+          // if we are on the oldest seen page, bump it back one;
+          // otherwise if there's a newer page, set it forward.
+          if(page == this._oldest_seen_page){
             this._oldest_seen_page = resp.page.prev_page;
-          }else{
-            resp.page.next_page && (this.url = resp.page.next_page);
+          }else if(page == this._newest_seen_page){
+            if(resp.page.next_page){
+              this.url = resp.page.next_page;
+              this._newest_seen_page = resp.page.next_page;
+            }
           }
           return resp.page.messages;
         }

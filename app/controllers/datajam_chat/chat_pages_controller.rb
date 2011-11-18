@@ -1,14 +1,11 @@
-module DatajamChat
+class DatajamChat::ChatPagesController < DatajamChat::EngineController
 
-  class ChatPagesController < EngineController
+  def show
+    @page = ChatPage.find(params[:id])
 
-    def show
-      @page = ChatPage.find(:chat_id => params[:chat_id], :id => params[:id])
-
-      respond_to do |format|
-        format.json { render :json => @page, :callback => params[:callback], :include => :messages }
-      end
+    respond_to do |format|
+      format.json { render :json => @page, :callback => params[:callback] }
     end
-
   end
+
 end

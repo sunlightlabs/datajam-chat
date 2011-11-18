@@ -12,6 +12,10 @@ module DatajamChat
     @@sessions ||= Redis::Namespace.new((Rails.env + '_chat_sessions').to_sym, :redis => Redis.new)
   end
 
+  def self.bitly
+    @@bitly ||= Bitly.new('dandrinkard', 'R_d8607321607aef1915a1d1a8ff0312bf')
+  end
+
   def self.config
     @@config ||= {}
   end

@@ -2,17 +2,23 @@ Rails.application.routes.draw do
 
   scope :module => :datajam_chat do
 
-    post 'chats/identity' => 'identity#create'
-    post 'chats/identity/destroy' => 'identity#destroy'
-    get 'chats/identity' => 'identity#show'
+    scope '/chats' do
+      resources :identity, :controller => 'chat_identity', :only => [:index, :create]
+      delete '/identity' => 'chat_identity#destroy'
 
-    post 'chats/upload' => 'message_assets#create'
-
-    resources :chats do
-      resources :messages
-      resources :chat_pages
+      resources :upload, :controller => 'chat_assets', :only => [:create]
+      delete '/upload' => 'chat_assets#destroy'
     end
 
+    resources :chats, :only => [:index, :show] do
+      resources :messages, :controller => 'chat_messages', :except => [:new, :edit, :destroy]
+      resources :pages, :controller => 'chat_pages', :only => [:show]
+    end
+
+  end
+
+  namespace :admin do
+    resources :chats
   end
 
 end
