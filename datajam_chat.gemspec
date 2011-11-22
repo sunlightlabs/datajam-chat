@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Dan Drinkard"]
   s.email       = ["ddrinkard@sunlightfoundation.com"]
   s.homepage    = "http://datajam.org"
-  s.summary     = "A pluggable real-time chat engine for datajam."
+  s.summary     = "A real-time chat engine for datajam."
   s.description = "Datajam is a real-time, data-driven platform for reporting on live events."
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]

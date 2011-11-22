@@ -1,6 +1,7 @@
 define('views/message', [
     'text!templates/message/show.html'
   , 'common'
+  , 'tweet'
   , 'vendor/md5'
   , 'models/message' ], function(showtmpl){
 
@@ -11,10 +12,20 @@ define('views/message', [
     App.Views.Message = Backbone.View.extend({
         linkP: /https?:\/\/[\w\-\/#\.%\?=&:,|]+[\w\-\/#=&]/g
       , imageP: /\.(jpe?g|gif|png|bmp|tiff?)$/
-      , events: {}
+      , events: {
+            'click': 'handleClick'
+        }
       , tagName: 'li'
+      , className: 'message'
       , initialize: function(args){
-          _.bindAll(this, 'getLinks', 'getImages', 'render');
+          _.bindAll(this
+                  , 'getLinks'
+                  , 'getImages'
+                  , 'handleClick'
+                  , 'parentModel'
+                  , 'parentView'
+                  , 'render'
+                  );
 
           this.model || (this.model = new App.Models.Message);
           this.model.bind('change', this.render);
@@ -28,22 +39,48 @@ define('views/message', [
             return link.search(this.imageP);
           }, this));
         }
+      , handleClick: function(evt){
+          var parent_model = this.parentModel();
+          if(parent_model && parent_model.get('is_admin')){
+            evt.preventDefault();
+            var text = prompt("Enter the new text", this.model.get('text'));
+            if(text && text != this.model.get('text')){
+              this.model.url = this._url();
+              this.model.set({text: text});
+              this.model.save();
+            }
+          }
+        }
+      , parentModel: function(){
+          return (this.parentView() && this.parentView().model) || null;
+        }
+      , parentView: function(){
+          // gets the chat that this message belongs to
+          return $(this.el).parents('.datajam-chat-thread').data('chat') || null;
+        }
       , render: function(){
-          var data = this.model.toJSON();
-
-          data.text = this._strip_tags(data.text);
-          data.text = this._linkify(data.text);
-          data.text = this._imgify(data.text);
-          data.text = this._spaceify(data.text);
-          data.text = this._linebreaks(data.text);
-          this.el = $(this.el).replaceWith(_.template(showtmpl, data));
+          var data = this.model.toJSON()
+            , parent_model = this.parentModel();
+          data.text = _(data.text).chain()
+            .striptags()
+            .linkify(this.linkP)
+            .imgify(this.imageP)
+            .spaceify()
+            .linebreaks()
+            .value()
+          // set up the container element because replacing it is too painful
+          $(this.el).attr('id', 'message_' + data.id)
+                    .attr('data-timestamp', data.updated_at);
+          if(parent_model && parent_model.get('is_admin')) $(this.el).addClass('sunlight');
+          $(this.el).html(_.template(showtmpl, data));
+          this.delegateEvents();
           return this;
         }
       , _imgify: function(text){
           var html = $('<div>' + text + '</div>')
             , imageP = this.imageP;
           html.find('a').each(function(){
-            if($(this).text().search(imageP)){
+            if($(this).text().search(imageP) > -1){
               $(this).html('<img src="' + $(this).html() + '" />');
             }
           });
@@ -62,7 +99,9 @@ define('views/message', [
       , _strip_tags: function(text){
           return $('<div>' + text + '</div>').text();
         }
-
+      , _url: function(){
+          return this.parentModel().url.replace(/\.json*/, '/messages/' + this.model.id + '.json');
+        }
     });
 
 });

@@ -9,12 +9,23 @@ define('views/rejected_message', [
     ;
 
     App.Views.RejectedMessage = App.Views.Message.extend({
-        events: {
+        className: 'message rejected'
+      , events: {
             "click .approve": "approve"
           , "click .delete-attachments": "deleteAttachments"
         }
       , initialize: function(args){
-          _.bindAll(this, 'approve', 'empty', 'loading', 'deleteAttachments', 'render', '_url');
+          _.bindAll(this
+                  , 'approve'
+                  , 'deleteAttachments'
+                  , 'empty'
+                  , 'getImages'
+                  , 'getLinks'
+                  , 'loading'
+                  , 'parentModel'
+                  , 'parentView'
+                  , 'render'
+                  , '_url');
 
           this.model || (this.model = new App.Models.Message);
           this.model.bind('change', this.render);
@@ -71,18 +82,20 @@ define('views/rejected_message', [
           $(this.el).addClass('loading');
         }
       , render: function(){
-          var data = this.model.toJSON();
+          var data = this.model.toJSON()
+            , parent_model = this.parentModel();
           data.text = this._strip_tags(data.text);
           data.text = this._linkify(data.text);
           data.text = this._imgify(data.text);
           data.text = this._spaceify(data.text);
           data.text = this._linebreaks(data.text);
-          this.el = $(this.el).replaceWith(_.template(showtmpl, data));
+          // set up the container element because replacing it is too painful
+          $(this.el).attr('id', 'message_' + data.id)
+                    .attr('data-timestamp', data.updated_at);
+          if(parent_model && parent_model.get('is_admin')) $(this.el).addClass('sunlight');
+          $(this.el).html(_.template(showtmpl, data));
           this.delegateEvents();
           return this;
-        }
-      , _url: function(){
-          return $(this.el).parents('.datajam-chat-thread').data('chat').model.url.replace(/\.json*/, '/messages/' + this.model.id + '.json');
         }
     });
 

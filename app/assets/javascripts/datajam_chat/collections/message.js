@@ -8,15 +8,21 @@ define('collections/message', ['common'], function(){
           if(_.isArray(models)){
             $.each(models, _.bind(function(idx, model){
               model = this._clean(model);
-              if(!this.get(model.id))
-                this._add(model, options);
+              this.add_or_replace(model, options);
             }, this));
           }else{
             models = this._clean(models);
-            if(!this.get(models.id))
-              this._add(models, options);
+            this.add_or_replace(model, options);
           }
           return this;
+        }
+      , add_or_replace: function(model, options){
+          var existing = this.get(model.id);
+          if(!existing){
+            this._add(model, options);
+          }else if(model.updated_at > existing.get('updated_at')){
+            existing.set(model)
+          }
         }
       , comparator: function(obj){
           return Date.parse(obj.get('updated_at'));

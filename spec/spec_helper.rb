@@ -1,7 +1,9 @@
 ENV['RAILS_ENV'] = 'test'
 require File.expand_path('../datajam/config/environment.rb', __FILE__)
-
 require 'rspec/rails'
+
+Rails.backtrace_cleaner.remove_silencers!
+
 require 'database_cleaner'
 DatabaseCleaner.strategy = :truncation
 

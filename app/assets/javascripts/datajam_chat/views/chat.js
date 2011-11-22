@@ -30,7 +30,6 @@ define('views/chat', [
       , initialize: function(){
           //scope class methods
           _.bindAll(this, 'addMessage'
-                        , 'bindUploadForm'
                         , 'destroy'
                         , 'destroyIdentity'
                         , 'error'
@@ -63,7 +62,10 @@ define('views/chat', [
             'dataType': 'json'
           }).success(_.bind(function(data){
             if (data.display_name){
-              this.model.set({'display_name': data.display_name});
+              this.model.set({
+                  'display_name': data.display_name
+                , 'is_admin': data.is_admin
+              });
             }
           }, this));
 
@@ -90,7 +92,8 @@ define('views/chat', [
             , message = new App.Views.Message({
                    model: model
               });
-          // reset the timeout to something sane
+
+          // make sure the polling timeout is something sane
           this.model.set({interval:this.el.attr('data-interval')}, {'slient': true});
 
           // append in order
@@ -114,12 +117,6 @@ define('views/chat', [
               this.anchor = null;
             }, this));
           }
-        }
-      , bindUploadForm: function(){
-          $('input[type=file]').live('change', _.bind(function(evt){
-
-            return false;
-          }, this));
         }
       , destroy: function(){
           this.el.remove().html('');
@@ -269,7 +266,6 @@ define('views/chat', [
           this.el.find('form').remove();
           if(this.model.get('display_name')){
             this.el.append(submitform(data));
-            this.bindUploadForm();
           }else{
             this.el.append(identityform(data))
           }

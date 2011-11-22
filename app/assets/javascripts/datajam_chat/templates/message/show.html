@@ -1,19 +1,18 @@
-<li id="message_<%= id %>" class="message<% if(user){ %> sunlight<% } %>" data-timestamp="<%= updated_at %>">
-    <div class="commentDetails">
-        <time pubdate class="published" datetime><%= moment(updated_at).format('h:mm a') %></time>
-    </div>
-    <% if (user && user.email) { %>
-        <img alt="Photo of <%= display_name %>" src="http://gravatar.com/avatar/<%= MD5(user.email.toLowerCase()) %>.jpg?s=50&amp;d=https%3A%2F%2Ftwimg0-a.akamaihd.net%2Fprofile_images%2F55418705%2F100x100_sunlight_normal.png" />
-    <% } %>
-    <div class="liveComment">
-        <address class="author">
-            <% if (user && user.url) { %>
-                <a href="<%= user.url %>"><%= display_name %></a>
-            <% } else { %>
-                <%= display_name %>
-            <% } %>
-        </address>
-        <p><%= text %></p>
-    </div>
-    <div class="clear"></div>
-</li>
+<div class="commentDetails">
+    <time pubdate class="published" datetime><%= moment(updated_at).format('h:mm a') %></time>
+</div>
+<% if (user && user.email) { %>
+    <img alt="Photo of <%= display_name %>" src="http://gravatar.com/avatar/<%= MD5(user.email.toLowerCase()) %>.jpg?s=50&amp;d=https%3A%2F%2Ftwimg0-a.akamaihd.net%2Fprofile_images%2F55418705%2F100x100_sunlight_normal.png" />
+<% } %>
+<div class="liveComment">
+    <address class="author">
+        <% if (user && user.url) { %>
+            <a href="<%= user.url %>"><%= display_name %></a>
+        <% } else { %>
+            <%= display_name %>
+        <% } %>
+    </address>
+    <p class="tweet"><a href="https://twitter.com/intent/tweet?text=<%= escape(_('"' + _(text).tweetablestriptags() + '"').truncate(120)) %>&amp;url=<%= window.location.href %>">Tweet this</a></p>
+    <p><%= text %></p>
+</div>
+<div class="clear"></div>

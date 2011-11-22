@@ -32,18 +32,20 @@ class ChatMessage
     super(:except => [:user_id, :chat_id, :page_id]).merge({:user => @user})
   end
 
-  def depaginate
-    page.messages.delete self
-    page.save
+  def repaginate!
+    self.page.messages.delete self rescue nil
+    self.page.save rescue nil
+    save
   end
+
 
   private
 
   def paginate
-    if is_public? and not page
-      chat.current_page.messages << self
-      chat.save
-      chat.current_page.save
+    if is_public? and not self.page
+      self.chat.current_page.messages << self
+      self.chat.current_page.save
+      self.chat.save
     end
   end
 

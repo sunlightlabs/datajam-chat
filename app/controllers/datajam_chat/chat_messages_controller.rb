@@ -54,12 +54,12 @@ class DatajamChat::ChatMessagesController < DatajamChat::EngineController
 
   def update
     @message = ChatMessage.find(params[:id])
-    # make sure we re-paginate this message if it already has a page assigned
-    if @message.page
-      @message.depaginate
-    end
-    @message.update_attributes(JSON.parse(params[:model]))
-    if @message.save
+
+    if @message.update_attributes(JSON.parse(params[:model]).keep_if {|key, val| writable_attrs.include? key.to_sym})
+      # make sure we re-paginate this message if it already has a page assigned
+      if @message.page
+        @message.repaginate!
+      end
       response = @message
     else
       response = @message.errors
@@ -69,6 +69,10 @@ class DatajamChat::ChatMessagesController < DatajamChat::EngineController
     respond_to do |format|
       format.json { render :json => response, :callback => params[:callback] }
     end
+  end
+
+  def writable_attrs
+    [:text, :is_public, :is_moderated]
   end
 
   # def destroy

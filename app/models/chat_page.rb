@@ -23,11 +23,11 @@ class ChatPage
   end
 
   def next_page
-    ChatPage.where(:chat_id => chat.id, :updated_at.gt => updated_at).order_by([:updated_at, :asc]).first
+    ChatPage.where(:chat_id => chat.id, :created_at.gt => created_at).order_by([:created_at, :asc]).first
   end
 
   def prev_page
-    ChatPage.where(:chat_id => chat.id, :updated_at.lt => updated_at).order_by([:updated_at, :desc]).first
+    ChatPage.where(:chat_id => chat.id, :created_at.lt => created_at).order_by([:created_at, :desc]).first
   end
 
   def as_json(options={})

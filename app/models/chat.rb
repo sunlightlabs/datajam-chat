@@ -19,7 +19,7 @@ class Chat
   end
 
   def current_page
-    page = pages.order_by([:updated_at, :desc]).first
+    page = pages.order_by([:created_at, :desc]).first
     if (page && page.is_open!) or not self.is_open?
       page
     else

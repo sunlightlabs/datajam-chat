@@ -15,6 +15,12 @@ module DatajamChat
     #   m.observers = :message_observer
     # end
 
+    initializer "datajam_chat.register_plugin" do
+      Datajam.setup do |app|
+        app.plugins << Gem::Specification.load(File.expand_path("../../../datajam_chat.gemspec", __FILE__))
+      end
+    end
+
     initializer "datajam_chat.load_defaults" do
       DatajamChat.setup do |engine|
         engine.config = YAML.load_file(File.expand_path("../../../config/defaults.yml", __FILE__))[Rails.env]
@@ -22,7 +28,7 @@ module DatajamChat
     end
 
     initializer "bitly.use_api_version_3" do
-      ::Bitly.use_api_version_3
+      Bitly.use_api_version_3
     end
 
     if Rails.env =~ /^(development|test)$/

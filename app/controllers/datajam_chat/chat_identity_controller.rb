@@ -65,7 +65,7 @@ class DatajamChat::ChatIdentityController < DatajamChat::EngineController
   end
 
   def display_name
-    {:display_name => (session[:display_name] rescue nil)}
+    {:display_name => (session[:display_name] rescue nil), :is_admin => current_user ? true : false }
   end
 
 end

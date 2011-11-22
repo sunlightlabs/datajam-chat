@@ -5,7 +5,7 @@ module DatajamChat
   mattr_accessor :app_root
 
   def self.setup
-    yield self
+    yield self if block_given?
   end
 
   def self.sessions
