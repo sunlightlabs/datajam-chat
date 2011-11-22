@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email       = ["ddrinkard@sunlightfoundation.com"]
   s.homepage    = "http://datajam.org"
   s.summary     = "A real-time chat engine for datajam."
-  s.description = "Datajam is a real-time, data-driven platform for reporting on live events."
+  s.description = File.open(File.expand_path("../README.md", __FILE__)).read rescue nil
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
 
@@ -24,7 +24,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'carrierwave-mongoid', '~> 0.1.3'
   s.add_dependency 'mongoid_slug', '~> 0.7'
   s.add_dependency 'rack-gridfs', '~> 0.4'
-  s.add_dependency 'bitly', '~>0.6'
+  s.add_dependency 'bitly', '~> 0.6'
   s.add_dependency 'uuidtools', '~> 2.1.2'
+  s.add_dependency 'formatize', '~> 1.0'
 
 end

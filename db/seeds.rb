@@ -5,9 +5,8 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
-event = Event.first
-user = User.first
-chat = Chat.create({:event => event})
-messages = Message.create([
-  {:event => event, :user => user, :chat => chat, :text => 'hello world!'}
+settings = Setting.create([
+  {:namespace => 'datajam_chat', :name => 'Bit.ly Username'},
+  {:namespace => 'datajam_chat', :name => 'Bit.ly API Key'},
+  {:namespace => 'datajam_chat', :name => 'Tweet this via'},
 ])
