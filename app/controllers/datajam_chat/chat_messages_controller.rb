@@ -4,7 +4,7 @@ class DatajamChat::ChatMessagesController < DatajamChat::EngineController
 
   def index
     @chat = Chat.find(params[:chat_id])
-    @limit =  params[:limit] ? params[:limit].to_i : DatajamChat.config[:page_size]
+    @limit =  params[:limit] ? params[:limit].to_i : Datajam::Settings[:datajam_chat][:page_size].to_i
     unless params[:status]
       @incoming = @chat.incoming_messages.limit @limit
       @approved = @chat.approved_messages.limit @limit

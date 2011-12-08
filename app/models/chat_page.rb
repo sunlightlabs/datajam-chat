@@ -12,14 +12,17 @@ class ChatPage
 
   after_save :cache_instance
 
+  validates_presence_of :chat
+
   def is_open!
     # checks for 'openness' versus maximum page size, closing if met or exceeded
     # does not 're-open' when page size is adjusted larger
-    if is_open? and messages.length >= DatajamChat.config[:page_size]
-      self.update_attributes!(is_open: false)
+    if is_open? && messages.length >= chat.page_size.to_i
+      self.update_attributes!(:is_open => false)
+      return false
     end
 
-    is_open
+    is_open?
   end
 
   def next_page

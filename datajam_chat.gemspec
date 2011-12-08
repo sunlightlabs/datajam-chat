@@ -28,4 +28,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'uuidtools', '~> 2.1.2'
   s.add_dependency 'formatize', '~> 1.0'
 
+  s.add_development_dependency 'vcr', '~>1.6.0'
+  s.add_development_dependency 'fakeweb', '~>1.3.0'
+
 end

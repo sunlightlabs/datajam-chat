@@ -21,12 +21,6 @@ module DatajamChat
       end
     end
 
-    initializer "datajam_chat.load_defaults" do
-      DatajamChat.setup do |engine|
-        engine.config = YAML.load_file(File.expand_path("../../../config/defaults.yml", __FILE__))[Rails.env]
-      end
-    end
-
     initializer "bitly.use_api_version_3" do
       Bitly.use_api_version_3
     end
