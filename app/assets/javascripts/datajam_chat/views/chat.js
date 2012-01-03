@@ -34,6 +34,8 @@
             _.bindAll(this, 'addMessage'
                           , 'destroy'
                           , 'destroyIdentity'
+                          , 'disableSubmit'
+                          , 'enableSubmit'
                           , 'error'
                           , 'handleBlur'
                           , 'handleFocus'
@@ -124,6 +126,12 @@
               });
             }
             this.model.set({'display_name': null});
+          }
+        , disableSubmit: function(){
+            this.el.find('form').addClass('disabled');
+          }
+        , enableSubmit: function(){
+            this.el.find('form').removeClass('disabled');
           }
         , error: function(){
             this.el.html(_.template(errortmpl, {}));
@@ -310,9 +318,13 @@
         , submit: function(evt){
             evt.preventDefault();
             evt.stopPropagation();
+            if(this.el.find('form').eq(0).hasClass('disabled')){
+              return;
+            }
             var text;
             text = this.el.find('textarea').val();
             if(text){
+              this.disableSubmit();
               message = new App.Models.Message({text: text});
               message.url = this.model.get('_submit_url');
               message.save(null, {
@@ -335,6 +347,7 @@
                       this.flash({type: 'error', message: 'There was a problem posting your message.'});
                     }
                   }, this)
+                , complete: this.enableSubmit
               });
             }
           }
