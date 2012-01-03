@@ -2,12 +2,12 @@ Datajam Chat adds live chat to your events.
 
 ### Installation:
 
-Run `rake db:seed` after adding datajam_chat to your gemspec and
+Run `rake datajam_chat:install` after adding datajam_chat to your gemspec and
 running bundle install.
 
 ### Settings:
 
-All settings are optional.
+Only page size is required.
 
 __Bit.ly username & api key:__ If set, links in chat messages will
 automatically be shortened using your bit.ly account

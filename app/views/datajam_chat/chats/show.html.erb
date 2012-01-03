@@ -1,9 +1,9 @@
 <% content_for :head do %>
 <%= stylesheet_link_tag 'datajam_chat/app' %>
-<%= javascript_include_tag 'datajam_chat/require' %>
-<%= javascript_include_tag 'datajam_chat/app' %>
+<%= javascript_include_tag 'datajam_chat/vendor/require' %>
+<%= javascript_include_tag 'datajam_chat/app-compiled.min.js' %>
 <% end %>
 
 <div id="content" class="container">
-    <div class="datajam-chat-thread clearfix" data-url="/chats/<%= @chat.id %>.json" data-interval="3000"></div>
+    <div class="datajamChatThread clearfix" data-url="/chats/<%= @chat.id %>.json" data-interval="3000"></div>
 </div>

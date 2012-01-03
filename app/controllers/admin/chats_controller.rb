@@ -6,6 +6,7 @@ class Admin::ChatsController < AdminController
 
   def show
     @chat = Chat.find(params[:id])
+    render :layout => "chat_admin"
   end
 
   def destroy

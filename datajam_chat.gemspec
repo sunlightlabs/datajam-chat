@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency "facets", "~> 2.9"
   s.add_dependency "rails", "~> 3.1.0"
   s.add_dependency "jquery-rails", '~> 0.2'
-  s.add_dependency 'mongoid', '~> 2.0'
+  s.add_dependency 'mongoid', '~> 2.3'
   s.add_dependency 'bson_ext', '~> 1.2'
   s.add_dependency 'carrierwave', '~> 0.5'
   s.add_dependency 'carrierwave-mongoid', '~> 0.1.3'

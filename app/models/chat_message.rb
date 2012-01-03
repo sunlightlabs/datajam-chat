@@ -8,16 +8,16 @@ class ChatMessage
   field :is_public, type: Boolean, default: false
   field :is_moderated, type: Boolean, default: false
 
-  belongs_to :chat, index: true
-  belongs_to :page, class_name: "ChatPage", inverse_of: :messages, index: true
-  belongs_to :user, index: true
+  belongs_to :chat, class_name: "Chat", inverse_of: :messages
+  belongs_to :page, class_name: "ChatPage", inverse_of: :messages
+  belongs_to :user
 
   validates_presence_of :chat
   validates_presence_of :display_name
   validates_length_of :text, allow_blank: false, maximum: 1000
 
-  before_save :shorten_urls
-  after_save :paginate
+  before_save :shorten_urls, :paginate
+
 
   def approve
     update_attributes(:is_public => true, :is_moderated => true)
@@ -33,19 +33,16 @@ class ChatMessage
   end
 
   def repaginate!
-    self.page.messages.delete self rescue nil
-    self.page.save rescue nil
-    save
+    update_attributes!(:page => nil)
   end
 
 
-  private
+  protected
 
   def paginate
-    if is_public? and not self.page
-      self.chat.current_page.messages << self
-      self.chat.current_page.save
-      self.chat.save
+    if is_public? && page_id.nil?
+      self.page = chat.current_page
+      self.page.save rescue nil
     end
   end
 
@@ -59,7 +56,7 @@ class ChatMessage
         end
       else long_url
       end
-    end rescue self.text
+    end rescue text
   end
 
 end

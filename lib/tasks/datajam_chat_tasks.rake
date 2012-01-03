@@ -1,4 +1,4 @@
-# desc "Explaining what the task does"
-# task :datajam_chat do
-#   # Task goes here
-# end
+desc "Install default settings"
+task :install => :environment do
+  DatajamChat::Engine.load_seed
+end

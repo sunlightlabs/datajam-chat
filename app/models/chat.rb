@@ -8,27 +8,27 @@ class Chat
   field :is_open, type: Boolean, default: false
   field :is_archived, type: Boolean, default: false
 
-  belongs_to :event, index: true
-  has_many :pages, class_name: "ChatPage"
-  has_many :messages, class_name: "ChatMessage"
+  has_many :pages, class_name: "ChatPage", inverse_of: :chat
+  has_many :messages, class_name: "ChatMessage", inverse_of: :chat
 
-  validates_presence_of :event
   validates_numericality_of :page_size, :greater_than => 0
 
   after_save :cache_instance
 
+
   def current_page
-    save! unless persisted?
-    latest_page = pages.order_by([:created_at, :desc]).first
-    if (latest_page && latest_page.is_open!) or not self.is_open?
-      latest_page
-    else
-      latest_page = pages.create!
-      save
+    save unless persisted?
+
+    latest_page = pages.last
+    unless (latest_page && latest_page.is_open!) || !self.is_open?
+      prev_page = latest_page
+      latest_page = self.pages.create!
       # queue up next_page on our new prev_page if it exists
-      latest_page.prev_page.save rescue nil
-      latest_page
+      prev_page.save rescue nil
+      # update the chat's current_page too
+      save
     end
+    latest_page
   end
 
   def page_size
@@ -52,18 +52,21 @@ class Chat
   end
 
   def publish_everything!
-    pages.each {|page| page.save }
-    save
+    pages.each {|page| page.save! }
+    save!
   end
 
   private
 
   def cache_instance
+    Chat.skip_callback(:save, :after, :cache_instance)
     if is_open? or is_archived?
       content = {:chat => as_json, :page => (self.current_page.as_json(:include => :messages) rescue nil)}.to_json
     else
       content = {:chat => as_json}.to_json
     end
+    Chat.set_callback(:save, :after, :cache_instance)
+
     path = cache_path
     logger.info "Caching #{path}..."
     Cacher::cache(path, content)

@@ -2,12 +2,18 @@ require 'spec_helper'
 
 describe ChatPage do
   include MessageExampleHelperMethods
-  before(:all) do
-    @event = Event.new
-  end
 
   before(:each) do
-    @chat = Chat.create!(:event => @event, :is_open => true)
+    body = <<-ENDBODY.strip_heredoc
+      <h2>{{ header }}</h2>
+      <p>{{ description }}</p>
+      <p>{{ chat_area: Test Chat }}</p>
+    ENDBODY
+    event_template = EventTemplate.create(name: 'Chat Event Template', template: body)
+    data =  { "header" => "Hello World", "description" => "This is the description." }
+    @event = Event.create!(name: 'Chat Test Event', scheduled_at: '2099-12-31', :event_template => event_template, :template_data => data)
+    @chat = @event.content_areas.chats.first.chat
+    @chat.update_attributes(:is_open => true)
     @page = @chat.current_page
   end
 
@@ -24,9 +30,18 @@ describe ChatPage do
     @page.is_open!.should eql(false)
   end
 
+  it "doesn't close itself when not full" do
+    Datajam::Settings[:datajam_chat][:page_size] = 11
+    10.times do
+      @chat.messages.create!(approved_message)
+    end
+    @chat.pages.length.should eql(1)
+  end
+
   it "paginates forward when possible" do
     (@chat.page_size+1).times do
-      @chat.messages.create!(approved_message)
+      message = @chat.messages.create!(approved_message)
+      sleep(0.5) # hack for proper sort order in current_page
     end
     @page.next_page.id.should eql(@chat.current_page.id)
   end
@@ -34,6 +49,7 @@ describe ChatPage do
   it "paginates backward when possible" do
     (@chat.page_size+1).times do
       @chat.messages.create!(approved_message)
+      sleep(0.5) # hack for proper sort order in current_page
     end
     @chat.current_page.prev_page.id.should eql(@page.id)
   end

@@ -1,15 +1,19 @@
-<div class="input-area clearfix">
+<div class="inputArea clearfix">
 <form action="#" name="new_message" class="new-message clearfix">
     <p>
-        <label for="<%= id %>_message">Posting as <strong><%= display_name %></strong> (<a href="#" class="destroy-identity">change</a>)</label>
-        <a class="attach-file" href="#chat_asset">Attach a file</a>
+        <label for="<%= id %>_message">Posting as <strong><%= display_name %></strong> (<a href="#" class="destroyIdentity">change</a>)</label>
+        <a class="attachFile" href="#chat_asset">Attach a file</a>
         <textarea name="" id="<%= id %>_message" cols="30" rows="10" maxlength="1000"></textarea>
+        <% if(typeof csrf_param != 'undefined'){ %>
         <input type="hidden" name="<%= csrf_param %>" value="<%= csrf_token %>" />
+        <% } %>
         <button type="submit">Post</button>
     </p>
 </form>
-<form action="/chats/upload.json" method="post" name="file_drop" class="file-drop" id="file_drop">
-    <input type="file" name="chat_asset" id="chat_asset" class="drop-area" />
+<form action="/chats/upload.json" method="post" name="file_drop" class="fileDrop" id="file_drop">
+    <input type="file" name="chat_asset" id="chat_asset" class="dropArea" />
+    <% if(typeof csrf_param != 'undefined'){ %>
     <input type="hidden" name="<%= csrf_param %>" value="<%= csrf_token %>" />
+    <% } %>
 </form>
 </div>

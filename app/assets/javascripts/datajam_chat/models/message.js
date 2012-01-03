@@ -1,10 +1,12 @@
-define('models/message', ['common'], function(){
-  var $ = jQuery
-    , App = DJ.Chat
-    ;
+(function(define, require){
+  define(['chat/common'], function(){
+    var $ = jQuery
+      , App = Datajam.Chat
+      ;
 
-    App.Models.Message = Backbone.Model.extend({
+      App.Models.Message = Backbone.Model.extend({
 
-    });
+      });
 
-});
+  });
+})(curl.define, curl);

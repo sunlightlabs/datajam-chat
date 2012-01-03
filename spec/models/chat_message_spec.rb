@@ -4,12 +4,17 @@ describe ChatMessage do
   include MessageExampleHelperMethods
   use_vcr_cassette "chat_message"
 
-  before(:all) do
-    @event = Event.new
-  end
   before(:each) do
-    # having chat here sucks, but the settings get cleaned up so they need to be in the global each block
-    @chat = Chat.create!(:event => @event, :is_open => true)
+    body = <<-ENDBODY.strip_heredoc
+      <h2>{{ header }}</h2>
+      <p>{{ description }}</p>
+      <p>{{ chat_area: Test Chat }}</p>
+    ENDBODY
+    event_template = EventTemplate.create(name: 'Chat Event Template', template: body)
+    data =  { "header" => "Hello World", "description" => "This is the description." }
+    @event = Event.create!(name: 'Chat Test Event', scheduled_at: '2099-12-31', :event_template => event_template, :template_data => data)
+    @chat = @event.content_areas.chats.first.chat
+    @chat.update_attributes(:is_open => true)
     @message = ChatMessage.new
   end
 
@@ -62,11 +67,11 @@ describe ChatMessage do
 
   it "can be repaginated" do
     # need to set page size to an odd number > 1 so current_page won't roll over
-    Setting.where(:namespace => 'datajam_chat', :name => 'page_size').first.update_attributes!(:value => 3)
-    Datajam::Settings.flush(:datajam_chat)
+    Datajam::Settings[:datajam_chat][:page_size] = 3
     @message = @chat.messages.create!(approved_message)
     (@chat.page_size).times do
       @chat.messages.create!(approved_message)
+      sleep(0.5) # hack for proper sort order in current_page
     end
     @message.repaginate!
     @chat.current_page.messages.should include(@message)
