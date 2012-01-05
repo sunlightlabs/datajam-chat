@@ -1,5 +1,4 @@
 require 'rails/engine'
-require 'sprockets/railtie'
 require 'datajam_chat'
 require 'bitly'
 
@@ -26,7 +25,7 @@ module DatajamChat
       Bitly.use_api_version_3
     end
 
-    if Rails.env =~ /^(development|test)$/
+    if Rails.env =~ /^(development|test|production)$/
       initializer "datajam_chat.static_assets" do |app|
         app.middleware.use ::ActionDispatch::Static, "#{root}/app/assets"
       end
