@@ -1,5 +1,5 @@
 class DatajamChat::ChatAssetUploader < CarrierWave::Uploader::Base
-  require 'UUIDTools'
+  require 'uuidtools'
   require 'mime/types'
 
   storage :grid_fs
