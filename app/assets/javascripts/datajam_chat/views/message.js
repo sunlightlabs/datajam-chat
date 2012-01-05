@@ -3,7 +3,7 @@
       'text!chat/templates/message/show.html'
     , 'chat/common'
     , 'chat/tweet'
-    , 'js!chat/vendor/md5.js'
+    , 'js!chat/plugins/md5.js'
     , 'chat/models/message' ], function(showtmpl){
 
     var $ = jQuery

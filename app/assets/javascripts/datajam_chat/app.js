@@ -6,10 +6,10 @@
 (function($, define, require){
 
   define('chat/common', [
-    , 'js!chat/vendor/underscore_mixins.js'
-    , 'js!chat/vendor/jquery.imagesloaded.js'
-    , 'js!chat/vendor/jquery.scrollTo-1.4.2-min.js'
-    , 'js!chat/vendor/moment.min.js'
+    , 'js!chat/plugins/underscore_mixins.js'
+    , 'js!chat/plugins/jquery.imagesloaded.js'
+    , 'js!chat/plugins/jquery.scrollTo-1.4.2-min.js'
+    , 'js!chat/plugins/moment.min.js'
     ]
   , function(){
       window.Datajam || (Datajam = {});
@@ -28,7 +28,7 @@
       });
     });
 
-  define('chat/upload', ['js!chat/vendor/jquery.form.js'], $.noop);
+  define('chat/upload', ['js!chat/plugins/jquery.form.js'], $.noop);
 
   define('chat/tweet', ['js!//platform.twitter.com/widgets.js'], $.noop);
 
