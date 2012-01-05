@@ -1,4 +1,5 @@
 require 'rails/engine'
+require 'sprockets/railtie'
 require 'datajam_chat'
 require 'bitly'
 
