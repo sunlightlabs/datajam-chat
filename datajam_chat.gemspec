@@ -25,7 +25,6 @@ Gem::Specification.new do |s|
   s.add_dependency 'mongoid_slug', '~> 0.7'
   s.add_dependency 'rack-gridfs', '~> 0.4'
   s.add_dependency 'bitly', '~> 0.6'
-  s.add_dependency 'uuidtools', '~> 2.1.2'
   s.add_dependency 'formatize', '~> 1.0'
 
   s.add_development_dependency 'vcr', '~>1.6.0'
