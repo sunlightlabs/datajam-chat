@@ -1,7 +1,6 @@
 class DatajamChat::ChatMessagesController < DatajamChat::EngineController
 
   before_filter :authenticate_user!, :except => [:create]
-  skip_before_filter :verify_authenticity_token, :only => [:create]
 
   def index
     @chat = Chat.find(params[:chat_id])

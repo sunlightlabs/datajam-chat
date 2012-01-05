@@ -22,7 +22,11 @@
       Datajam.Chat.csrf = {
           csrf_param: $('meta[name=csrf-param]').attr('content')
         , csrf_token: $('meta[name=csrf-token]').attr('content')
-      }
+      };
+      // ensure we have the real token
+      $('document').bind('csrfloaded', function(){
+        Datajam.Chat.csrf.csrf_token = $('meta[name=csrf-token]').attr('content');
+      });
     });
 
   define('chat/upload', ['js!chat/vendor/jquery.form.js'], $.noop);
@@ -71,6 +75,11 @@
                 this.url = resp.page.next_page;
                 this._newest_seen_page = resp.page.next_page;
               }
+            }
+            // Separation of concerns (n). Not this.
+            if(!resp.chat.is_open && !_.isEqual(resp.chat, this.view.model.toJSON())){
+              this.view.model.set(resp.chat);
+              this.view.pause();
             }
             return resp.page.messages;
           }
@@ -382,8 +391,9 @@
               }, this));
             }else if(this.anchor){
               scroller.find('img').imagesLoaded(_.bind(function(){
-                clipper.stop().scrollTo(this.anchor);
-                this.anchor = null;
+                clipper.stop().scrollTo(this.anchor, _.bind(function(){
+                  this.anchor = null;
+                }, this));
               }, this));
             }
           }
@@ -497,13 +507,13 @@
               clearTimeout(this._timeout);
               this._timeout = null;
             }
+            this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')))
+            // trigger scroll if we opened to a blank page
+            if(!this.el.children('ul.comments > li').length){
+              this.el.children('.commentsClip').trigger('scroll');
+            }
             if(!this.model.get('paused')){
-              this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')))
               this._timeout = setTimeout(this.pollForContent, this.model.get('interval'));
-              // trigger scroll if we opened to a blank page
-              if(!this.el.children('ul.comments > li').length){
-                this.el.children('.commentsClip').trigger('scroll');
-              }
             }
           }
         , pollForOpenness: function(){
@@ -557,7 +567,7 @@
             if(!data.id) return this;
 
             // if the model is closed, render the closed message
-            if(!data.is_open){
+            if(!data.is_open && !data.is_archived){
               this.el.html(closedmessage);
               return this;
             }
@@ -573,12 +583,17 @@
                 this.el.trigger('chatWindow:scroll');
               }, this));
             }
-            // draw the correct form
-            this.el.find('form').remove();
-            if(this.model.get('display_name')){
-              this.el.append(submitform(data));
-            }else{
-              this.el.append(identityform(data))
+            // draw the correct form, if needed
+            this.el.find('form, .archived').remove();
+            if(data.is_open){
+              if(this.model.get('display_name')){
+                this.el.append(submitform(data));
+              }else{
+                this.el.append(identityform(data))
+              }
+            }
+            if(data.is_archived){
+              this.el.append('<p class="archived">This is an archived event, comments are closed.</p>');
             }
             // focus if focus is sticky
             if(this.model.get('_keep_focus')){
@@ -650,6 +665,60 @@
                     }, this)
                 });
             };
+          }
+      });
+  });
+
+  define('chat/views/chat_controls', [
+      'text!chat/templates/chat/controls.html'
+    , 'chat/common'
+    , 'chat/models/chat' ], function(controlstmpl){
+
+    var $ = jQuery
+      , App = Datajam.Chat
+      ;
+
+      App.Views.ChatControls = Backbone.View.extend({
+          events: {
+              "change select": "submit"
+          }
+        , initialize: function(){
+            _.bindAll(this, 'submit'
+                          , 'render'
+                          );
+            this.el.data('chat-controls', this);
+            this.statuses = [
+                {is_open: false, is_archived: false}
+              , {is_open: true, is_archived: false}
+              , {is_open: false, is_archived: true}
+            ]
+            var modal = this.el.parents('.modal')
+              , areaId = modal.attr('id').replace('modal-', '');
+            try{
+              this.model = $('#chat_area_' + areaId).data('chat').model;
+            }catch(e){
+              return;
+            }
+          }
+        , render: function(){
+            this.el.html(controlstmpl);
+            var status = {
+                    is_open: this.model.get('is_open')
+                  , is_archived: this.model.get('is_archived')
+                }
+              , val = null;
+            _(this.statuses).each(function(obj, idx, statuses){
+              if(_.isEqual(obj, status)){
+                val = idx + 1;
+              }
+            }, this);
+            val && this.el.find('select').val(val);
+            return this;
+          }
+        , submit: function(){
+            var select = this.el.find('select')
+              , idx = (select.length) ? (select.first().val()) : null;
+            idx && this.model.save(this.statuses[idx-1], {data: this.statuses[idx-1]});
           }
       });
   });

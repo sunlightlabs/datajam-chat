@@ -1,7 +1,6 @@
 class ChatArea < ContentArea
   belongs_to :chat
 
-
   after_initialize :ensure_chat
 
   def render_head
@@ -26,7 +25,7 @@ class ChatArea < ContentArea
   protected
 
   def ensure_chat
-    self.chat = Chat.new
+    self.chat ||= Chat.create!
   end
 
   def renderer

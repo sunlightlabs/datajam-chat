@@ -1,7 +1,5 @@
 class DatajamChat::ChatIdentityController < DatajamChat::EngineController
 
-  skip_before_filter :verify_authenticity_token, :only => [:index, :create, :destroy]
-
   # Gets current user's display name
   def index
     if current_user

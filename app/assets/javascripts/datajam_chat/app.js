@@ -21,7 +21,11 @@
       Datajam.Chat.csrf = {
           csrf_param: $('meta[name=csrf-param]').attr('content')
         , csrf_token: $('meta[name=csrf-token]').attr('content')
-      }
+      };
+      // ensure we have the real token
+      $('document').bind('csrfloaded', function(){
+        Datajam.Chat.csrf.csrf_token = $('meta[name=csrf-token]').attr('content');
+      });
     });
 
   define('chat/upload', ['js!chat/vendor/jquery.form.js'], $.noop);
@@ -45,6 +49,11 @@
       $('.datajamChatThread.moderator').each(function(){
         require(['chat/views/moderator_chat'], _.bind(function(){
           new App.Views.ModeratorChat({ el: $(this) });
+        }, this));
+      });
+      $('.chat-modal .modal-chat-controls').each(function(){
+        require(['chat/views/chat_controls'], _.bind(function(){
+          new App.Views.ChatControls({ el: $(this) }).render();
         }, this));
       });
     });

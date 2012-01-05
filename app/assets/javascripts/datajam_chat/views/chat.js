@@ -106,8 +106,9 @@
               }, this));
             }else if(this.anchor){
               scroller.find('img').imagesLoaded(_.bind(function(){
-                clipper.stop().scrollTo(this.anchor);
-                this.anchor = null;
+                clipper.stop().scrollTo(this.anchor, _.bind(function(){
+                  this.anchor = null;
+                }, this));
               }, this));
             }
           }
@@ -221,13 +222,13 @@
               clearTimeout(this._timeout);
               this._timeout = null;
             }
+            this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')))
+            // trigger scroll if we opened to a blank page
+            if(!this.el.children('ul.comments > li').length){
+              this.el.children('.commentsClip').trigger('scroll');
+            }
             if(!this.model.get('paused')){
-              this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')))
               this._timeout = setTimeout(this.pollForContent, this.model.get('interval'));
-              // trigger scroll if we opened to a blank page
-              if(!this.el.children('ul.comments > li').length){
-                this.el.children('.commentsClip').trigger('scroll');
-              }
             }
           }
         , pollForOpenness: function(){
@@ -281,7 +282,7 @@
             if(!data.id) return this;
 
             // if the model is closed, render the closed message
-            if(!data.is_open){
+            if(!data.is_open && !data.is_archived){
               this.el.html(closedmessage);
               return this;
             }
@@ -297,12 +298,17 @@
                 this.el.trigger('chatWindow:scroll');
               }, this));
             }
-            // draw the correct form
-            this.el.find('form').remove();
-            if(this.model.get('display_name')){
-              this.el.append(submitform(data));
-            }else{
-              this.el.append(identityform(data))
+            // draw the correct form, if needed
+            this.el.find('form, .archived').remove();
+            if(data.is_open){
+              if(this.model.get('display_name')){
+                this.el.append(submitform(data));
+              }else{
+                this.el.append(identityform(data))
+              }
+            }
+            if(data.is_archived){
+              this.el.append('<p class="archived">This is an archived event, comments are closed.</p>');
             }
             // focus if focus is sticky
             if(this.model.get('_keep_focus')){

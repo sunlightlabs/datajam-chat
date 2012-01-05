@@ -1,6 +1,6 @@
 <div class="commentDetails">
     <time pubdate class="published" datetime><%= moment(updated_at).format('h:mm a') %></time>
-    <a class="tweet" href="https://twitter.com/intent/tweet?text=<%= escape(_('"' + _(text).tweetablestriptags() + '"').truncate(120)) %>&amp;url=<%= window.location.href %>">Tweet this</a>
+    <a class="tweet" href="https://twitter.com/intent/tweet?text=<%= escape(_('"' + _(text).tweetablestriptags() + '"').truncate(100) + ' ' + window.location.href) %>">Tweet this</a>
 
 </div>
 <% if (user && user.email) { %>

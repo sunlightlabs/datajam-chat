@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       delete '/upload' => 'chat_assets#destroy'
     end
 
-    resources :chats, :only => [:index, :show] do
+    resources :chats, :only => [:index, :show, :update] do
       resources :messages, :controller => 'chat_messages', :except => [:new, :edit, :destroy]
       resources :pages, :controller => 'chat_pages', :only => [:show]
     end

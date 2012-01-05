@@ -40,6 +40,11 @@
                 this._newest_seen_page = resp.page.next_page;
               }
             }
+            // Separation of concerns (n). Not this.
+            if(!resp.chat.is_open && !_.isEqual(resp.chat, this.view.model.toJSON())){
+              this.view.model.set(resp.chat);
+              this.view.pause();
+            }
             return resp.page.messages;
           }
         , _clean: function(model) {
