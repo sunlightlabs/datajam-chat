@@ -1,5 +1,4 @@
 require 'rails/engine'
-require 'sprockets/railtie'
 require 'datajam_chat'
 require 'bitly'
 
@@ -19,12 +18,6 @@ module DatajamChat
     initializer "datajam_chat.register_plugin" do
       Datajam.setup do |app|
         app.plugins << Gem::Specification.load(File.expand_path("../../../datajam_chat.gemspec", __FILE__))
-      end
-    end
-
-    initializer "datajam.precompile_everything" do
-      Datajam.setup do |app|
-        app.assets.precompile += %w( *.js *.css )
       end
     end
 
