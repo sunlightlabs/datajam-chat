@@ -1079,10 +1079,12 @@
           new App.Views.ModeratorChat({ el: $(this) });
         }, this));
       });
-      $('.chat-modal .modal-chat-controls').each(function(){
-        require(['chat/views/chat_controls'], _.bind(function(){
-          new App.Views.ChatControls({ el: $(this) });
-        }, this));
+      $('a[data-controls-modal]').one('click', function(){
+        $('#' + $(this).attr('data-controls-modal')).find('.modal-chat-controls').each(function(){
+          require(['chat/views/chat_controls'], _.bind(function(){
+            new App.Views.ChatControls({ el: $(this) });
+          }, this));
+        });
       });
     });
 
