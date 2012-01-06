@@ -9,7 +9,7 @@ module DatajamChat
   end
 
   def self.sessions
-    @@sessions ||= Redis::Namespace.new((Rails.env + '_chat_sessions').to_sym, :redis => Redis.new)
+    @@sessions ||= Redis::Namespace.new((Rails.env + '_chat_sessions').to_sym, :redis => REDIS)
   end
 
   def self.bitly
