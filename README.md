@@ -1,9 +1,23 @@
 Datajam Chat adds live chat to your events.
 
-### Installation:
+### Install:
 
-Run `rake datajam_chat:install` after adding datajam_chat to your gemspec and
-running bundle install.
+1. add datajam\_chat to your gemfile; currently from github:
+    
+    `gem 'datajam_chat', :git => 'git://github.com/sunlightlabs/datajam_chat.git'`
+    
+2. run `bundle install`
+3. run `rake datajam_chat:install_assets`
+4. deploy heroku
+5. run `heroku run rake datajam_chat:install_settings`
+6. Add a chat area to your event template, e.g., `{{ chat_area: Live Chat }}`
+
+### Uninstall:
+
+1. remove chat area
+2. run `heroku run rake datajam_chat:uninstall_settings`
+3. run `rake datajam_chat:uninstall_assets`
+4. deploy heroku
 
 ### Settings:
 
