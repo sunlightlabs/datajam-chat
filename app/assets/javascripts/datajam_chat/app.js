@@ -53,7 +53,7 @@
       });
       $('.chat-modal .modal-chat-controls').each(function(){
         require(['chat/views/chat_controls'], _.bind(function(){
-          new App.Views.ChatControls({ el: $(this) }).render();
+          new App.Views.ChatControls({ el: $(this) });
         }, this));
       });
     });

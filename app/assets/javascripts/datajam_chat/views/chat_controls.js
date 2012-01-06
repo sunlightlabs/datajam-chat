@@ -29,6 +29,7 @@
             }catch(e){
               return;
             }
+            return this.render();
           }
         , render: function(){
             this.el.html(controlstmpl);
