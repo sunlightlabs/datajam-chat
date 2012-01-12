@@ -13,7 +13,6 @@ PATH
       mongoid_slug (~> 0.7)
       rack-gridfs (~> 0.4)
       rails (~> 3.1.0)
-      uuidtools (~> 2.1.2)
 
 GEM
   remote: http://rubygems.org/
@@ -259,7 +258,6 @@ GEM
     unicorn (3.7.0)
       kgio (~> 2.3)
       rack
-    uuidtools (2.1.2)
     vcr (1.6.0)
     warden (1.1.0)
       rack (>= 1.0)
