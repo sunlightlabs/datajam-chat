@@ -1,6 +1,6 @@
 class DatajamChat::EngineController < ApplicationController
 
-  private
+  protected
 
   def locals
     context = {}

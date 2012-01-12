@@ -54,7 +54,7 @@ class DatajamChat::ChatIdentityController < DatajamChat::EngineController
     end
   end
 
-  private
+  protected
 
   def error_name_taken
     {:errors => ['Name is already registered, please choose another']}

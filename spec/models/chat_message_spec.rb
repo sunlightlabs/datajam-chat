@@ -45,6 +45,12 @@ describe ChatMessage do
     @chat.current_page.messages.should include(@message)
   end
 
+  it "publishes when approved" do
+    @message = @chat.messages.create!(incoming_message)
+    @message.update_attributes!(:is_public => true, :is_moderated => true)
+    @redis.get(@chat.current_page.cache_path).should include(@message.to_json)
+  end
+
   it "sets the correct status when approved" do
     @message = @chat.messages.create!(incoming_message)
     @message.approve

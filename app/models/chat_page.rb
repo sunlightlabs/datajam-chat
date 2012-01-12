@@ -46,7 +46,7 @@ class ChatPage
   end
 
 
-  private
+  protected
 
   def cache_instance
     content = { :chat => chat, :page => as_json }.to_json

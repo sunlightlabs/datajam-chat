@@ -55,7 +55,7 @@ class Chat
     save!
   end
 
-  private
+  protected
 
   def cache_instance
     Chat.skip_callback(:save, :after, :cache_instance)
