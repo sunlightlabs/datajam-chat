@@ -9,24 +9,30 @@
             if(_.isArray(models)){
               $.each(models, _.bind(function(idx, model){
                 model = this._clean(model);
-                this.add_or_replace(model, options);
+                this.handle_message(model, options);
               }, this));
             }else{
               models = this._clean(models);
-              this.add_or_replace(model, options);
+              this.handle_message(model, options);
             }
             return this;
           }
-        , add_or_replace: function(model, options){
+        , handle_message: function(model, options){
             var existing = this.get(model.id);
             if(!existing){
-              this._add(model, options);
+              if(model.text){
+                this._add(model, options);
+              }
             }else if(model.updated_at > existing.get('updated_at')){
-              existing.set(model)
+              if(model.text){
+                existing.set(model);
+              }else{
+                this.remove(existing);
+              }
             }
           }
         , comparator: function(obj){
-            return Date.parse(obj.get('updated_at'));
+            return 0 - Date.parse(obj.get('updated_at')).valueOf();
           }
         , parse: function(resp, xhr) {
             var page = '/chats/' + resp.chat._id + '/pages/' + resp.page._id + '.json';
@@ -53,6 +59,5 @@
             return model;
           }
       });
-
   });
 })(curl.define, curl);

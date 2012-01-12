@@ -14,7 +14,7 @@ class ChatMessage
 
   validates_presence_of :chat
   validates_presence_of :display_name
-  validates_length_of :text, allow_blank: false, maximum: 1000
+  validates_length_of :text, allow_blank: true, maximum: 1000
 
   validate :chat_is_open?
 
@@ -35,7 +35,11 @@ class ChatMessage
   end
 
   def repaginate!
+    original_page = self.page
     update_attributes!(:page => nil)
+
+    # update_attributes doesn't trigger callbacks on the relation
+    original_page.save
   end
 
 

@@ -45,24 +45,30 @@
             if(_.isArray(models)){
               $.each(models, _.bind(function(idx, model){
                 model = this._clean(model);
-                this.add_or_replace(model, options);
+                this.handle_message(model, options);
               }, this));
             }else{
               models = this._clean(models);
-              this.add_or_replace(model, options);
+              this.handle_message(model, options);
             }
             return this;
           }
-        , add_or_replace: function(model, options){
+        , handle_message: function(model, options){
             var existing = this.get(model.id);
             if(!existing){
-              this._add(model, options);
+              if(model.text){
+                this._add(model, options);
+              }
             }else if(model.updated_at > existing.get('updated_at')){
-              existing.set(model)
+              if(model.text){
+                existing.set(model);
+              }else{
+                this.remove(existing);
+              }
             }
           }
         , comparator: function(obj){
-            return Date.parse(obj.get('updated_at'));
+            return 0 - Date.parse(obj.get('updated_at')).valueOf();
           }
         , parse: function(resp, xhr) {
             var page = '/chats/' + resp.chat._id + '/pages/' + resp.page._id + '.json';
@@ -89,7 +95,6 @@
             return model;
           }
       });
-
   });
 
   define('chat/collections/moderator_message', ['chat/common'], function(){
@@ -222,7 +227,7 @@
             if(parent_model && parent_model.get('is_admin') && $(this.el).parents('.datajamChatAdmin').length){
               evt.preventDefault();
               var text = prompt("Enter the new text", this.model.get('text'));
-              if(text && text != this.model.get('text')){
+              if(text !== null && text != this.model.get('text')){
                 this.model.url = this._url();
                 this.model.set({text: text});
                 this.model.save();
@@ -333,6 +338,7 @@
                           , 'pollForContent'
                           , 'pollForOpenness'
                           , 'prevPage'
+                          , 'removeMessage'
                           , 'render'
                           , 'resume'
                           , 'submit'
@@ -344,7 +350,7 @@
             this.el.data('chat', this);
             this.model = new App.Models.Chat;
             this.model.url = this.el.attr('data-url');
-            this.model.set({interval: this.el.attr('data-interval'), _scroll_anchored: true});
+            this.model.set({interval: this.el.attr('data-interval'), _scroll_anchored: true });
             this.model.bind('change', this.render);
 
             // get identity if available
@@ -366,6 +372,8 @@
         , addMessage: function(model){
             var clipper = this.el.find('.commentsClip')
               , scroller = clipper.find('.comments')
+              , offset = clipper.scrollTop()
+              , height = scroller.height()
               , items = scroller.find('li')
               , message = new App.Views.Message({
                      model: model
@@ -384,16 +392,11 @@
             // fire a scroll message if the window is too short to scroll
             if(scroller.height() < clipper.height()) clipper.trigger('scroll');
 
-            // scroll to bottom of window if we are anchored
-            if(this.model.get('_scroll_anchored')){
+            // maintain scroll offset if not anchored
+            if(!this.model.get('_scroll_anchored')){
               scroller.find('img').imagesLoaded(_.bind(function(){
-                clipper.stop().scrollTo('100%', 100, 'swing');
-              }, this));
-            }else if(this.anchor){
-              scroller.find('img').imagesLoaded(_.bind(function(){
-                clipper.stop().scrollTo(this.anchor, _.bind(function(){
-                  this.anchor = null;
-                }, this));
+                var diff = scroller.height() - height;
+                clipper.scrollTo(offset+ diff);
               }, this));
             }
           }
@@ -456,16 +459,16 @@
             var clipper, scroller;
             clipper = this.el.find('div.commentsClip');
             scroller = clipper.find('.comments');
-            // anchor if user scrolls to the bottom of the range
-            if(clipper.height() + clipper.scrollTop() >= scroller.height()){
+            // anchor if user scrolls to the top of the range
+            if(clipper.scrollTop() == 0){
+            // if(clipper.height() + clipper.scrollTop() >= scroller.height()){
               this.model.set({'_scroll_anchored': true}, {'silent': true});
             }else{
               this.model.set({'_scroll_anchored': false}, {'silent': true});
             }
-            // page back if user scrolls to the top of the range
-            if(clipper.scrollTop() == 0){
+            // page back if user scrolls to the end of the range
+            if(clipper.height() + clipper.scrollTop() >= scroller.height()){
               this.loading();
-              this.anchor = scroller.find('li:first');
               $.when(this.prevPage()).then(this.loaded());
             }
           }
@@ -527,6 +530,7 @@
                   this.collection = new App.Collections.Message;
                   this.collection.view = this;
                   this.collection.bind('add', this.addMessage);
+                  this.collection.bind('remove', this.removeMessage);
                   this.collection.url = this.model.url.replace('.json', '/pages/' + model.page._id + '.json');
                   this.collection._newest_seen_page = this.collection.url;
                   this.collection._oldest_seen_page = model.page.prev_page;
@@ -556,6 +560,11 @@
               return true;
             }
           }
+        , removeMessage: function(model){
+            var scroller = this.el.find('.comments')
+              , item = scroller.find('li#' + model.get('id'));
+            item && item.remove();
+          }
         , render: function(){
             var data = _(this.model.toJSON()).extend(App.csrf)
               , html = _.template(showtmpl)
@@ -583,18 +592,22 @@
                 this.el.trigger('chatWindow:scroll');
               }, this));
             }
+
             // draw the correct form, if needed
             this.el.find('form, .archived').remove();
             if(data.is_open){
               if(this.model.get('display_name')){
-                this.el.append(submitform(data));
+                this.el.find('.tip').after(submitform(data));
               }else{
-                this.el.append(identityform(data))
+                this.el.find('.tip').after(identityform(data))
               }
+            }else{
+              this.el.find('.tip').remove();
             }
             if(data.is_archived){
-              this.el.append('<p class="archived">This is an archived event, comments are closed.</p>');
+              this.el.prepend('<p class="archived">This is an archived event, comments are closed.</p>');
             }
+
             // focus if focus is sticky
             if(this.model.get('_keep_focus')){
               this.el.find('textarea, input[type=text]').focus();

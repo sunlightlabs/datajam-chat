@@ -45,7 +45,7 @@
             if(parent_model && parent_model.get('is_admin') && $(this.el).parents('.datajamChatAdmin').length){
               evt.preventDefault();
               var text = prompt("Enter the new text", this.model.get('text'));
-              if(text && text != this.model.get('text')){
+              if(text !== null && text != this.model.get('text')){
                 this.model.url = this._url();
                 this.model.set({text: text});
                 this.model.save();
