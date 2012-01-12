@@ -18,7 +18,8 @@ class ChatMessage
 
   validate :chat_is_open?
 
-  before_save :shorten_urls, :paginate
+  before_save :shorten_urls
+  after_save :paginate
 
 
   def approve
