@@ -18,8 +18,7 @@ class ChatMessage
 
   validate :chat_is_open?
 
-  before_save :shorten_urls
-  after_save :paginate
+  before_save :shorten_urls, :paginate
 
 
   def approve
@@ -49,7 +48,7 @@ class ChatMessage
   def paginate
     if is_public? && page_id.nil?
       self.page = chat.current_page
-      self.page.save rescue nil
+      self.page.save!
     end
   end
 
