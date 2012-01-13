@@ -55,7 +55,7 @@ class DatajamChat::ChatMessagesController < DatajamChat::EngineController
   def update
     @message = ChatMessage.find(params[:id])
     if @message.update_with(JSON.parse(params[:model]))
-      @message.page.save
+      @message.page && @message.page.save
       response = @message
     else
       response = @message.errors
