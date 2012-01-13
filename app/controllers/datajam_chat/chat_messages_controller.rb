@@ -54,38 +54,17 @@ class DatajamChat::ChatMessagesController < DatajamChat::EngineController
 
   def update
     @message = ChatMessage.find(params[:id])
-
-    if @message.update_attributes(JSON.parse(params[:model]).keep_if {|key, val| writable_attrs.include? key.to_sym})
-      # make sure we re-paginate this message if it already has a page assigned
-      if @message.page
-        @message.repaginate!
-      end
+    if @message.update_with(JSON.parse(params[:model]))
+      @message.page.save
       response = @message
     else
       response = @message.errors
     end
-
 
     respond_to do |format|
       format.json { render :json => response, :callback => params[:callback] }
     end
   end
 
-  def writable_attrs
-    [:text, :is_public, :is_moderated]
-  end
-
-  # def destroy
-  #   @message = ChatMessage.find(params[:id])
-  #   if @message.destroy
-  #     response = {:success => true}
-  #   else
-  #     response = @message.errors
-  #   end
-  #
-  #   respond_to do |format|
-  #     format.json { render :json => response, :callback => params[:callback] }
-  #   end
-  # end
 
 end

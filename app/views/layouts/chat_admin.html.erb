@@ -18,7 +18,10 @@
 <body class="bare">
 
   <%= yield %>
-
+  <script type="text/javascript" charset="utf-8">
+    window.datajam || (Datajam = {});
+    Datajam.DEBUG = <%= (Rails.env.to_s == 'production' && 'false') || 'true' %>;
+  </script>
   <script src="/javascripts/curl/curl.js" type="text/javascript" charset="utf-8"></script>
 
   <%= yield :body %>

@@ -272,7 +272,7 @@
           }
         , removeMessage: function(model){
             var scroller = this.el.find('.comments')
-              , item = scroller.find('li#' + model.get('id'));
+              , item = scroller.find('li#message_' + model.get('id'));
             item && item.remove();
           }
         , render: function(){

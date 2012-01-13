@@ -19,8 +19,6 @@ class ChatMessage
   validate :chat_is_open?
 
   before_save :shorten_urls, :paginate
-  after_save :ensure_publish
-
 
   def approve
     update_attributes(:is_public => true, :is_moderated => true)
@@ -35,26 +33,33 @@ class ChatMessage
     super(:except => [:user_id, :chat_id, :page_id]).merge({:user => @user})
   end
 
-  def repaginate!
+  def update_with(options)
     original_page = self.page
-    update_attributes!(:page => nil)
-
-    # update_attributes doesn't trigger callbacks on the relation
-    original_page.save
+    # set accessible attrs
+    if options
+      self.attributes = options.keep_if {|key, val| accessible_attrs.include? key.to_sym}
+    end
+    if valid?
+      # depaginate if it already had a page
+      if original_page
+        original_page.messages.delete(self)
+        original_page.save
+      end
+    end
+    save
   end
 
 
   protected
 
-  def paginate
-    if is_public? && page_id.nil?
-      chat.current_page && chat.current_page.messages << self
-    end
+  def accessible_attrs
+    [:text, :is_public, :is_moderated]
   end
 
-  def ensure_publish
-    if is_public?
-      self.page.save!
+  def paginate
+    if is_public? && page_id.nil?
+      self.chat.current_page.messages.concat([ self ])
+      self.page.save
     end
   end
 

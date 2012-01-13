@@ -79,7 +79,7 @@ describe ChatMessage do
       @chat.messages.create!(approved_message)
       sleep(0.5) # hack for proper sort order in current_page
     end
-    @message.repaginate!
+    @message.update_with(:text => 'Goodbye, cruel world!')
     @chat.current_page.messages.should include(@message)
   end
 
