@@ -13,7 +13,7 @@ module DatajamChat
   end
 
   def self.bitly
-    @@bitly ||= Bitly.new('dandrinkard', 'R_d8607321607aef1915a1d1a8ff0312bf')
+    @@bitly ||= Bitly.new(Datajam::Settings[:datajam_chat][:bitly_username], Datajam::Settings[:datajam_chat][:bitly_api_key])
   end
 
 end
