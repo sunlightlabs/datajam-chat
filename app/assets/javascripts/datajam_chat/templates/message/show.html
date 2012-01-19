@@ -3,7 +3,10 @@
     <a class="tweet" href="https://twitter.com/intent/tweet?text=<%= escape(_('"' + _(text).tweetablestriptags() + '"').truncate(100) + ' ' + window.location.href) %>">Tweet this</a>
 
 </div>
-<% if (user && user.email) { %>
+
+<% if (user && user.small_avatar_url) %>
+    <img alt="Photo of <%= display_name %>" src="<%= user.small_avatar_url %>" width="50" height="50" />
+<% else if (user && user.email) { %>
     <img alt="Photo of <%= display_name %>" src="http://gravatar.com/avatar/<%= MD5(user.email.toLowerCase()) %>.jpg?s=50&amp;d=https%3A%2F%2Ftwimg0-a.akamaihd.net%2Fprofile_images%2F55418705%2F100x100_sunlight_normal.png" />
 <% } %>
 <div class="liveComment">
