@@ -1,143 +1,237 @@
---- 
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+---
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://api.bit.ly:80/v3/shorten?longUrl=http%3A%2F%2Fsunlighfoundation.com&login=dandrinkard&apiKey=R_d8607321607aef1915a1d1a8ff0312bf
-    body: 
-    headers: 
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+    body:
+    headers:
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      server: 
+    headers:
+      server:
       - nginx
-      date: 
+      date:
       - Tue, 06 Dec 2011 21:44:13 GMT
-      content-type: 
+      content-type:
       - application/json; charset=utf-8
-      mime-version: 
+      mime-version:
       - "1.0"
-      content-length: 
+      content-length:
       - "195"
     body: |
       { "status_code": 200, "status_txt": "OK", "data": { "long_url": "http:\/\/sunlighfoundation.com\/", "url": "http:\/\/bit.ly\/tebC0r", "hash": "tebC0r", "global_hash": "vvZLSg", "new_hash": 0 } }
 
     http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://api.bit.ly:80/v3/shorten?longUrl=http%3A%2F%2Fbit.ly%2FtebC0r&login=dandrinkard&apiKey=R_d8607321607aef1915a1d1a8ff0312bf
-    body: 
-    headers: 
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+    body:
+    headers:
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      server: 
+    headers:
+      server:
       - nginx
-      date: 
+      date:
       - Tue, 06 Dec 2011 21:44:14 GMT
-      content-type: 
+      content-type:
       - application/json; charset=utf-8
-      mime-version: 
+      mime-version:
       - "1.0"
-      content-length: 
+      content-length:
       - "73"
     body: "{ \"data\": [ ], \"status_code\": 500, \"status_txt\": \"ALREADY_A_BITLY_LINK\" }"
     http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://api.bit.ly:80/v3/shorten?longUrl=http%3A%2F%2Fsunlighfoundation.com&login=sunlightlabstest&apiKey=R_4a9fd69e8bd11ad20be192740a8c3816
-    body: 
-    headers: 
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+    body:
+    headers:
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      server: 
+    headers:
+      server:
       - nginx
-      date: 
+      date:
       - Thu, 19 Jan 2012 16:58:31 GMT
-      content-type: 
+      content-type:
       - application/json; charset=utf-8
-      mime-version: 
+      mime-version:
       - "1.0"
-      content-length: 
+      content-length:
       - "195"
     body: |
       { "status_code": 200, "status_txt": "OK", "data": { "long_url": "http:\/\/sunlighfoundation.com\/", "url": "http:\/\/bit.ly\/z7kNUk", "hash": "z7kNUk", "global_hash": "vvZLSg", "new_hash": 1 } }
 
     http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://api.bit.ly:80/v3/shorten?longUrl=http%3A%2F%2Fbit.ly%2Fz7kNUk&login=sunlightlabstest&apiKey=R_4a9fd69e8bd11ad20be192740a8c3816
-    body: 
-    headers: 
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+    body:
+    headers:
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      server: 
+    headers:
+      server:
       - nginx
-      date: 
+      date:
       - Thu, 19 Jan 2012 16:58:31 GMT
-      content-type: 
+      content-type:
       - application/json; charset=utf-8
-      mime-version: 
+      mime-version:
       - "1.0"
-      content-length: 
+      content-length:
       - "73"
     body: "{ \"data\": [ ], \"status_code\": 500, \"status_txt\": \"ALREADY_A_BITLY_LINK\" }"
     http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://api.bit.ly:80/v3/shorten?longUrl=http%3A%2F%2Fsunlighfoundation.com&login=&apiKey=
-    body: 
-    headers: 
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+    body:
+    headers:
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      server: 
+    headers:
+      server:
       - nginx
-      date: 
-      - Thu, 19 Jan 2012 16:46:41 GMT
-      content-type: 
+      date:
+      - Thu, 19 Jan 2012 17:01:33 GMT
+      content-type:
       - application/json; charset=utf-8
-      mime-version: 
+      mime-version:
       - "1.0"
-      content-length: 
+      content-length:
       - "71"
     body: "{ \"data\": [ ], \"status_code\": 500, \"status_txt\": \"MISSING_ARG_APIKEY\" }"
     http_version: "1.1"
-- !ruby/struct:VCR::HTTPInteraction 
-  request: !ruby/struct:VCR::Request 
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
     method: :get
     uri: http://api.bit.ly:80/v3/shorten?longUrl=http%3A%2F%2Fsunlighfoundation.com&login=&apiKey=
-    body: 
-    headers: 
-  response: !ruby/struct:VCR::Response 
-    status: !ruby/struct:VCR::ResponseStatus 
+    body:
+    headers:
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
       code: 200
       message: OK
-    headers: 
-      server: 
+    headers:
+      server:
       - nginx
-      date: 
-      - Thu, 19 Jan 2012 16:46:42 GMT
-      content-type: 
+      date:
+      - Thu, 19 Jan 2012 17:01:33 GMT
+      content-type:
       - application/json; charset=utf-8
-      mime-version: 
+      mime-version:
       - "1.0"
-      content-length: 
+      content-length:
+      - "71"
+    body: "{ \"data\": [ ], \"status_code\": 500, \"status_txt\": \"MISSING_ARG_APIKEY\" }"
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
+    method: :get
+    uri: http://api.bit.ly:80/v3/shorten?longUrl=http%3A%2F%2Fsunlightfoundation.com&login=sunlightlabstest&apiKey=R_4a9fd69e8bd11ad20be192740a8c3816
+    body:
+    headers:
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx
+      date:
+      - Thu, 19 Jan 2012 17:02:20 GMT
+      content-type:
+      - application/json; charset=utf-8
+      mime-version:
+      - "1.0"
+      content-length:
+      - "194"
+    body: |
+      { "status_code": 200, "status_txt": "OK", "data": { "long_url": "http:\/\/sunlightfoundation.com\/", "url": "http:\/\/bit.ly\/y6Px7H", "hash": "y6Px7H", "global_hash": "BWHV", "new_hash": 1 } }
+
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
+    method: :get
+    uri: http://api.bit.ly:80/v3/shorten?longUrl=http%3A%2F%2Fbit.ly%2Fy6Px7H&login=sunlightlabstest&apiKey=R_4a9fd69e8bd11ad20be192740a8c3816
+    body:
+    headers:
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx
+      date:
+      - Thu, 19 Jan 2012 17:02:20 GMT
+      content-type:
+      - application/json; charset=utf-8
+      mime-version:
+      - "1.0"
+      content-length:
+      - "73"
+    body: "{ \"data\": [ ], \"status_code\": 500, \"status_txt\": \"ALREADY_A_BITLY_LINK\" }"
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
+    method: :get
+    uri: http://api.bit.ly:80/v3/shorten?longUrl=http%3A%2F%2Fsunlightfoundation.com&login=&apiKey=
+    body:
+    headers:
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx
+      date:
+      - Thu, 19 Jan 2012 17:02:20 GMT
+      content-type:
+      - application/json; charset=utf-8
+      mime-version:
+      - "1.0"
+      content-length:
+      - "71"
+    body: "{ \"data\": [ ], \"status_code\": 500, \"status_txt\": \"MISSING_ARG_APIKEY\" }"
+    http_version: "1.1"
+- !ruby/struct:VCR::HTTPInteraction
+  request: !ruby/struct:VCR::Request
+    method: :get
+    uri: http://api.bit.ly:80/v3/shorten?longUrl=http%3A%2F%2Fsunlightfoundation.com&login=&apiKey=
+    body:
+    headers:
+  response: !ruby/struct:VCR::Response
+    status: !ruby/struct:VCR::ResponseStatus
+      code: 200
+      message: OK
+    headers:
+      server:
+      - nginx
+      date:
+      - Thu, 19 Jan 2012 17:02:20 GMT
+      content-type:
+      - application/json; charset=utf-8
+      mime-version:
+      - "1.0"
+      content-length:
       - "71"
     body: "{ \"data\": [ ], \"status_code\": 500, \"status_txt\": \"MISSING_ARG_APIKEY\" }"
     http_version: "1.1"
