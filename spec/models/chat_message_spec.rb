@@ -34,11 +34,16 @@ describe ChatMessage do
     @message.errors.should include(:text)
   end
 
-  it "shortens its urls on save" do
+  it "shortens its urls on save if bitly credentials are set" do
+    DatajamChat::bitly.instance_variable_set(:@default_query_opts, :login => 'sunlightlabstest', :apiKey => 'R_4a9fd69e8bd11ad20be192740a8c3816')
     @message = @chat.messages.create!(approved_message.merge!(:text => 'Hello http://sunlighfoundation.com!'))
     @message.text.should include('http://bit.ly')
   end
 
+  it "leaves urls expanded on save if bitly credentials are unset" do
+    @message = @chat.messages.create!(approved_message.merge!(:text => 'Hello http://sunlighfoundation.com!'))
+    @message.text.should include('http://bit.ly')
+  end
 
   it "paginates on save" do
     @message = @chat.messages.create!(approved_message)
