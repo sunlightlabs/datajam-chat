@@ -90,7 +90,7 @@
                 });
 
             // make sure the polling timeout is something sane
-            this.model.set({interval:this.el.attr('data-interval')}, {'slient': true});
+            this.model.set({interval:this.el.attr('data-interval')}, {'silent': true});
 
             // append in order
             if(items.length && this.collection.indexOf(model) < items.length){
@@ -275,7 +275,10 @@
               , item = scroller.find('li#message_' + model.get('id'));
             item && item.remove();
           }
-        , render: function(){
+        , render: function(a,b){
+            console.log('rendering');
+            window.thing1 = a;
+            window.thing2 = b;
             var data = _(this.model.toJSON()).extend(App.csrf)
               , html = _.template(showtmpl)
               , closedmessage = _.template(closedtmpl)
@@ -349,7 +352,7 @@
                       this.flash({type: 'info', message: 'Your message is awaiting moderation.'});
                     }else{
                       // fast-poll 'til the message comes back down
-                      this.model.set({interval:500}, {'slient': true});
+                      this.model.set({interval:500}, {'silent': true});
                     }
                     this.pollForContent();
                   }, this)

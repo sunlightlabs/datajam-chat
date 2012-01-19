@@ -386,7 +386,7 @@
                   });
 
               // make sure the polling timeout is something sane
-              this.model.set({interval:this.el.attr('data-interval')}, {'slient': true});
+              this.model.set({interval:this.el.attr('data-interval')}, {'silent': true});
 
               // append in order
               if(items.length && this.collection.indexOf(model) < items.length){
@@ -645,7 +645,7 @@
                         this.flash({type: 'info', message: 'Your message is awaiting moderation.'});
                       }else{
                         // fast-poll 'til the message comes back down
-                        this.model.set({interval:500}, {'slient': true});
+                        this.model.set({interval:500}, {'silent': true});
                       }
                       this.pollForContent();
                     }, this)
