@@ -611,7 +611,7 @@
                 this.el.find('.tip').remove();
               }
               if(data.is_archived){
-                this.el.prepend('<p class="archived">This is an archived event, comments are closed.</p>');
+                this.el.prepend('<p class="archived">This is an archived event, comments are no longer being accepted.</p>');
               }
 
               // focus if focus is sticky
