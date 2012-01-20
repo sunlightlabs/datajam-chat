@@ -58,7 +58,7 @@ class DatajamChat::ChatMessagesController < DatajamChat::EngineController
       @message.page && @message.page.save
       response = @message
     else
-      response = @message.errors
+      response = {:errors => @message.errors}
     end
 
     respond_to do |format|
