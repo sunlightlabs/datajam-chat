@@ -1037,6 +1037,7 @@
                 , html = _.template(showtmpl)
 
               $(this.el).html(html(data));
+              $(this.el).prepend('<h3>' + this.model.get('name') + '</h3>');
               return this;
             }
           , renderCollection: function(){
