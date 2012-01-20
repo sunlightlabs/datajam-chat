@@ -3,18 +3,18 @@ class ChatMessage
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  field :display_name, type: String
-  field :text, type: String
-  field :is_public, type: Boolean, default: false
-  field :is_moderated, type: Boolean, default: false
+  field :display_name,    type: String
+  field :text,            type: String
+  field :is_public,       type: Boolean,  default: false
+  field :is_moderated,    type: Boolean,  default: false
 
-  belongs_to :chat, class_name: "Chat", inverse_of: :messages
-  belongs_to :page, class_name: "ChatPage", inverse_of: :messages
+  belongs_to :chat,   class_name: "Chat",     inverse_of: :messages
+  belongs_to :page,   class_name: "ChatPage", inverse_of: :messages
   belongs_to :user
 
   validates_presence_of :chat
   validates_presence_of :display_name
-  validates_length_of :text, allow_blank: true, maximum: 1000
+  validates_length_of :text,  allow_blank: false,  maximum: 1000
 
   validate :chat_is_open?
 

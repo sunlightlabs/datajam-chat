@@ -29,6 +29,9 @@
             csrf_param: $('meta[name=csrf-param]').attr('content')
           , csrf_token: $('meta[name=csrf-token]').attr('content')
         };
+        Datajam.Chat.constants = {
+            deleted_message_text: '[deleted]'
+        };
         // ensure we have the real token
         $('document').bind('csrfloaded', function(){
           Datajam.Chat.csrf.csrf_token = $('meta[name=csrf-token]').attr('content');
@@ -62,13 +65,13 @@
           , handle_message: function(model, options){
               var existing = this.get(model.id);
               if(!existing){
-                if(model.text){
+                if(model.text && model.text != App.constants.deleted_message_text){
                   this._add(model, options);
                 }
               }else if(model.updated_at > existing.get('updated_at')){
-                if(model.text){
+                if(model.text && model.text != App.constants.deleted_message_text){
                   existing.set(model);
-                }else{
+                }else if(model.text == App.constants.deleted_message_text){
                   this.remove(existing);
                 }
               }

@@ -4,11 +4,11 @@ class Chat
   include Rails.application.routes.url_helpers
   include ActionDispatch::Routing::UrlFor
 
-  field :is_open, type: Boolean, default: false
-  field :is_archived, type: Boolean, default: false
+  field :is_open,       type: Boolean, default: false
+  field :is_archived,   type: Boolean, default: false
 
-  has_many :pages, class_name: "ChatPage", inverse_of: :chat
-  has_many :messages, class_name: "ChatMessage", inverse_of: :chat
+  has_many :pages,      class_name: "ChatPage",     inverse_of: :chat
+  has_many :messages,   class_name: "ChatMessage",  inverse_of: :chat
 
   validates_numericality_of :page_size, :greater_than => 0
 

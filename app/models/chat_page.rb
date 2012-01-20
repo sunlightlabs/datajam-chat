@@ -5,10 +5,10 @@ class ChatPage
   include Rails.application.routes.url_helpers
   include ActionDispatch::Routing::UrlFor
 
-  field :is_open, type: Boolean, default: true
+  field :is_open,   type: Boolean, default: true
 
-  belongs_to :chat, index: true
-  has_many :messages, class_name: "ChatMessage", inverse_of: :page
+  belongs_to :chat,   index: true
+  has_many :messages, class_name: "ChatMessage",  inverse_of: :page
 
   after_save :cache_instance
 

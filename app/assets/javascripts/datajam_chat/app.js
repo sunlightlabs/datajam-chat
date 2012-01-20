@@ -22,6 +22,9 @@
           csrf_param: $('meta[name=csrf-param]').attr('content')
         , csrf_token: $('meta[name=csrf-token]').attr('content')
       };
+      Datajam.Chat.constants = {
+          deleted_message_text: '[deleted]'
+      };
       // ensure we have the real token
       $('document').bind('csrfloaded', function(){
         Datajam.Chat.csrf.csrf_token = $('meta[name=csrf-token]').attr('content');
