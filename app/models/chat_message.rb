@@ -14,6 +14,7 @@ class ChatMessage
 
   validates_presence_of :chat
   validates_presence_of :display_name
+  validates_presence_of :text
   validates_length_of :text,  allow_blank: false,  maximum: 1000
 
   validate :chat_is_open?
