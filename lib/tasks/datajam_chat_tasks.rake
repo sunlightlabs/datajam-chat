@@ -37,11 +37,8 @@ namespace :datajam_chat do
        */
 
       (function($, define, require){
-
         if(window.Datajam.DEBUG){
-
           $.getScript('/javascripts/datajam_chat/app.js');
-
         }else{
     EOT
 
@@ -69,6 +66,8 @@ namespace :datajam_chat do
     EOT
 
     build.rewind
+    code = build.read
+    build.close
 
     compiled = HTTParty::post(
       'http://closure-compiler.appspot.com/compile',
@@ -76,12 +75,10 @@ namespace :datajam_chat do
         compilation_level: 'SIMPLE_OPTIMIZATIONS',
         output_format: 'text',
         output_info: 'compiled_code',
-        js_code: build.read})
+        js_code: code})
 
-    build.close
 
     File.open("#{dir}/app-compiled.min.js", "w+") do |file|
-      require 'ruby-debug';debugger
       file.print compiled
     end
 

@@ -4,11 +4,8 @@
  */
 
 (function($, define, require){
-
   if(window.Datajam.DEBUG){
-
     $.getScript('/javascripts/datajam_chat/app.js');
-
   }else{
 /**
  * DataJam Chat
@@ -83,7 +80,7 @@
             }
           }
         , comparator: function(obj){
-            return 0 - Date.parse(obj.get('updated_at')).valueOf();
+            return 0 - obj.get('timestamp')._d.valueOf();
           }
         , parse: function(resp, xhr) {
             var page = '/chats/' + resp.chat._id + '/pages/' + resp.page._id + '.json';
@@ -108,6 +105,7 @@
         , _clean: function(model) {
             model.id = model._id;
             delete model._id;
+            model.timestamp = moment(model.updated_at, 'YYYY-MM-DDTHH:mm:ssZZ');
             return model;
           }
       });
