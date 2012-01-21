@@ -24,6 +24,8 @@ namespace :datajam_chat do
   end
 
   task :build do
+    require 'httparty'
+
     manifest = File.open(File.expand_path('../../../build.manifest', __FILE__), 'r')
     dir = File.expand_path('../../../app/assets/javascripts/datajam_chat', __FILE__)
     build = File.open("#{dir}/app-compiled.js", "w+")
@@ -66,7 +68,22 @@ namespace :datajam_chat do
       })(jQuery, curl.define, curl);
     EOT
 
+    build.rewind
+
+    compiled = HTTParty::post(
+      'http://closure-compiler.appspot.com/compile',
+      :body => {
+        compilation_level: 'SIMPLE_OPTIMIZATIONS',
+        output_format: 'text',
+        output_info: 'compiled_code',
+        js_code: build.read})
+
     build.close
+
+    File.open("#{dir}/app-compiled.min.js", "w+") do |file|
+      require 'ruby-debug';debugger
+      file.print compiled
+    end
 
   end
 end
