@@ -76,7 +76,7 @@
 
           }
         , destroy: function(){
-            this.pause();
+            this.pause(true);
             this.el.html('');
           }
         , error: function(){

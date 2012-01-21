@@ -32,18 +32,23 @@
         , initialize: function(){
             //scope class methods
             _.bindAll(this, 'addMessage'
+                          , 'archive'
+                          , 'bootstrap'
+                          , 'close'
                           , 'destroy'
                           , 'destroyIdentity'
                           , 'disableSubmit'
                           , 'enableSubmit'
                           , 'error'
                           , 'handleBlur'
+                          , 'handleChange'
                           , 'handleFocus'
                           , 'handleKeyDown'
                           , 'handleScroll'
                           , 'identify'
                           , 'loading'
                           , 'loaded'
+                          , 'open'
                           , 'pause'
                           , 'pollForContent'
                           , 'pollForOpenness'
@@ -62,6 +67,7 @@
             this.model.url = this.el.attr('data-url');
             this.model.set({interval: this.el.attr('data-interval'), _scroll_anchored: true });
             this.model.bind('change', this.render);
+            this.model.bind('change', this.handleChange);
 
             // get identity if available
             $.ajax({
@@ -99,9 +105,6 @@
               scroller.append(message.render().el);
             }
 
-            // fire a scroll message if the window is too short to scroll
-            if(scroller.height() < clipper.height()) clipper.trigger('scroll');
-
             // maintain scroll offset if not anchored
             if(!this.model.get('_scroll_anchored')){
               scroller.find('img').imagesLoaded(_.bind(function(){
@@ -109,6 +112,35 @@
                 clipper.scrollTo(offset+ diff);
               }, this));
             }
+          }
+        , archive: function(model){
+            Datajam.debug('archiving');
+            model && this.bootstrap(model);
+            model && this.pollForContent();
+            this.model.set({'is_open': false, 'is_archived': true});
+            this.pause();
+          }
+        , bootstrap: function(model){
+            Datajam.debug('bootstrapping');
+            if(!this.collection){
+              this.collection = new App.Collections.Message;
+              this.collection.bind('add', this.addMessage);
+              this.collection.bind('remove', this.removeMessage);
+              this.collection.ajaxOptions = model.ajaxOptions;
+              this.collection.url = this.model.url.replace('.json', '/pages/' + model.page._id + '.json');
+              this.collection._newest_seen_page = this.collection.url;
+              this.collection._oldest_seen_page = model.page.prev_page;
+              this.collection.view = this;
+              this.model.collection = this.collection;
+            }else{
+              this.collection._oldest_seen_page = this.collection.url;
+              this.collection.reset();
+            }
+          }
+        , close: function(){
+            Datajam.debug('closing');
+            this.model.set({'is_open': false, 'is_archived': false});
+            this.pollForOpenness();
           }
         , destroy: function(){
             this.pause();
@@ -145,8 +177,14 @@
           }
         , handleBlur: function(evt){
             this._focusTimeout = setTimeout(_.bind(function(){
-              this.model.set({'_keep_focus': false}, {'silent': true})
-              }, this), 1500);
+              this.model.set({'_keep_focus': false}, {'silent': true});
+            }, this), 1500);
+          }
+        , handleChange: function(evt){
+            Datajam.debug('model changed');
+            if(!this.model.get('is_open') && !this.model.get('is_archived')){
+              this.pollForOpenness();
+            }
           }
         , handleFocus: function(evt){
             if(this._focusTimeout){
@@ -179,7 +217,14 @@
             // page back if user scrolls to the end of the range
             if(clipper.height() + clipper.scrollTop() >= scroller.height()){
               this.loading();
-              $.when(this.prevPage()).then(this.loaded());
+              $.when(this.prevPage()).then(_.bind(function(){
+                  this.loaded();
+                  setTimeout(_.bind(function(){
+                    if(clipper.height() >= scroller.height()){
+                      clipper.trigger('scroll');
+                    }
+                  }, this), 100);
+              }, this)());
             }
           }
         , identify: function(evt){
@@ -212,7 +257,17 @@
         , loaded: function(){
             this.el.removeClass('loading');
           }
+        , open: function(model){
+            Datajam.debug('opening');
+            this.model.set({
+                  'is_open': true
+                , 'is_archived': false
+            });
+            this.bootstrap(model);
+            this.resume();
+          }
         , pause: function(){
+            Datajam.debug('pausing');
             this.model.set({'paused': true}, {'silent': true});
           }
         , pollForContent: function(){
@@ -236,28 +291,22 @@
             }
             this.model.fetch()
               .success(_.bind(function(model){
-                if(model.chat.is_open || model.chat.is_archived){ //there will be a page in the api response
-                  this.collection = new App.Collections.Message;
-                  this.collection.view = this;
-                  this.collection.bind('add', this.addMessage);
-                  this.collection.bind('remove', this.removeMessage);
-                  this.collection.url = this.model.url.replace('.json', '/pages/' + model.page._id + '.json');
-                  this.collection._newest_seen_page = this.collection.url;
-                  this.collection._oldest_seen_page = model.page.prev_page;
-                  this.collection.ajaxOptions = model.ajaxOptions;
-                  this.pollForContent();
-                  if(model.chat.is_archived){
-                    this.pause();
-                  }
-                }else{
+                if(model.chat.is_open){
+                  this.open(model);
+                }
+                if(model.chat.is_archived){
+                  this.archive(model);
+                }
+                if(!model.chat.is_open && !model.chat.is_archived){
                   this.render();
-                  this._timeout = setTimeout(this.pollForOpenness, this.model.get('interval'))
+                  this._timeout = setTimeout(this.pollForOpenness, this.model.get('interval'));
                 }
               }, this))
               .error(this.error)
               .complete(this.loaded);
           }
         , prevPage: function(){
+            Datajam.debug('prev page');
             if(this.collection._oldest_seen_page){
               var dfd = $.Deferred();
               this.collection.fetch($.extend({
@@ -275,10 +324,8 @@
               , item = scroller.find('li#message_' + model.get('id'));
             item && item.remove();
           }
-        , render: function(a,b){
-            console.log('rendering');
-            window.thing1 = a;
-            window.thing2 = b;
+        , render: function(){
+            Datajam.debug('rendering');
             var data = _(this.model.toJSON()).extend(App.csrf)
               , html = _.template(showtmpl)
               , closedmessage = _.template(closedtmpl)
@@ -329,6 +376,7 @@
             return this;
           }
         , resume: function(){
+            Datajam.debug('resuming');
             this.model.set({'paused': false}, {'silent': true});
             this.pollForContent();
           }

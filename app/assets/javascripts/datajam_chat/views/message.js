@@ -14,15 +14,15 @@
           linkP: /https?:\/\/[\w\-\/#\.%\?=&:,|]+[\w\-\/#=&]/g
         , imageP: /\.(jpe?g|gif|png|bmp|tiff?)$/
         , events: {
-              'click': 'handleClick'
+              'click .liveComment': 'edit'
           }
         , tagName: 'li'
         , className: 'message clearfix'
         , initialize: function(args){
             _.bindAll(this
+                    , 'edit'
                     , 'getLinks'
                     , 'getImages'
-                    , 'handleClick'
                     , 'parentModel'
                     , 'parentView'
                     , 'render'
@@ -30,6 +30,23 @@
 
             this.model || (this.model = new App.Models.Message);
             this.model.bind('change', this.render);
+          }
+        , edit: function(evt){
+            var parent_model = this.parentModel();
+            if(parent_model && parent_model.get('is_admin') && $(this.el).parents('.datajamChatAdmin').length){
+              evt.preventDefault();
+              var text = prompt("Enter the new text", this.model.get('text'));
+              Datajam.debug(text);
+              if(text && text != this.model.get('text')){
+                this.model.url = this._url();
+                this.model.set({text: text});
+                this.model.save();
+                // delete if deleted
+                if(text == App.constants.deleted_message_text){
+                  parent_model.view.collection.remove(this.model);
+                }
+              }
+            }
           }
         , getLinks: function(){
             return this.model.get('text').match(this.linkP);
@@ -39,18 +56,6 @@
             return _(links).filter(_.bind(function(link){
               return link.search(this.imageP);
             }, this));
-          }
-        , handleClick: function(evt){
-            var parent_model = this.parentModel();
-            if(parent_model && parent_model.get('is_admin') && $(this.el).parents('.datajamChatAdmin').length){
-              evt.preventDefault();
-              var text = prompt("Enter the new text", this.model.get('text'));
-              if(text && text != this.model.get('text')){
-                this.model.url = this._url();
-                this.model.set({text: text});
-                this.model.save();
-              }
-            }
           }
         , parentModel: function(){
             return (this.parentView() && this.parentView().model) || null;

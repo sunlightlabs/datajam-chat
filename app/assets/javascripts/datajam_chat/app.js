@@ -1,5 +1,5 @@
 /**
- * DataJam-Chat
+ * DataJam Chat
  * Rails Messaging Engine
  * @author Dan Drinkard <ddrinkard@sunlightfoundation.com>
  */
@@ -35,9 +35,7 @@
 
   define('chat/tweet', ['js!//platform.twitter.com/widgets.js'], $.noop);
 
-  /**
-   * Bootstrap the app
-   */
+  // Bootstrap the app
   require(['chat/common', 'chat/views/chat'], function(){
 
     // Emulate HTTP via _method param
@@ -54,11 +52,12 @@
           new App.Views.ModeratorChat({ el: $(this) });
         }, this));
       });
-      $('a[data-controls-modal]').one('click', function(){
+      $('body').delegate('a[data-controls-modal]', 'click.chat', function(){
         $('#' + $(this).attr('data-controls-modal')).find('.modal-chat-controls').each(function(){
           require(['chat/views/chat_controls'], _.bind(function(){
             new App.Views.ChatControls({ el: $(this) });
           }, this));
+          $('body').undelegate('a[data-controls-modal]', 'click.chat');
         });
       });
     });

@@ -21,6 +21,9 @@
   <script type="text/javascript" charset="utf-8">
     window.datajam || (Datajam = {});
     Datajam.DEBUG = <%= (Rails.env.to_s == 'production' && 'false') || 'true' %>;
+    Datajam.debug = function(msg){
+      Datajam.DEBUG && window.console && console.log(msg);
+    }
   </script>
   <script src="/javascripts/curl/curl.js" type="text/javascript" charset="utf-8"></script>
 

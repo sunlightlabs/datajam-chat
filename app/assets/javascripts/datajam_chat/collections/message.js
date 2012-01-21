@@ -47,9 +47,10 @@
               }
             }
             // Separation of concerns (n). Not this.
-            if(!resp.chat.is_open && !_.isEqual(resp.chat, this.view.model.toJSON())){
-              this.view.model.set(resp.chat);
-              this.view.pause();
+            if(!resp.chat.is_open && !resp.chat.is_archived && !_.isEqual(resp.chat, this.view.model.toJSON())){
+              this.view.close();
+            }else if(!resp.chat.is_open && resp.chat.is_archived && !_.isEqual(resp.chat, this.view.model.toJSON())){
+              this.view.archive();
             }
             return resp.page.messages;
           }
