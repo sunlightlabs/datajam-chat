@@ -53,12 +53,12 @@
         }, this));
       });
       $('body').delegate('a[data-controls-modal]', 'click.chat', function(){
-        $('#' + $(this).attr('data-controls-modal')).find('.modal-chat-controls').each(function(){
+        $('#' + $(this).attr('data-controls-modal')).find('.modal-chat-controls').each(_.bind(function(){
           require(['chat/views/chat_controls'], _.bind(function(){
             new App.Views.ChatControls({ el: $(this) });
           }, this));
           $('body').undelegate('a[data-controls-modal]', 'click.chat');
-        });
+        }, this);
       });
     });
 
