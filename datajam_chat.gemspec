@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.summary     = "A real-time chat engine for datajam."
   s.description = File.open(File.expand_path("../README.md", __FILE__)).read rescue nil
 
-  s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE", "Rakefile", "README.md"]
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["LICENSE.md", "Rakefile", "README.md"]
 
   s.add_dependency "facets", "~> 2.9"
   s.add_dependency "rails", "~> 3.1.0"
