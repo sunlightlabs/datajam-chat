@@ -16,7 +16,7 @@
 <div class="liveComment">
     <address class="author">
         <% if (user && user.url) { %>
-            <a href="<%= user.url %>"><%= display_name %></a>
+            <a href="<%= user.url %>" target="_blank"><%= display_name %></a>
         <% } else { %>
             <%= display_name %>
         <% } %>
