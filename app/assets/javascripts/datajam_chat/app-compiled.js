@@ -80,7 +80,7 @@
             }
           }
         , comparator: function(obj){
-            return 0 - obj.get('timestamp')._d.valueOf();
+            return 0 - obj.get('timestamp').toDate().valueOf();
           }
         , parse: function(resp, xhr) {
             var page = '/chats/' + resp.chat._id + '/pages/' + resp.page._id + '.json';
