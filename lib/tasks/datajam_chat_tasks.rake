@@ -23,6 +23,12 @@ namespace :datajam_chat do
     FileUtils.rm_r("#{Rails.root}/public/stylesheets/datajam_chat", :force => true)
   end
 
+  desc "Clear the redis session cache"
+  task :clear_sessions do
+    DatajamChat.sessions.keys("#{Rails.env.to_s}*").each {|key| DatajamChat.sessions.del(key)}
+  end
+
+  desc "Concatenate and compile the backbone app after making changes"
   task :build do
     require 'httparty'
 
