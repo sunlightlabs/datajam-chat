@@ -24,7 +24,7 @@ namespace :datajam_chat do
   end
 
   desc "Clear the redis session cache"
-  task :clear_sessions do
+  task :clear_sessions => :environment do
     DatajamChat.sessions.keys("#{Rails.env.to_s}*").each {|key| DatajamChat.sessions.del(key)}
   end
 
