@@ -140,7 +140,11 @@
       ;
 
       App.Models.Chat = Backbone.Model.extend({
-          defaults: {}
+          defaults: {
+              'ajaxOptions': {
+                  cache: ($.browser.msie) ? false : true
+              }
+          }
         , initialize: function(){}
         , parse: function(data){
             var model;
