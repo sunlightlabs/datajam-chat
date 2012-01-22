@@ -8,7 +8,7 @@ div#content{width:100%;}
 .discussionComments time { font-style: oblique; margin-right: 8px;}
 .discussionComments li a.tweet{width:16px;height:16px;line-height:16px;display:inline-block;*display:inline;zoom:1;background:transparent url(/images/datajam_chat/tweet_sprite.png) no-repeat 0 0;text-indent:-9999px;}
 .discussionComments li a.tweet:hover{background-position:-16px 0;}
-.discussionComments li a.delete{display:inline-block;*display:inline;zoom:1;width:10px;height:4px;background-color:#acacac;}
+.discussionComments li a.delete{display:none;}
 .discussionComments img { width: 50px; border: 1px solid #D4CFC2; float: left; margin-right: 15px;}
 .discussionComments ol { list-style-type: none; }
 .discussionComments li { border-bottom: 1px solid #e7e6dd; background: url(http://assets.sunlightfoundation.com/images/bg_bottomGradient.jpg) left bottom repeat-x; padding: 5px 15px; margin-bottom: 0; position:relative;}
@@ -76,3 +76,21 @@ div#content{width:100%;}
 .datajamChatAdmin .datajamChatThread .comments>li p{margin:0;}
 .datajamChatAdmin .datajamChatThread .comments li.message img{max-width:100%;display:block;}
 .datajamChatAdmin .liveComment{width:auto;}
+.datajamChatAdmin .discussionComments li a.delete,
+.datajamChatAdmin .discussionComments li a.delete span{display:inline-block;*display:inline;zoom:1;width:15px;height:5px;background-color:#acacac;position:relative;top:-3px;}
+.datajamChatAdmin .discussionComments li a.delete{
+    -webkit-transform: rotate(45deg);
+       -moz-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+         -o-transform: rotate(45deg);
+            transform: rotate(45deg);
+}
+.datajamChatAdmin .discussionComments li a.delete span{text-indent:-9999px;overflow:hidden;position:absolute;top:0;
+    -webkit-transform: rotate(-90deg);
+       -moz-transform: rotate(-90deg);
+        -ms-transform: rotate(-90deg);
+         -o-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+}
+.datajamChatAdmin .discussionComments li a.delete:hover,
+.datajamChatAdmin .discussionComments li a.delete:hover span{background-color:#0c9ac7;}
