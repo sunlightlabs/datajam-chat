@@ -83,6 +83,10 @@ namespace :datajam_chat do
         output_info: 'compiled_code',
         js_code: code})
 
+    if compiled.strip === ''
+      raise 'Unable to build with closure compiler. Please ensure your syntax is correct.'
+    end
+
 
     File.open("#{dir}/app-compiled.min.js", "w+") do |file|
       file.print compiled
