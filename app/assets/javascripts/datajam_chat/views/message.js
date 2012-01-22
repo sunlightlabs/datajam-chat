@@ -15,11 +15,13 @@
         , imageP: /\.(jpe?g|gif|png|bmp|tiff?)$/
         , events: {
               'click .liveComment': 'edit'
+            , 'click .delete': 'delete'
           }
         , tagName: 'li'
         , className: 'message clearfix'
         , initialize: function(args){
             _.bindAll(this
+                    , 'delete'
                     , 'edit'
                     , 'getLinks'
                     , 'getImages'
@@ -31,6 +33,20 @@
             this.model || (this.model = new App.Models.Message);
             this.model.bind('change', this.render);
           }
+        , 'delete': function(evt){
+            var parent_model = this.parentModel();
+            if(parent_model && parent_model.get('is_admin') && $(this.el).parents('.datajamChatAdmin').length){
+              evt.preventDefault();
+              Datajam.debug('deleting');
+              if(confirm('Really delete this comment?')){
+                this.model.url = this._url();
+                this.model.set({text: App.constants.deleted_message_text});
+                this.model.save().success(_.bind(function(){
+                  parent_model.view.collection.remove(this.model);
+                }, this));
+              }
+            }
+          }
         , edit: function(evt){
             var parent_model = this.parentModel();
             if(parent_model && parent_model.get('is_admin') && $(this.el).parents('.datajamChatAdmin').length){
@@ -40,11 +56,12 @@
               if(text && text != this.model.get('text')){
                 this.model.url = this._url();
                 this.model.set({text: text});
-                this.model.save();
-                // delete if deleted
-                if(text == App.constants.deleted_message_text){
-                  parent_model.view.collection.remove(this.model);
-                }
+                this.model.save().success(_.bind(function(){
+                  // delete if deleted
+                  if(text == App.constants.deleted_message_text){
+                    parent_model.view.collection.remove(this.model);
+                  }
+                }, this));
               }
             }
           }

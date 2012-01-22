@@ -58,7 +58,7 @@
             new App.Views.ChatControls({ el: $(this) });
           }, this));
           $('body').undelegate('a[data-controls-modal]', 'click.chat');
-        }, this);
+        }, this));
       });
     });
 

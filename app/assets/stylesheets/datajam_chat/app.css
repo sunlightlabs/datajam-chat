@@ -8,6 +8,7 @@ div#content{width:100%;}
 .discussionComments time { font-style: oblique; margin-right: 8px;}
 .discussionComments li a.tweet{width:16px;height:16px;line-height:16px;display:inline-block;*display:inline;zoom:1;background:transparent url(/images/datajam_chat/tweet_sprite.png) no-repeat 0 0;text-indent:-9999px;}
 .discussionComments li a.tweet:hover{background-position:-16px 0;}
+.discussionComments li a.delete{display:inline-block;*display:inline;zoom:1;width:10px;height:4px;background-color:#acacac;}
 .discussionComments img { width: 50px; border: 1px solid #D4CFC2; float: left; margin-right: 15px;}
 .discussionComments ol { list-style-type: none; }
 .discussionComments li { border-bottom: 1px solid #e7e6dd; background: url(http://assets.sunlightfoundation.com/images/bg_bottomGradient.jpg) left bottom repeat-x; padding: 5px 15px; margin-bottom: 0; position:relative;}
