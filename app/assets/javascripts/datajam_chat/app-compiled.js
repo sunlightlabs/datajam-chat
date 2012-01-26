@@ -215,7 +215,7 @@
           linkP: /https?:\/\/[\w\-\/#\.%\?=&:,|]+[\w\-\/#=&]/g
         , imageP: /\.(jpe?g|gif|png|bmp|tiff?)$/
         , events: {
-              'click .liveComment': 'edit'
+              'click .edit': 'edit'
             , 'click .delete': 'delete'
           }
         , tagName: 'li'
@@ -607,7 +607,11 @@
               clearTimeout(this._timeout);
               this._timeout = null;
             }
-            this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')))
+            if(this._request){
+              this._request.abort();
+              this._request = null;
+            }
+            this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')))
             // trigger scroll if we opened to a blank page
             if(!this.el.children('ul.comments > li').length){
               this.el.children('.commentsClip').trigger('scroll');

@@ -5,7 +5,9 @@
     <time pubdate class="published" datetime><%= timestamp.format('MMM Do, h:mm a') %></time>
     <% } %>
     <a class="tweet" href="https://twitter.com/intent/tweet?text=<%= escape(_('"' + _(text).tweetablestriptags() + '"').truncate(100) + ' ' + window.location.href) %>">Tweet this</a>
-    <a href="#" class="delete"><span>x</span></a>
+    <a href="#" class="picto edit" title="Edit">e</a>
+    <a href="#" class="picto delete" title="Delete">X</a>
+
 </div>
 
 <% if (user && user.small_avatar_url) { %>

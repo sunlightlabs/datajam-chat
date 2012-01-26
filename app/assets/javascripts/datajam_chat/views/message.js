@@ -14,7 +14,7 @@
           linkP: /https?:\/\/[\w\-\/#\.%\?=&:,|]+[\w\-\/#=&]/g
         , imageP: /\.(jpe?g|gif|png|bmp|tiff?)$/
         , events: {
-              'click .liveComment': 'edit'
+              'click .edit': 'edit'
             , 'click .delete': 'delete'
           }
         , tagName: 'li'

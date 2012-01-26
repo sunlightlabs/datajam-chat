@@ -1,4 +1,17 @@
 @charset "utf-8";
+
+@font-face {
+    font-family: 'ModernPictogramsNormal';
+    src: url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/modernpics-webfont.eot');
+    src: url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/modernpics-webfont.eot?#iefix') format('embedded-opentype'),
+         url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/modernpics-webfont.woff') format('woff'),
+         url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/modernpics-webfont.ttf') format('truetype'),
+         url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/modernpics-webfont.svg#ModernPictogramsNormal') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 .clearfix:before,.clearfix:after{content:"\0020";display:block;height:0;visibility:hidden;}.clearfix:after{clear:both;}.clearfix{zoom:1;}
 div#content{width:100%;}
 .discussionFilter { float: right;}
@@ -8,7 +21,7 @@ div#content{width:100%;}
 .discussionComments time { font-style: oblique; margin-right: 8px;}
 .discussionComments li a.tweet{width:16px;height:16px;line-height:16px;display:inline-block;*display:inline;zoom:1;background:transparent url(/images/datajam_chat/tweet_sprite.png) no-repeat 0 0;text-indent:-9999px;}
 .discussionComments li a.tweet:hover{background-position:-16px 0;}
-.discussionComments li a.delete{display:none;}
+.discussionComments li a.picto{display:none;}
 .discussionComments img { width: 50px; border: 1px solid #D4CFC2; float: left; margin-right: 15px;}
 .discussionComments ol { list-style-type: none; }
 .discussionComments li { border-bottom: 1px solid #e7e6dd; background: url(http://assets.sunlightfoundation.com/images/bg_bottomGradient.jpg) left bottom repeat-x; padding: 5px 15px; margin-bottom: 0; position:relative;}
@@ -58,7 +71,6 @@ div#content{width:100%;}
  * Admin / Modal
  */
  body.bare{margin:0;padding:0;}
-.datajamChatAdmin .datajamChatThread{margin-top:0;margin-bottom:0;}
 .chat-modal{width:90%;height:520px;left:5%;margin:0;}
 .chat-modal .modal-header h3,
 .chat-modal .modal-header div.modal-chat-controls{float:left;margin-right:1em;}
@@ -67,30 +79,18 @@ div#content{width:100%;}
 .chat-modal.fade.in{top:10%;}
 .chat-modal iframe{width:100%;height:100%;padding:0;margin:0;}
 .datajamChatAdmin span.tip{display:none;}
-.datajamChatAdmin .datajamChatThread{width:32%;float:left;margin:0 1% 0 0;}
+.datajamChatAdmin h3{font-size:14px;color:#494442;}
+.datajamChatAdmin a{color:#233653;text-decoration:none;}
+.datajamChatAdmin a:hover{color:#222;}
+.datajamChatAdmin .datajamChatThread{width:32%;float:left;margin:0 1% 0 0;font: normal 13px/1.5 'helvetica', arial, sans-serif;}
 .datajamChatAdmin .datajamChatThread.moderator{margin-top:0;}
-.datajamChatAdmin .datajamChatThread .commentsClip{height:318px;overflow-y:scroll;clear:both;background:#f5f5f5;border:1px solid #eee;border-radius:5px;margin:0;position:relative;}
+.datajamChatAdmin .datajamChatThread .commentsClip{height:313px;overflow-y:scroll;clear:both;background:#f5f5f5;border:1px solid #eee;border-radius:5px;margin:0;position:relative;}
 .datajamChatAdmin .datajamChatThread.moderator .commentsClip{height:380px;}
 .datajamChatAdmin .datajamChatThread .comments{list-style:none outside;padding:0;margin:0;overflow:hidden;}
-.datajamChatAdmin .datajamChatThread .comments>li{padding:5px;word-wrap:break-word;position:relative;}
+.datajamChatAdmin .datajamChatThread .comments>li{padding:5px 10px;word-wrap:break-word;position:relative;}
+.datajamChatAdmin .datajamChatThread .comments>li time{font-family:'helvetica', arial, sans-serif;font-style:normal;color:#888;font-weight:bold;}
 .datajamChatAdmin .datajamChatThread .comments>li p{margin:0;}
 .datajamChatAdmin .datajamChatThread .comments li.message img{max-width:100%;display:block;}
 .datajamChatAdmin .liveComment{width:auto;}
-.datajamChatAdmin .discussionComments li a.delete,
-.datajamChatAdmin .discussionComments li a.delete span{display:inline-block;*display:inline;zoom:1;width:15px;height:5px;background-color:#acacac;position:relative;top:-3px;}
-.datajamChatAdmin .discussionComments li a.delete{
-    -webkit-transform: rotate(45deg);
-       -moz-transform: rotate(45deg);
-        -ms-transform: rotate(45deg);
-         -o-transform: rotate(45deg);
-            transform: rotate(45deg);
-}
-.datajamChatAdmin .discussionComments li a.delete span{text-indent:-9999px;overflow:hidden;position:absolute;top:0;
-    -webkit-transform: rotate(-90deg);
-       -moz-transform: rotate(-90deg);
-        -ms-transform: rotate(-90deg);
-         -o-transform: rotate(-90deg);
-            transform: rotate(-90deg);
-}
-.datajamChatAdmin .discussionComments li a.delete:hover,
-.datajamChatAdmin .discussionComments li a.delete:hover span{background-color:#0c9ac7;}
+.datajamChatAdmin .discussionComments li a.picto{color:#acacac;font-family:'ModernPictogramsNormal';font-size:22px;display:inline;text-decoration:none;}
+.datajamChatAdmin .discussionComments li a.picto:hover{color:#0c9ac7}
