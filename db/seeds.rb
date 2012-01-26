@@ -5,8 +5,8 @@
 #
 #   cities = City.create([{ :name => 'Chicago' }, { :name => 'Copenhagen' }])
 #   Mayor.create(:name => 'Daley', :city => cities.first)
-Setting.find_or_create_by(:namespace => 'datajam_chat', :name => 'bitly_username', :callbacks => ['update_bitly_login'])
-Setting.find_or_create_by(:namespace => 'datajam_chat', :name => 'bitly_api_key', :callbacks => ['update_bitly_apikey'])
+Setting.find_or_create_by(:namespace => 'datajam_chat', :name => 'bitly_username')
+Setting.find_or_create_by(:namespace => 'datajam_chat', :name => 'bitly_api_key')
 page_size = Setting.find_or_create_by(:namespace => 'datajam_chat', :name => 'page_size')
 page_size.required = true
 page_size.value = 100 unless page_size.value?
