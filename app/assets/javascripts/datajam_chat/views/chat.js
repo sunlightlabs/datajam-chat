@@ -178,6 +178,7 @@
         , handleBlur: function(evt){
             this._focusTimeout = setTimeout(_.bind(function(){
               this.model.set({'_keep_focus': false}, {'silent': true});
+              $(evt.target).parents('form').removeClass('active');
             }, this), 1500);
           }
         , handleChange: function(evt){
@@ -191,11 +192,12 @@
               clearTimeout(this._focusTimeout);
             }
             this.model.set({'_keep_focus': true}, {'silent': true});
+            $(evt.target).parents('form').addClass('active');
           }
         , handleKeyDown: function(evt){
             switch(evt.keyCode){
               case 13:
-                if(! evt.altKey){
+                if(evt.ctrlKey || evt.metaKey){
                   this.submit(evt);
                 }
               break;
@@ -387,6 +389,7 @@
         , submit: function(evt){
             evt.preventDefault();
             evt.stopPropagation();
+            this.el.find('form textarea').eq(0).focus();
             if(this.el.find('form').eq(0).hasClass('disabled')){
               return;
             }

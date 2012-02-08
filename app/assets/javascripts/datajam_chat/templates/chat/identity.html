@@ -5,6 +5,6 @@
         <% if(typeof csrf_param != 'undefined'){ %>
         <input type="hidden" name="<%= csrf_param %>" value="<%= csrf_token %>" />
         <% } %>
-        <button type="submit">Identify</button>
+        <button type="submit" class="identify">Identify</button>
     </p>
 </form>
