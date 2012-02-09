@@ -27,7 +27,7 @@ module DatajamChat
 
     if Rails.env =~ /^(development|test)$/
       initializer "datajam_chat.static_assets" do |app|
-        app.middleware.use ::ActionDispatch::Static, "#{root}/app/assets"
+        app.middleware.use ::ActionDispatch::Static, "#{root}/public"
       end
     end
 

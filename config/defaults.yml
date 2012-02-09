@@ -1,9 +1,0 @@
-development: &base
-  :page_size: 100
-  :polling_interval: 3000
-
-test:
-  <<: *base
-
-production:
-  <<: *base

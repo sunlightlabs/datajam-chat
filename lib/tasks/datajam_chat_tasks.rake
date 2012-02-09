@@ -6,9 +6,9 @@ namespace :datajam_chat do
 
   desc "Install static files for Chat"
   task :install_assets do
-    FileUtils.cp_r("#{DatajamChat::Engine.root}/app/assets/images/datajam_chat/", "#{Rails.root}/public/images")
-    FileUtils.cp_r("#{DatajamChat::Engine.root}/app/assets/javascripts/datajam_chat/", "#{Rails.root}/public/javascripts")
-    FileUtils.cp_r("#{DatajamChat::Engine.root}/app/assets/stylesheets/datajam_chat/", "#{Rails.root}/public/stylesheets")
+    FileUtils.cp_r("#{DatajamChat::Engine.root}/public/images/datajam_chat/", "#{Rails.root}/public/images")
+    FileUtils.cp_r("#{DatajamChat::Engine.root}/public/javascripts/datajam_chat/", "#{Rails.root}/public/javascripts")
+    FileUtils.cp_r("#{DatajamChat::Engine.root}/public/stylesheets/datajam_chat/", "#{Rails.root}/public/stylesheets")
   end
 
   desc "Uninstall settings for Chat"
@@ -33,7 +33,7 @@ namespace :datajam_chat do
     require 'httparty'
 
     manifest = File.open(File.expand_path('../../../build.manifest', __FILE__), 'r')
-    dir = File.expand_path('../../../app/assets/javascripts/datajam_chat', __FILE__)
+    dir = File.expand_path('../../../public/javascripts/datajam_chat', __FILE__)
     build = File.open("#{dir}/app-compiled.js", "w+")
 
     build.puts <<-EOT.strip_heredoc
