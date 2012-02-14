@@ -1,19 +1,11 @@
 require 'rails/engine'
+require "active_support/dependencies"
 require 'datajam_chat'
 require 'bitly'
 
 module DatajamChat
-  class Engine < Rails::Engine
-    #
-    # config.generators do |g|
-    #   g.orm :mongoid
-    #   g.template_engine :erb
-    #   g.test_framework :rspec
-    # end
 
-    # config.mongoid do |m|
-    #   m.observers = :message_observer
-    # end
+  class Engine < Rails::Engine
 
     initializer "datajam_chat.register_plugin" do
       Datajam.setup do |app|
@@ -25,12 +17,16 @@ module DatajamChat
       Bitly.use_api_version_3
     end
 
+    initializer "evergreen.config" do
+      Evergreen.configure do |config|
+        config.root = DatajamChat::Engine.root
+      end
+    end
+
     if Rails.env =~ /^(development|test)$/
       initializer "datajam_chat.static_assets" do |app|
         app.middleware.use ::ActionDispatch::Static, "#{root}/public"
       end
     end
-
-
   end
 end

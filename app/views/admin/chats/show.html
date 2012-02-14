@@ -1,12 +1,13 @@
 <% content_for :head do %>
+<link rel="stylesheet" href="/static/stylesheets/datajam_chat/app.css" type="text/css" media="screen, projection" />
 <%= stylesheet_link_tag 'datajam_chat/app' %>
 <script type="text/javascript">
-    curl.paths.chat || (curl.paths.chat = '/javascripts/datajam_chat')
+    curl.paths.chat || (curl.paths.chat = '/static/javascripts/datajam_chat')
 </script>
 <% end %>
 
 <% content_for :body do %>
-<%= javascript_include_tag 'datajam_chat/app-compiled.min.js' %>
+<script src="/static/javascripts/datajam_chat/app-compiled.min.js" type="text/javascript" charset="utf-8"></script>
 <% end %>
 
 <div id="content" class="container">

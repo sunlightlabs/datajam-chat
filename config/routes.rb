@@ -15,6 +15,12 @@ Rails.application.routes.draw do
       resources :pages, :controller => 'chat_pages', :only => [:show]
     end
 
+    scope '/admin/plugins/datajam_chat' do
+      get 'install' => 'plugin#install'
+      get 'uninstall' => 'plugin#uninstall'
+      get 'clear_sessions' => 'plugin#clear_sessions'
+    end
+
   end
 
   namespace :admin do

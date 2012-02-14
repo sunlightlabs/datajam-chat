@@ -178,7 +178,7 @@
         , handleBlur: function(evt){
             this._focusTimeout = setTimeout(_.bind(function(){
               this.model.set({'_keep_focus': false}, {'silent': true});
-              $(evt.target).parents('form').removeClass('active');
+              $(evt.target).parents('.datajamChatThread').removeClass('active');
             }, this), 1500);
           }
         , handleChange: function(evt){
@@ -192,7 +192,7 @@
               clearTimeout(this._focusTimeout);
             }
             this.model.set({'_keep_focus': true}, {'silent': true});
-            $(evt.target).parents('form').addClass('active');
+            $(evt.target).parents('.datajamChatThread').addClass('active');
           }
         , handleKeyDown: function(evt){
             switch(evt.keyCode){

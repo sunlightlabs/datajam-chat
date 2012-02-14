@@ -11,4 +11,6 @@ page_size = Setting.find_or_create_by(:namespace => 'datajam_chat', :name => 'pa
 page_size.required = true
 page_size.value = 100 unless page_size.value?
 page_size.save!
-Setting.find_or_create_by(:namespace => 'datajam_chat', :name => 'tweet_this_via')
+Setting.find_or_create_by(:namespace => 'datajam_chat', :name => 'tweet_this_via'
+# 'installed' setting is a placeholder to ensure that all plugins will have at least one setting
+Setting.find_or_create_by(:namespace => 'datajam_chat', :name => 'installed', :value => true)
