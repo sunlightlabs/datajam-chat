@@ -49,13 +49,13 @@ div#content{width:100%;}
 .datajamChatThread form label,
 .datajamChatThread form input[type=text]{float:left;clear:left;margin-bottom:0.25em;}
 .datajamChatThread form button{float:left;height:30px;text-indent:-9999px;border:none;}
-.datajamChatThread form button.identify{background:transparent url(http://assets.sunlightfoundation.com/datajam/datajam_chat/images/btn_join.png) no-repeat 0 0;width:110px;margin-left:6px;}
-.datajamChatThread form button.post{background:transparent url(http://assets.sunlightfoundation.com/datajam/datajam_chat/images/btn_submit.png) no-repeat 0 0; width:132px;display:none;}
+.datajamChatThread form button.identify{background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/btn_join.png') no-repeat 0 0;width:110px;margin-left:6px;}
+.datajamChatThread form button.post{background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/btn_submit.png') no-repeat 0 0; width:132px;display:none;}
 .datajamChatThread.active form button.post{display:block;}
 .datajamChatThread form button.identify:hover,
 .datajamChatThread form button.post:hover{background-position:0 -30px;}
 .datajamChatThread form#file_drop{position:absolute;left:-9999px;}
-.datajamChatThread form a.attachFile{display:block;width:16px;height:16px;float:right;text-indent:-9999px;background:transparent url(/images/datajam_chat/attachment.png) no-repeat 0 0;}
+.datajamChatThread form a.attachFile{display:block;width:16px;height:16px;float:right;text-indent:-9999px;background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/datajam_chat/attachment.png') no-repeat 0 0;}
 .datajamChatThread .flash{position:absolute;top:-5px;left:0;width:100%;/*background:#e1e7e9;border:1px solid #c3d3e0;*/padding:5px 0;margin:0;z-index:9999;font-weight:normal;font-style:italic;font-size:12px;}
 .datajamChatThread .flash.error{color:#900;}
 .datajamChatThread .flash.info{color:#79c;}
