@@ -19,24 +19,24 @@ div#content{width:100%;}
 .commentDetails { margin-bottom: 10px; font-family: Georgia, "Times New Roman", Times, serif; color: #766f6b; }
 .commentDetails span { text-transform: uppercase;}
 .discussionComments time { font-style: oblique; margin-right: 8px;}
-.discussionComments li a.tweet{width:16px;height:16px;line-height:16px;display:inline-block;*display:inline;zoom:1;background:transparent url(/images/datajam_chat/tweet_sprite.png) no-repeat 0 0;text-indent:-9999px;}
+.discussionComments li a.tweet{width:16px;height:16px;line-height:16px;display:inline-block;*display:inline;zoom:1;background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/tweet_sprite.png') no-repeat 0 0;text-indent:-9999px;}
 .discussionComments li a.tweet:hover{background-position:-16px 0;}
 .discussionComments li a.picto{display:none;}
 .discussionComments img { width: 50px; border: 1px solid #D4CFC2; float: left; margin-right: 15px;}
 .discussionComments ol { list-style-type: none; }
-.discussionComments li { border-bottom: 1px solid #e7e6dd; background: url(http://assets.sunlightfoundation.com/images/bg_bottomGradient.jpg) left bottom repeat-x; padding: 5px 15px; margin-bottom: 0; position:relative;}
+.discussionComments li { border-bottom: 1px solid #e7e6dd; background: url('http://assets.sunlightfoundation.com/images/bg_bottomGradient.jpg') left bottom repeat-x; padding: 5px 15px; margin-bottom: 0; position:relative;}
 .discussionComments li .liveComment img{width:auto;height:auto;max-width:100%;display:block;}
 .liveComment { float: left; width: 325px; line-height: 20px;}
 .liveComment address { font-weight: bold; display: block; font-style: normal; float: none;}
 .scroll { height: 400px; overflow-y: scroll; border-top: 1px solid #e2e0d6; border-bottom: 1px solid #e2e0d6; }
 
-.submitBtn { background: url(http://assets.sunlightfoundation.com/images/btn_submit.png) top right no-repeat; width: 140px; height: 26px; margin-top: 10px;}
-.submitBtn:hover { background: url(http://assets.sunlightfoundation.com/images/btn_submit.png) bottom right no-repeat; }
+.submitBtn { background: url('http://assets.sunlightfoundation.com/images/btn_submit.png') top right no-repeat; width: 140px; height: 26px; margin-top: 10px;}
+.submitBtn:hover { background: url('http://assets.sunlightfoundation.com/images/btn_submit.png') bottom right no-repeat; }
 
 .liveFilter .last, .discussionFilter .last { margin-right: 0; }
 
 .datajamChatThread .commentsClip{position:relative;}
-.datajamChatThread.loading .comments:before{content:'loading...';display:block;text-align:center;color:#444;padding:1em;background:#d9d9d9 url(/images/datajam_chat/loading.gif) no-repeat 38% 50%;border-bottom:1px solid #d0d0d0;text-shadow:0 1px 1px #fff;position:absolute;bottom:0;}
+.datajamChatThread.loading .comments:before{content:'loading...';display:block;text-align:center;color:#444;padding:1em;background:#d9d9d9 url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/loading.gif') no-repeat 38% 50%;border-bottom:1px solid #d0d0d0;text-shadow:0 1px 1px #fff;position:absolute;bottom:0;}
 .datajamChatThread p.archived,
 .datajamChatThread form{position:relative;padding:1.5em 0;}
 .datajamChatThread form textarea{height:20px;line-height:1;width:96%;padding:2%;float:left;
@@ -75,7 +75,7 @@ div#content{width:100%;}
        -moz-transform: rotate(-45deg);
             transform: rotate(-45deg);
     }
-.datajamChatThread li.loading a.action:after{border:none;width:18px;height:18px;background:transparent url(/images/datajam_chat/loading.gif) no-repeat 0 0;}
+.datajamChatThread li.loading a.action:after{border:none;width:18px;height:18px;background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/loading.gif') no-repeat 0 0;}
 
 /**
  * Admin / Modal
