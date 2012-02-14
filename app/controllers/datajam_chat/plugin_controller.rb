@@ -1,5 +1,7 @@
 class DatajamChat::PluginController < ApplicationController
 
+  before_filter :authenticate_user!
+
   def install
     begin
       DatajamChat.install
