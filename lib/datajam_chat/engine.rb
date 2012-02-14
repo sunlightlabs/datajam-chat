@@ -17,16 +17,17 @@ module DatajamChat
       Bitly.use_api_version_3
     end
 
-    initializer "evergreen.config" do
-      Evergreen.configure do |config|
-        config.root = DatajamChat::Engine.root
-      end
-    end
-
     if Rails.env =~ /^(development|test)$/
       initializer "datajam_chat.static_assets" do |app|
         app.middleware.use ::ActionDispatch::Static, "#{root}/public"
       end
+
+      initializer "evergreen.config" do
+        Evergreen.configure do |config|
+          config.root = DatajamChat::Engine.root
+        end
+      end
+
     end
   end
 end
