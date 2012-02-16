@@ -23,7 +23,7 @@ module DatajamChat
       end
 
       initializer "evergreen.config" do
-        Evergreen.configure do |config|
+        ::Evergreen.configure do |config|
           config.root = DatajamChat::Engine.root
         end
       end
