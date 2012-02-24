@@ -12,7 +12,7 @@
                 this.handle_message(model, options);
               }, this));
             }else{
-              models = this._clean(models);
+              model = this._clean(models);
               this.handle_message(model, options);
             }
             return this;
@@ -36,6 +36,13 @@
           }
         , parse: function(resp, xhr) {
             var page = '/chats/' + resp.chat._id + '/pages/' + resp.page._id + '.json';
+            // set paging bounds if they're not already set by the parent model...
+            if(typeof this._oldest_seen_page == 'undefined'){
+              this._oldest_seen_page = page;
+            }
+            if(typeof this._newest_seen_page == 'undefined'){
+              this._newest_seen_page = page
+            }
             // if we are on the oldest seen page, bump it back one;
             // otherwise if there's a newer page, set it forward.
             if(page == this._oldest_seen_page){

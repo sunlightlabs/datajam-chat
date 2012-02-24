@@ -38,6 +38,6 @@ _.mixin({
       node.find('img').each(function(){
         $(this).replaceWith($(this).attr('src'));
       });
-      return node.text();
+      return node.text().replace(/\s+/, ' ');
     }
 });

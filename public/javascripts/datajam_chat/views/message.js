@@ -28,6 +28,9 @@
                     , 'parentModel'
                     , 'parentView'
                     , 'render'
+                    , '_imgify'
+                    , '_linkify'
+                    , '_url'
                     );
 
             this.model || (this.model = new App.Models.Message);

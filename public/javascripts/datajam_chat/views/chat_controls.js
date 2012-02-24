@@ -22,14 +22,15 @@
               , {is_open: true, is_archived: false}
               , {is_open: false, is_archived: true}
             ]
-            var modal = this.el.parents('.modal')
-              , areaId = modal.attr('id').replace('modal-', '');
             try{
+              var modal = this.el.parents('.modal')
+                , areaId = modal.attr('id').replace('modal-', '');
               this.model = $('#chat_area_' + areaId).data('chat').model;
+              return this.render();
             }catch(e){
-              return;
+              Datajam.debug('Caught `' + e + '` initializing controls, no model associated.');
+              return this;
             }
-            return this.render();
           }
         , render: function(){
             this.el.html(controlstmpl);

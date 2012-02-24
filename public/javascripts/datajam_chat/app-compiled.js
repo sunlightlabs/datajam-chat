@@ -60,7 +60,7 @@
                 this.handle_message(model, options);
               }, this));
             }else{
-              models = this._clean(models);
+              model = this._clean(models);
               this.handle_message(model, options);
             }
             return this;
@@ -84,6 +84,13 @@
           }
         , parse: function(resp, xhr) {
             var page = '/chats/' + resp.chat._id + '/pages/' + resp.page._id + '.json';
+            // set paging bounds if they're not already set by the parent model...
+            if(typeof this._oldest_seen_page == 'undefined'){
+              this._oldest_seen_page = page;
+            }
+            if(typeof this._newest_seen_page == 'undefined'){
+              this._newest_seen_page = page
+            }
             // if we are on the oldest seen page, bump it back one;
             // otherwise if there's a newer page, set it forward.
             if(page == this._oldest_seen_page){
@@ -191,7 +198,7 @@
             data.chat.id = data.chat._id;
             delete data.chat._id;
             model = data.chat;
-            model._submit_url = this.url.replace('.json', '/messages/');
+            model._submit_url = this.url.replace('.json', '/messages.json');
             return model;
           }
 
@@ -229,6 +236,9 @@
                     , 'parentModel'
                     , 'parentView'
                     , 'render'
+                    , '_imgify'
+                    , '_linkify'
+                    , '_url'
                     );
 
             this.model || (this.model = new App.Models.Message);
@@ -564,7 +574,7 @@
         , identify: function(evt){
             evt.preventDefault();
             evt.stopPropagation();
-            var display_name = $('input[name=display_name]').val();
+            var display_name = this.el.find('input[name=display_name]').val();
             if(display_name){
               $.ajax({
                   url: '/chats/identity.json'
@@ -806,14 +816,15 @@
               , {is_open: true, is_archived: false}
               , {is_open: false, is_archived: true}
             ]
-            var modal = this.el.parents('.modal')
-              , areaId = modal.attr('id').replace('modal-', '');
             try{
+              var modal = this.el.parents('.modal')
+                , areaId = modal.attr('id').replace('modal-', '');
               this.model = $('#chat_area_' + areaId).data('chat').model;
+              return this.render();
             }catch(e){
-              return;
+              Datajam.debug('Caught `' + e + '` initializing controls, no model associated.');
+              return this;
             }
-            return this.render();
           }
         , render: function(){
             this.el.html(controlstmpl);

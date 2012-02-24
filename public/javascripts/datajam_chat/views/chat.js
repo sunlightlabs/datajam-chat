@@ -232,7 +232,7 @@
         , identify: function(evt){
             evt.preventDefault();
             evt.stopPropagation();
-            var display_name = $('input[name=display_name]').val();
+            var display_name = this.el.find('input[name=display_name]').val();
             if(display_name){
               $.ajax({
                   url: '/chats/identity.json'

@@ -1,5 +1,5 @@
 <div class="commentDetails">
-    <% if (timestamp.native().getYear() == new Date().getYear() && timestamp.native().getDate() == new Date().getDate()) { %>
+    <% if (timestamp.toDate().getYear() == new Date().getYear() && timestamp.toDate().getMonth == new Date().getMonth() && timestamp.toDate().getDate() == new Date().getDate()) { %>
     <time pubdate class="published" datetime><%= timestamp.format('h:mm a') %></time>
     <% } else { %>
     <time pubdate class="published" datetime><%= timestamp.format('MMM Do, h:mm a') %></time>

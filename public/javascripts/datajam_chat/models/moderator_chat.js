@@ -12,7 +12,7 @@
             data.chat.id = data.chat._id;
             delete data.chat._id;
             model = data.chat;
-            model._submit_url = this.url.replace('.json', '/messages/');
+            model._submit_url = this.url.replace('.json', '/messages.json');
             return model;
           }
 
