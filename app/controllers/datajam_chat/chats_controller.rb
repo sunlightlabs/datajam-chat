@@ -6,7 +6,7 @@ class DatajamChat::ChatsController < DatajamChat::EngineController
     @chats = Chat.all()
 
     respond_to do |format|
-      format.html
+      # format.html
       format.json { render :json => locals, :callback => params[:callback] }
     end
   end
@@ -16,7 +16,7 @@ class DatajamChat::ChatsController < DatajamChat::EngineController
     @page = @chat.current_page
 
     respond_to do |format|
-      format.html
+      # format.html
       format.json { render :json => locals, :callback => params[:callback] }
     end
   end
