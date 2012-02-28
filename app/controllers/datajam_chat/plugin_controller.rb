@@ -4,7 +4,7 @@ class DatajamChat::PluginController < ApplicationController
 
   def install
     begin
-      DatajamChat.install
+      DatajamChat::InstallJob.perform
       flash[:notice] = "Plugin installed."
       redirect_to plugin_settings_path('datajam_chat')
     rescue
@@ -15,7 +15,7 @@ class DatajamChat::PluginController < ApplicationController
 
   def uninstall
     begin
-      DatajamChat.uninstall
+      DatajamChat::UninstallJob.perform
       flash[:notice] = "Plugin uninstalled."
       redirect_to admin_plugins_path
     rescue
@@ -26,7 +26,7 @@ class DatajamChat::PluginController < ApplicationController
 
   def clear_sessions
     begin
-      DatajamChat.clear_sessions
+      DatajamChat::ClearSessionsJob.perform
       flash[:notice] = "Chat sessions cleared."
     rescue
       flash[:error] = "Failed to clear sessions: #{$!}"

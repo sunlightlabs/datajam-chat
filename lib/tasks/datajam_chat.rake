@@ -1,17 +1,22 @@
 namespace :datajam_chat do
   desc "Install Chat"
   task :install => :environment do
-    DatajamChat.install
+    DatajamChat::InstallJob.perform
   end
 
   desc "Uninstall Chat"
   task :uninstall => :environment do
-    DatajamChat.uninstall
+    DatajamChat::UninstallJob.perform
   end
 
   desc "Clear the redis session cache"
   task :clear_sessions => :environment do
-    DatajamChat.clear_sessions
+    DatajamChat::ClearSessionsJob.perform
+  end
+
+  desc "Recache all chat endpoints"
+  task :cache_reset => :environment do
+    DatajamChat::CacheResetJob.perform
   end
 
   desc "Concatenate and compile the backbone app after making changes"
