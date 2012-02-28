@@ -16,7 +16,6 @@ class ChatMessage
   validates_presence_of :display_name
   validates_presence_of :text
   validates_length_of :text,  allow_blank: false,  maximum: 1000
-
   validate :chat_is_open?
 
   before_save :shorten_urls, :paginate
@@ -78,7 +77,8 @@ class ChatMessage
   end
 
   def chat_is_open?
-    unless self.chat && self.chat.is_open?
+    # only save if the chat is open, or the model hasn't changed (in case of re-caching)
+    unless (self.chat && self.chat.is_open?) || (self.chat && !self.changed?)
       errors.add(:chat, "is closed for comments")
     end
   end

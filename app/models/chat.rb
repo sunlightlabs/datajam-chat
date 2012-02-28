@@ -50,7 +50,7 @@ class Chat
     chat_path(:id => self.id, :format => :json)
   end
 
-  def publish_everything!
+  def cache_reset!
     pages.each {|page| page.save! }
     save!
   end

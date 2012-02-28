@@ -17,6 +17,12 @@ module DatajamChat
     @@bitly ||= Bitly.new(Datajam::Settings[:datajam_chat][:bitly_username], Datajam::Settings[:datajam_chat][:bitly_api_key])
   end
 
+  def self.cache_reset!
+    Chat.all.entries.each do |chat|
+      chat.cache_reset!
+    end
+  end
+
   def self.install_required?
     true
   end

@@ -12,7 +12,6 @@ class ChatPage
 
   after_save :cache_instance
 
-
   validates_presence_of :chat
 
   def is_open!
