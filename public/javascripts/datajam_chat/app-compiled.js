@@ -540,7 +540,8 @@
             switch(evt.keyCode){
               case 13:
                 if(evt.ctrlKey || evt.metaKey){
-                  this.submit(evt);
+                  // submit with jQuery so analytics can be bolted on from outside
+                  $(evt.target).parents('form').submit();
                 }
               break;
               default:
