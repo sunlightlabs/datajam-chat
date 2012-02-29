@@ -24,6 +24,16 @@ class DatajamChat::PluginController < ApplicationController
     end
   end
 
+  def refresh_assets
+    begin
+      DatajamChat::RefreshAssetsJob.perform
+      flash[:notice] = "Assets refreshed."
+    rescue
+      flash[:error] = "Failed to refresh assets: #{$!}"
+    end
+    redirect_to plugin_settings_path('datajam_chat')
+  end
+
   def clear_sessions
     begin
       DatajamChat::ClearSessionsJob.perform

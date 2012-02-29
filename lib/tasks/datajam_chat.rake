@@ -9,6 +9,11 @@ namespace :datajam_chat do
     DatajamChat::UninstallJob.perform
   end
 
+  desc "Refresh static assets"
+  task :refresh_assets => :environment do
+    DatajamChat::RefreshAssetsJob.perform
+  end
+
   desc "Clear the redis session cache"
   task :clear_sessions => :environment do
     DatajamChat::ClearSessionsJob.perform

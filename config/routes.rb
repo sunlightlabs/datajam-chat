@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     scope '/admin/plugins/datajam_chat' do
       get '/install' => 'plugin#install'
       get '/uninstall' => 'plugin#uninstall'
+      get '/refresh_assets' => 'plugin#refresh_assets'
       get '/clear_sessions' => 'plugin#clear_sessions'
     end
 
