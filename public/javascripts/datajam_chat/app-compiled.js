@@ -573,7 +573,7 @@
           }
         , identify: function(evt){
             evt.preventDefault();
-            evt.stopPropagation();
+            // evt.stopPropagation();
             var display_name = this.el.find('input[name=display_name]').val();
             if(display_name){
               $.ajax({
@@ -730,7 +730,7 @@
           }
         , submit: function(evt){
             evt.preventDefault();
-            evt.stopPropagation();
+            // evt.stopPropagation();
             this.el.find('form textarea').eq(0).focus();
             if(this.el.find('form').eq(0).hasClass('disabled')){
               return;
