@@ -12,60 +12,62 @@
 
 }
 
-.clearfix:before,.clearfix:after{content:"\0020";display:block;height:0;visibility:hidden;}.clearfix:after{clear:both;}.clearfix{zoom:1;}
+.clearfix:before,.clearfix:after{ content:"\0020";display:block;height:0;visibility:hidden; }
+.clearfix:after{ clear:both; }
+.clearfix{ zoom:1; }
 div#content{width:100%;}
-.discussionFilter { float: right;}
-.discussionFilter li { float: left; color: #766f6b; font-style: oblique; font-family: Georgia, "Times New Roman", Times, serif; margin-right: 15px; margin-bottom: 5px; margin-top: 10px;}
+.discussionFilter { float: right; }
+.discussionFilter li { float: left; color: #766f6b; font-style: oblique; font-family: Georgia, "Times New Roman", Times, serif; margin-right: 15px; margin-bottom: 5px; margin-top: 10px; }
 .commentDetails { margin-bottom: 10px; font-family: Georgia, "Times New Roman", Times, serif; color: #766f6b; }
-.commentDetails span { text-transform: uppercase;}
-.discussionComments time { font-style: oblique; margin-right: 8px;}
-.discussionComments li a.tweet{width:16px;height:16px;line-height:16px;display:inline-block;*display:inline;zoom:1;background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/tweet_sprite.png') no-repeat 0 0;text-indent:-9999px;}
-.discussionComments li a.tweet:hover{background-position:-16px 0;}
-.discussionComments li a.picto{display:none;}
-.discussionComments img { width: 50px; border: 1px solid #D4CFC2; float: left; margin-right: 15px;}
+.commentDetails span { text-transform: uppercase; }
+.discussionComments time { font-style: oblique; margin-right: 8px; }
+.discussionComments li a.tweet{ width:16px;height:16px;line-height:16px;display:inline-block;*display:inline;zoom:1;background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/tweet_sprite.png') no-repeat 0 0;text-indent:-9999px; }
+.discussionComments li a.tweet:hover{ background-position:-16px 0; }
+.discussionComments li a.picto{ display:none; }
+.discussionComments img { width: 50px; border: 1px solid #D4CFC2; float: left; margin-right: 15px; }
 .discussionComments ol { list-style-type: none; }
-.discussionComments li { border-bottom: 1px solid #e7e6dd; background: url('http://assets.sunlightfoundation.com/images/bg_bottomGradient.jpg') left bottom repeat-x; padding: 5px 15px; margin-bottom: 0; position:relative;}
-.discussionComments li .liveComment img{width:auto;height:auto;max-width:100%;display:block;}
-.liveComment { float: left; width: 325px; line-height: 20px;}
-.liveComment address { font-weight: bold; display: block; font-style: normal; float: none;}
+.discussionComments li { border-bottom: 1px solid #e7e6dd; background: url('http://assets.sunlightfoundation.com/images/bg_bottomGradient.jpg') left bottom repeat-x; padding: 5px 15px; margin-bottom: 0; position:relative; }
+.discussionComments li .liveComment img{ width:auto;height:auto;max-width:100%;display:block; }
+.liveComment { float: left; width: 325px; line-height: 20px; }
+.liveComment address { font-weight: bold; display: block; font-style: normal; float: none; }
 .scroll { height: 400px; overflow-y: scroll; border-top: 1px solid #e2e0d6; border-bottom: 1px solid #e2e0d6; }
 
-.submitBtn { background: url('http://assets.sunlightfoundation.com/images/btn_submit.png') top right no-repeat; width: 140px; height: 26px; margin-top: 10px;}
+.submitBtn { background: url('http://assets.sunlightfoundation.com/images/btn_submit.png') top right no-repeat; width: 140px; height: 26px; margin-top: 10px; }
 .submitBtn:hover { background: url('http://assets.sunlightfoundation.com/images/btn_submit.png') bottom right no-repeat; }
 
 .liveFilter .last, .discussionFilter .last { margin-right: 0; }
 
 .datajamChatThread .commentsClip{ position:relative; overflow-x:hidden; word-wrap:break-word; }
-.datajamChatThread.loading .comments:before{content:'loading...';display:block;text-align:center;color:#444;padding:1em;background:#d9d9d9 url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/loading.gif') no-repeat 38% 50%;border-bottom:1px solid #d0d0d0;text-shadow:0 1px 1px #fff;position:absolute;bottom:0;}
+.datajamChatThread.loading .comments:before{ content:'loading...';display:block;text-align:center;color:#444;padding:1em;background:#d9d9d9 url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/loading.gif') no-repeat 38% 50%;border-bottom:1px solid #d0d0d0;text-shadow:0 1px 1px #fff;position:absolute;bottom:0; }
 .datajamChatThread p.archived,
-.datajamChatThread form{position:relative;padding:1.5em 0;}
-.datajamChatThread form textarea{height:20px;line-height:1;width:96%;padding:2%;float:left;
+.datajamChatThread form{ position:relative;padding:1.5em 0; }
+.datajamChatThread form textarea{ height:20px;line-height:1;width:96%;padding:2%;float:left;
 /*    -webkit-transition: all 0.25s ease-in-out;
        -moz-transition: all 0.25s ease-in-out;
             transition: all 0.25s ease-in-out;*/
 }
-.datajamChatThread.active form textarea{height:50px;margin-bottom:6px;}
-.datajamChatThread form textarea.dragable{border-color:#69a;}
+.datajamChatThread.active form textarea{ height:50px;margin-bottom:6px; }
+.datajamChatThread form textarea.dragable{ border-color:#69a; }
 .datajamChatThread form label,
-.datajamChatThread form input[type=text]{float:left;clear:left;margin-bottom:0.25em;}
-.datajamChatThread form button{float:left;height:30px;text-indent:-9999px;border:none;}
-.datajamChatThread form button.identify{background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/btn_join.png') no-repeat 0 0;width:110px;margin-left:6px;}
-.datajamChatThread form button.post{background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/btn_submit.png') no-repeat 0 0; width:132px;display:none;}
-.datajamChatThread.active form button.post{display:block;}
+.datajamChatThread form input[type=text]{ float:left;clear:left;margin-bottom:0.25em; }
+.datajamChatThread form button{ float:left;height:30px;text-indent:-9999px;border:none; }
+.datajamChatThread form button.identify{ background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/btn_join.png') no-repeat 0 0;width:110px;margin-left:6px; }
+.datajamChatThread form button.post{ background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/btn_submit.png') no-repeat 0 0; width:132px;display:none; }
+.datajamChatThread.active form button.post{ display:block; }
 .datajamChatThread form button.identify:hover,
-.datajamChatThread form button.post:hover{background-position:0 -30px;}
-.datajamChatThread form#file_drop{position:absolute;left:-9999px;}
-.datajamChatThread form a.attachFile{display:block;width:16px;height:16px;float:right;text-indent:-9999px;background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/attachment.png') no-repeat 0 0;}
-.datajamChatThread .flash{position:absolute;top:-5px;left:0;width:100%;/*background:#e1e7e9;border:1px solid #c3d3e0;*/padding:5px 0;margin:0;z-index:9999;font-weight:normal;font-style:italic;font-size:12px;}
-.datajamChatThread .flash.error{color:#900;}
-.datajamChatThread .flash.info{color:#79c;}
-.datajamChatThread li a.action{position:absolute;top:0;left:0;width:50%;display:block;height:100%;background:rgba(0, 0, 0, 0.2);opacity:0;text-align:center;text-indent:-999px;}
-.datajamChatThread li a.action:after{display:block;width:0;height:0;border:10px solid transparent;border-right-color:#fff;content:'.';position:absolute;left:3%;top:50%;margin-top:-10px;}
-.datajamChatThread li a.approve{left:auto;right:0;}
-.datajamChatThread li a.approve:after{left:85%;border-right-color:transparent;border-left-color:#fff;}
-.datajamChatThread li a.action:hover{opacity:1;}
+.datajamChatThread form button.post:hover{ background-position:0 -30px; }
+.datajamChatThread form#file_drop{ position:absolute;left:-9999px; }
+.datajamChatThread form a.attachFile{ display:block;width:16px;height:16px;float:right;text-indent:-9999px;background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/attachment.png') no-repeat 0 0; }
+.datajamChatThread .flash{ position:absolute;top:-5px;left:0;width:100%;/*background:#e1e7e9;border:1px solid #c3d3e0;*/padding:5px 0;margin:0;z-index:9999;font-weight:normal;font-style:italic;font-size:12px; }
+.datajamChatThread .flash.error{ color:#900; }
+.datajamChatThread .flash.info{ color:#79c; }
+.datajamChatThread li a.action{ position:absolute;top:0;left:0;width:50%;display:block;height:100%;background:rgba(0, 0, 0, 0.2);opacity:0;text-align:center;text-indent:-999px; }
+.datajamChatThread li a.action:after{ display:block;width:0;height:0;border:10px solid transparent;border-right-color:#fff;content:'.';position:absolute;left:3%;top:50%;margin-top:-10px; }
+.datajamChatThread li a.approve{ left:auto;right:0; }
+.datajamChatThread li a.approve:after{ left:85%;border-right-color:transparent;border-left-color:#fff; }
+.datajamChatThread li a.action:hover{ opacity:1; }
 .datajamChatThread li a.deleteAttachments:before,
-.datajamChatThread li a.deleteAttachments:after{display:block;border:none;content:'.';position:absolute;left:5%;top:50%;margin-top:-1px;width:21px;height:7px;background-color:#fff;
+.datajamChatThread li a.deleteAttachments:after{ display:block;border:none;content:'.';position:absolute;left:5%;top:50%;margin-top:-1px;width:21px;height:7px;background-color:#fff;
     -webkit-transform: rotate(45deg);
        -moz-transform: rotate(45deg);
             transform: rotate(45deg);
@@ -75,37 +77,37 @@ div#content{width:100%;}
        -moz-transform: rotate(-45deg);
             transform: rotate(-45deg);
     }
-.datajamChatThread li.loading a.action:after{border:none;width:18px;height:18px;background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/loading.gif') no-repeat 0 0;}
+.datajamChatThread li.loading a.action:after{ border:none;width:18px;height:18px;background:transparent url('http://assets.sunlightfoundation.com/datajam/datajam_chat/images/loading.gif') no-repeat 0 0; }
 
 /**
  * Admin / Modal
  */
- body.bare{margin:0;padding:0;}
-.chat-modal{width:90%;height:520px;left:5%;margin:0;}
+ body.bare{ margin:0;padding:0; }
+.chat-modal{ width:90%;height:520px;left:5%;margin:0; }
 .chat-modal .modal-header h3,
-.chat-modal .modal-header div.modal-chat-controls{float:left;margin-right:1em;}
-.chat-modal .modal-header div.modal-chat-controls *{display:inline;line-height:36px;}
-.chat-modal .modal-body{position:relative;}
-.chat-modal.fade.in{top:10%;}
-.chat-modal iframe{width:100%;height:100%;padding:0;margin:0;}
-.datajamChatAdmin span.tip{display:none;}
-.datajamChatAdmin h3{font-size:14px;color:#494442;}
-.datajamChatAdmin a{color:#233653;text-decoration:none;}
-.datajamChatAdmin a:hover{color:#222;}
-.datajamChatAdmin .datajamChatThread{width:32%;float:left;margin:0 1% 0 0;font: normal 13px/1.5 'helvetica', arial, sans-serif;}
-.datajamChatAdmin .datajamChatThread.moderator{margin-top:0;}
-.datajamChatAdmin .datajamChatThread .commentsClip{height:313px;overflow-y:scroll;clear:both;background:#f5f5f5;border:1px solid #eee;border-radius:5px;margin:0;position:relative;
+.chat-modal .modal-header div.modal-chat-controls{ float:left;margin-right:1em; }
+.chat-modal .modal-header div.modal-chat-controls *{ display:inline;line-height:36px; }
+.chat-modal .modal-body{ position:relative; }
+.chat-modal.fade.in{ top:10%; }
+.chat-modal iframe{ width:100%;height:100%;padding:0;margin:0; }
+.datajamChatAdmin span.tip{ display:none; }
+.datajamChatAdmin h3{ font-size:14px;color:#494442; }
+.datajamChatAdmin a{ color:#233653;text-decoration:none; }
+.datajamChatAdmin a:hover{ color:#222; }
+.datajamChatAdmin .datajamChatThread{ width:32%;float:left;margin:0 1% 0 0;font: normal 13px/1.5 'helvetica', arial, sans-serif; }
+.datajamChatAdmin .datajamChatThread.moderator{ margin-top:0; }
+.datajamChatAdmin .datajamChatThread .commentsClip{ height:313px;overflow-y:scroll;clear:both;background:#f5f5f5;border:1px solid #eee;border-radius:5px;margin:0;position:relative;
 /*        -webkit-transition: all 0.25s ease-in-out;
            -moz-transition: all 0.25s ease-in-out;
                 transition: all 0.25s ease-in-out;*/
     }
-.datajamChatAdmin .datajamChatThread.active .commentsClip{height:250px;}
-.datajamChatAdmin .datajamChatThread.moderator .commentsClip{height:380px;}
-.datajamChatAdmin .datajamChatThread .comments{list-style:none outside;padding:0;margin:0;overflow:hidden;}
-.datajamChatAdmin .datajamChatThread .comments>li{padding:5px 10px;word-wrap:break-word;position:relative;}
-.datajamChatAdmin .datajamChatThread .comments>li time{font-family:'helvetica', arial, sans-serif;font-style:normal;color:#888;font-weight:bold;}
-.datajamChatAdmin .datajamChatThread .comments>li p{margin:0;}
-.datajamChatAdmin .datajamChatThread .comments li.message img{max-width:100%;display:block;}
-.datajamChatAdmin .liveComment{width:auto;}
-.datajamChatAdmin .discussionComments li a.picto{color:#acacac;font-family:'ModernPictogramsNormal';font-size:22px;display:inline;text-decoration:none;}
-.datajamChatAdmin .discussionComments li a.picto:hover{color:#0c9ac7}
+.datajamChatAdmin .datajamChatThread.active .commentsClip{ height:250px; }
+.datajamChatAdmin .datajamChatThread.moderator .commentsClip{ height:380px; }
+.datajamChatAdmin .datajamChatThread .comments{ list-style:none outside;padding:0;margin:0;overflow:hidden; }
+.datajamChatAdmin .datajamChatThread .comments>li{ padding:5px 10px;word-wrap:break-word;position:relative; }
+.datajamChatAdmin .datajamChatThread .comments>li time{ font-family:'helvetica', arial, sans-serif;font-style:normal;color:#888;font-weight:bold; }
+.datajamChatAdmin .datajamChatThread .comments>li p{ margin:0; }
+.datajamChatAdmin .datajamChatThread .comments li.message img{ max-width:100%;display:block; }
+.datajamChatAdmin .liveComment{ width:auto; }
+.datajamChatAdmin .discussionComments li a.picto{ color:#acacac;font-family:'ModernPictogramsNormal';font-size:22px;display:inline;text-decoration:none; }
+.datajamChatAdmin .discussionComments li a.picto:hover{ color:#0c9ac7 }
