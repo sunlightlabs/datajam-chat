@@ -112,7 +112,7 @@
         , _clean: function(model) {
             model.id = model._id;
             delete model._id;
-            model.timestamp = moment(model.updated_at, 'YYYY-MM-DDTHH:mm:ssZZ');
+            model.timestamp = moment(model.updated_at, 'YYYY-MM-DDTHH:mm:ss');
             return model;
           }
       });
