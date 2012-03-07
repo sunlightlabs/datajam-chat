@@ -66,7 +66,7 @@ class ChatMessage
   end
 
   def default_avatar_url_encoded
-    URI.escape(Datajam::Settings[:datajam_chat][:default_avatar_url])
+    URI.escape(Datajam::Settings[:datajam_chat][:default_avatar_url]) rescue ''
   end
 
   def shorten_urls
