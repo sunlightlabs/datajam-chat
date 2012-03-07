@@ -135,7 +135,7 @@
               , modal = parentDoc.find('.chat-modal[data-chat-id=' + this.model.get('id') + ']');
             if(!modal.length) return;
 
-            var navLink = parentDoc.find('.nav a[data-controls-modal=' + modal.attr('id') + ']').eq(0)
+            var navLink = parentDoc.find('.topbar-nav a[data-controls-modal=' + modal.attr('id') + ']').eq(0)
               , badge = navLink.find('.badge')
               , count = $(this.el).find('li').length;
             if(!badge.length){

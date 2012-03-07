@@ -1,5 +1,5 @@
 <div class="commentDetails">
-    <% if (timestamp.toDate().getYear() == new Date().getYear() && timestamp.toDate().getMonth == new Date().getMonth() && timestamp.toDate().getDate() == new Date().getDate()) { %>
+    <% if (timestamp.toDate().getYear() == (new Date).getYear() && timestamp.toDate().getMonth() == (new Date).getMonth() && timestamp.toDate().getDate() == (new Date).getDate()) { %>
     <time pubdate class="published" datetime><%= timestamp.format('h:mm a') %></time>
     <% } else { %>
     <time pubdate class="published" datetime><%= timestamp.format('MMM Do, h:mm a') %></time>
@@ -13,7 +13,7 @@
 <% if (user && user.small_avatar_url) { %>
     <img alt="Photo of <%= display_name %>" src="<%= user.small_avatar_url %>" width="50" height="50" />
 <% } else if (user && user.email) { %>
-    <img alt="Photo of <%= display_name %>" src="http://gravatar.com/avatar/<%= MD5(user.email.toLowerCase()) %>.jpg?s=50&amp;d=https%3A%2F%2Ftwimg0-a.akamaihd.net%2Fprofile_images%2F55418705%2F100x100_sunlight_normal.png" />
+    <img alt="Photo of <%= display_name %>" src="http://gravatar.com/avatar/<%= MD5(user.email.toLowerCase()) %>.jpg?s=50&amp;d=<%= default_avatar_url_encoded %>" />
 <% } %>
 <div class="liveComment">
     <address class="author">

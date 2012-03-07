@@ -9,7 +9,7 @@
         <% if(typeof csrf_token != 'undefined'){ %>
         <input type="hidden" name="<%= csrf_param %>" value="<%= csrf_token %>" />
         <% } %>
-        <button type="submit" class="post">Post</button>
+        <button type="submit" class="post btn">Post</button>
     </p>
 </form>
 <% if(typeof is_admin != 'undefined' && is_admin){ %>

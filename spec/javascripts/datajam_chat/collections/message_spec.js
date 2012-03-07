@@ -36,7 +36,7 @@
         });
 
         it("sets models' timestamps correctly", function(){
-          expect(_this.collection.get('4f1b73fa340942000100001c').get('timestamp').toDate()).toEqual(new Date(2012,00,21,21,28,06))
+          expect(_this.collection.get('4f1b73fa340942000100001c').get('timestamp').toDate()).toEqual(new Date(2012,00,22,02,28,06))
         });
 
         it("sorts messages by timestamp", function(){

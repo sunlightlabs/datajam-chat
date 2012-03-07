@@ -30,7 +30,7 @@ class ChatMessage
 
   def as_json(options={})
     @user = user.as_json rescue nil
-    super(:except => [:user_id, :chat_id, :page_id]).merge({:user => @user})
+    super(:except => [:user_id, :chat_id, :page_id]).merge({:default_avatar_url_encoded => default_avatar_url_encoded, :user => @user, })
   end
 
   def update_with(options)
@@ -52,6 +52,8 @@ class ChatMessage
 
   protected
 
+  # this is just for convenience, not a security measure a la attr_accessible
+  # in fact, I want to still be able to mass-assign other stuff
   def accessible_attrs
     [:text, :is_public, :is_moderated]
   end
@@ -61,6 +63,10 @@ class ChatMessage
       self.chat.current_page.messages.concat([ self ])
       self.page.save
     end
+  end
+
+  def default_avatar_url_encoded
+    URI.escape(Datajam::Settings[:datajam_chat][:default_avatar_url])
   end
 
   def shorten_urls

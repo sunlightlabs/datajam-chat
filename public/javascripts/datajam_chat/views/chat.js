@@ -313,8 +313,8 @@
               .complete(this.loaded);
           }
         , prevPage: function(){
-            Datajam.debug('prev page');
             if(this.collection._oldest_seen_page){
+              Datajam.debug('prev page');
               var dfd = $.Deferred();
               this.collection.fetch($.extend({
                     'add':true

@@ -24,7 +24,7 @@
       });
 
       it('renders with the correct timestamp', function(){
-        expect(_this.view.el.find('time').text()).toEqual('Jan 23rd, 5:42 pm');
+        expect(_this.view.el.find('time').text()).toEqual('Jan 23rd, 10:42 pm');
       });
 
       it('activates links', function(){
