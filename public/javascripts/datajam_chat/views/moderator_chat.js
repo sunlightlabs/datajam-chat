@@ -139,7 +139,7 @@
               , badge = navLink.find('.badge')
               , count = $(this.el).find('li').length;
             if(!badge.length){
-              badge = navLink.append('<span class="badge"></span>').find('.badge');
+              badge = navLink.append(' <span class="badge badge-warning"></span>').find('.badge');
             }
             badge.html(count);
             if(count == 0){
