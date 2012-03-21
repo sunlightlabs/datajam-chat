@@ -136,6 +136,8 @@
               this.collection._oldest_seen_page = this.collection.url;
               this.collection.reset();
             }
+            // trigger scroll once just in case we opened to a blank page
+            this.el.children('.commentsClip').trigger('scroll');
           }
         , close: function(){
             Datajam.debug('closing');
@@ -226,7 +228,7 @@
                     if(clipper.height() >= scroller.height()){
                       clipper.trigger('scroll');
                     }
-                  }, this), 100);
+                  }, this), 1000);
               }, this)());
             }
           }
@@ -283,10 +285,10 @@
               this._request = null;
             }
             this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')))
-            // trigger scroll if we opened to a blank page
-            if(!this.el.children('ul.comments > li').length){
-              this.el.children('.commentsClip').trigger('scroll');
-            }
+            // // trigger scroll if we opened to a blank page
+            // if(!this.el.children('ul.comments > li').length){
+            //   this.el.children('.commentsClip').trigger('scroll');
+            // }
             if(!this.model.get('paused')){
               this._timeout = setTimeout(this.pollForContent, this.model.get('interval'));
             }

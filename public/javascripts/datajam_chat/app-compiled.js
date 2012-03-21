@@ -92,10 +92,11 @@
               this._newest_seen_page = page
             }
             // if we are on the oldest seen page, bump it back one;
-            // otherwise if there's a newer page, set it forward.
+            // if there's a newer page, set it forward.
             if(page == this._oldest_seen_page){
               this._oldest_seen_page = resp.page.prev_page;
-            }else if(page == this._newest_seen_page){
+            }
+            if(page == this._newest_seen_page){
               if(resp.page.next_page){
                 this.url = resp.page.next_page;
                 this._newest_seen_page = resp.page.next_page;
@@ -478,6 +479,8 @@
               this.collection._oldest_seen_page = this.collection.url;
               this.collection.reset();
             }
+            // trigger scroll once just in case we opened to a blank page
+            this.el.children('.commentsClip').trigger('scroll');
           }
         , close: function(){
             Datajam.debug('closing');
@@ -568,7 +571,7 @@
                     if(clipper.height() >= scroller.height()){
                       clipper.trigger('scroll');
                     }
-                  }, this), 100);
+                  }, this), 1000);
               }, this)());
             }
           }
@@ -625,10 +628,10 @@
               this._request = null;
             }
             this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')))
-            // trigger scroll if we opened to a blank page
-            if(!this.el.children('ul.comments > li').length){
-              this.el.children('.commentsClip').trigger('scroll');
-            }
+            // // trigger scroll if we opened to a blank page
+            // if(!this.el.children('ul.comments > li').length){
+            //   this.el.children('.commentsClip').trigger('scroll');
+            // }
             if(!this.model.get('paused')){
               this._timeout = setTimeout(this.pollForContent, this.model.get('interval'));
             }

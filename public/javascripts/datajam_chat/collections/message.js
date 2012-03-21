@@ -44,10 +44,11 @@
               this._newest_seen_page = page
             }
             // if we are on the oldest seen page, bump it back one;
-            // otherwise if there's a newer page, set it forward.
+            // if there's a newer page, set it forward.
             if(page == this._oldest_seen_page){
               this._oldest_seen_page = resp.page.prev_page;
-            }else if(page == this._newest_seen_page){
+            }
+            if(page == this._newest_seen_page){
               if(resp.page.next_page){
                 this.url = resp.page.next_page;
                 this._newest_seen_page = resp.page.next_page;
