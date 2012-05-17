@@ -1,5 +1,6 @@
 class DatajamChat::ChatIdentityController < DatajamChat::EngineController
 
+  before_filter :set_cache_buster, :only => [:index]
   # Gets current user's display name
   def index
     if current_user
@@ -66,6 +67,12 @@ class DatajamChat::ChatIdentityController < DatajamChat::EngineController
 
   def display_name
     {:display_name => (session[:display_name] rescue nil), :is_admin => current_user ? true : false }
+  end
+
+  def set_cache_buster
+    response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
   end
 
 end
