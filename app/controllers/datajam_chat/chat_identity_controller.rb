@@ -1,6 +1,7 @@
 class DatajamChat::ChatIdentityController < DatajamChat::EngineController
 
   before_filter :set_cache_buster, :only => [:index]
+  
   # Gets current user's display name
   def index
     if current_user
