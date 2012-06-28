@@ -1,11 +1,9 @@
+# -*- ruby -*-
 source "http://rubygems.org"
+gemspec
+
+eval File.read(File.expand_path('../spec/datajam/Gemfile-deps', __FILE__)), binding
 
 group :development, :test do
-
-  # include gems from test app
-  datajam_gemfile = File.expand_path('../spec/datajam/Gemfile', __FILE__)
-  datajam_gems = File.read(datajam_gemfile) rescue nil
-  eval datajam_gems if datajam_gems
+    gem 'fuubar'
 end
-
-gemspec

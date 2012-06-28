@@ -18,6 +18,10 @@ class ChatArea < ContentArea
     )
   end
 
+  def render_update
+    render
+  end
+
   def as_json(options = {})
     super.merge({:chat_id => chat.id})
   end
