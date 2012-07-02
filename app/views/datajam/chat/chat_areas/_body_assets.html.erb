@@ -1,0 +1,13 @@
+<script id="chat_area_modal_template" class="modalTemplate" type="text/x-handlebars-template" >
+  <div id="modal-{{ _id }}" class="modal chat-modal hide fade" style="display: none;" data-chat-id="{{ chat_id }}">
+    <div class="modal-header clearfix">
+      <a href="#" class="close">&times;</a>
+      <h3>{{ name }}</h3>
+      <div class="modal-chat-controls"></div>
+    </div>
+    <div class="modal-body">
+      <iframe src="/admin/chats/{{ chat_id }}" frameborder="0"></iframe>
+    </div>
+  </div>
+</script>
+<script src="/static/javascripts/datajam/chat/app-compiled.min.js" type="text/javascript"></script>

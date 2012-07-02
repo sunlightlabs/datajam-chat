@@ -1,19 +1,19 @@
 class ChatArea < ContentArea
-  belongs_to :chat
+  belongs_to :chat, class_name: "ChatThread", inverse_of: :area
 
   after_initialize :ensure_chat
 
   def render_head
-    renderer.render(:partial => "datajam_chat/chat_areas/head_assets")
+    renderer.render(:partial => "datajam/chat/chat_areas/head_assets")
   end
 
   def render_body
-    renderer.render(:partial => "datajam_chat/chat_areas/body_assets")
+    renderer.render(:partial => "datajam/chat/chat_areas/body_assets")
   end
 
   def render
     renderer.render(
-      :partial => "datajam_chat/chat_areas/content",
+      :partial => "datajam/chat/chat_areas/content",
       :locals => {:chat_area => self}
     )
   end
@@ -29,11 +29,10 @@ class ChatArea < ContentArea
   protected
 
   def ensure_chat
-    self.chat ||= Chat.create!
+    self.chat ||= ChatThread.create!
   end
 
   def renderer
-    @@av ||= ActionView::Base.new(DatajamChat::Engine.paths['app/views'].first)
+    @@av ||= ActionView::Base.new(Datajam::Chat::Engine.paths['app/views'].first)
   end
-
 end

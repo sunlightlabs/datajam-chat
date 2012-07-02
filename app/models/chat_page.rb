@@ -1,5 +1,4 @@
 class ChatPage
-
   include Mongoid::Document
   include Mongoid::Timestamps
   include Rails.application.routes.url_helpers
@@ -7,7 +6,7 @@ class ChatPage
 
   field :is_open,   type: Boolean, default: true
 
-  belongs_to :chat,   index: true
+  belongs_to :chat,   class_name: "ChatThread",   inverse_of: :page,  index: true
   has_many :messages, class_name: "ChatMessage",  inverse_of: :page
 
   after_save :cache_instance

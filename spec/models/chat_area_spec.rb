@@ -1,5 +1,5 @@
 require 'spec_helper'
 
-describe Chat do
+describe ChatThread do
   include MessageExampleHelperMethods
 end

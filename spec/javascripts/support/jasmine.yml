@@ -18,7 +18,7 @@ src_files:
   - spec/datajam/public/javascripts/backbone.js
   - spec/datajam/public/javascripts/rails.js
   - spec/datajam/public/javascripts/curl/curl.js
-  - public/javascripts/datajam_chat/app-compiled.min.js
+  - public/javascripts/datajam/chat/app-compiled.min.js
 
 # stylesheets
 #
@@ -59,7 +59,7 @@ helpers:
 #
 spec_files:
   # - '**/*[sS]pec.js'
-  - 'datajam_chat/*/*[sS]pec.js'
+  - 'datajam/chat/*/*[sS]pec.js'
 
 # src_dir
 #

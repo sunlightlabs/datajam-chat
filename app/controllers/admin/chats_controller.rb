@@ -1,16 +1,16 @@
 class Admin::ChatsController < AdminController
 
   def index
-    @chats = Chat.all
+    @chats = ChatThread.all
   end
 
   def show
-    @chat = Chat.find(params[:id])
+    @chat = ChatThread.find(params[:id])
     render :layout => "chat_admin"
   end
 
   def destroy
-    @chat = Chat.find(params[:id])
+    @chat = ChatThread.find(params[:id])
     @event = @chat.event
     @chat.destroy
     flash[:notice] = "Chat deleted."
@@ -18,7 +18,7 @@ class Admin::ChatsController < AdminController
   end
 
   def update
-    @chat = Chat.find(params[:id])
+    @chat = ChatThread.find(params[:id])
     if @chat.update_attributes(params[:chat])
       flash[:notice] = "Chat updated."
     else

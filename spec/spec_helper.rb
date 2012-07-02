@@ -1,6 +1,5 @@
-ENV['RAILS_ENV'] = 'test'
-require File.expand_path('../datajam/config/environment.rb', __FILE__)
-require 'rspec/rails'
+require File.expand_path('../../config/environment', __FILE__)
+require 'rspec'
 require 'vcr'
 require 'database_cleaner'
 
@@ -23,7 +22,7 @@ RSpec.configure do |config|
   end
 
   config.before(:all) do
-    @redis_db = Redis.new
+    @redis_db = REDIS
     @redis = Redis::Namespace.new(Rails.env.to_s, :redis => @redis_db)
   end
 
@@ -31,8 +30,8 @@ RSpec.configure do |config|
     DatabaseCleaner.start
 
     # create DjC settings
-    DatajamChat::Engine.load_seed
-    Setting.where(:namespace => 'datajam_chat', :name => 'page_size').first.update_attributes!(:value => 2)
+    Datajam::Chat::Engine.load_seed
+    Setting.where(:namespace => 'chat', :name => 'page_size').first.update_attributes!(:value => 2)
 
     # Create a site template if one doesn't exist.
     unless SiteTemplate.first

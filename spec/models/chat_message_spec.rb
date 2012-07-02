@@ -13,7 +13,7 @@ describe ChatMessage do
     event_template = EventTemplate.create(name: 'Chat Event Template', template: body)
     data =  { "header" => "Hello World", "description" => "This is the description." }
     @event = Event.create!(name: 'Chat Test Event', scheduled_at: '2099-12-31', :event_template => event_template, :template_data => data)
-    @chat = @event.content_areas.chats.first.chat
+    @chat = @event.content_areas.select {|area| area.area_type == 'chat_area'}.first.chat
     @chat.update_attributes(:is_open => true)
     @message = ChatMessage.new
   end
@@ -35,13 +35,13 @@ describe ChatMessage do
   end
 
   it "shortens its urls on save if bitly credentials are set" do
-    DatajamChat::bitly.instance_variable_set(:@default_query_opts, :login => 'sunlightlabstest', :apiKey => 'R_4a9fd69e8bd11ad20be192740a8c3816')
+    Datajam::Chat::bitly.instance_variable_set(:@default_query_opts, :login => 'sunlightlabstest', :apiKey => 'R_4a9fd69e8bd11ad20be192740a8c3816')
     @message = @chat.messages.create!(approved_message.merge!(:text => 'Hello http://sunlightfoundation.com!'))
     @message.text.should include('http://bit.ly')
   end
 
   it "leaves urls expanded on save if bitly credentials are unset" do
-    DatajamChat::bitly.instance_variable_set(:@default_query_opts, :login => nil, :apiKey => nil)
+    Datajam::Chat::bitly.instance_variable_set(:@default_query_opts, :login => nil, :apiKey => nil)
     @message = @chat.messages.create!(approved_message.merge!(:text => 'Hello http://sunlightfoundation.com!'))
     @message.text.should include('http://sunlightfoundation.com')
   end
@@ -79,7 +79,7 @@ describe ChatMessage do
 
   it "can be repaginated" do
     # need to set page size to an odd number > 1 so current_page won't roll over
-    Datajam::Settings[:datajam_chat][:page_size] = 3
+    Datajam::Settings[:chat][:page_size] = 3
     @message = @chat.messages.create!(approved_message)
     (@chat.page_size).times do
       @chat.messages.create!(approved_message)

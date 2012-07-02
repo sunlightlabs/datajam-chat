@@ -8,6 +8,6 @@ curl = {
     baseUrl: '/public/javascripts'
   , pluginPath: '/spec/datajam/public/javascripts/curl/plugin'
   , paths: {
-        chat: '/public/javascripts/datajam_chat'
+        chat: '/public/javascripts/datajam/chat'
       }
   }

@@ -11,8 +11,8 @@ describe ChatPage do
     ENDBODY
     event_template = EventTemplate.create(name: 'Chat Event Template', template: body)
     data =  { "header" => "Hello World", "description" => "This is the description." }
-    @event = Event.create!(name: 'Chat Test Event', scheduled_at: '2099-12-31', :event_template => event_template, :template_data => data)
-    @chat = @event.content_areas.chats.first.chat
+    @event = Event.create!(name: 'Chat Test Event', scheduled_at: '2099-12-31', event_template: event_template, template_data: data)
+    @chat = @event.content_areas.select {|area| area.area_type == 'chat_area'}.first.chat
     @chat.update_attributes(:is_open => true)
     @page = @chat.current_page
   end
@@ -31,7 +31,7 @@ describe ChatPage do
   end
 
   it "doesn't close itself when not full" do
-    Datajam::Settings[:datajam_chat][:page_size] = 11
+    Datajam::Settings[:chat][:page_size] = 11
     10.times do
       @chat.messages.create!(approved_message)
     end
@@ -56,29 +56,29 @@ describe ChatPage do
 
   it "includes status in json output" do
     @chat.current_page.save
-    @redis.get(@chat.current_page.cache_path).should include({:is_open => @chat.current_page.is_open}.to_json.gsub(/(^{|}$)/, ''))
+    @redis.get(@chat.current_page.cache_path).should include({:is_open => @chat.current_page.is_open}.to_json.gsub(/(^\{|\}$)/, ''))
   end
 
   it "includes pagination in json output" do
     @chat.current_page.save
-    @redis.get(@chat.current_page.cache_path).should include({:next_page => @chat.current_page.next_page}.to_json.gsub(/(^{|}$)/, ''))
-    @redis.get(@chat.current_page.cache_path).should include({:prev_page => @chat.current_page.prev_page}.to_json.gsub(/(^{|}$)/, ''))
+    @redis.get(@chat.current_page.cache_path).should include({:next_page => @chat.current_page.next_page}.to_json.gsub(/(^\{|\}$)/, ''))
+    @redis.get(@chat.current_page.cache_path).should include({:prev_page => @chat.current_page.prev_page}.to_json.gsub(/(^\{|\}$)/, ''))
   end
 
   it "includes messages in json output" do
     @chat.current_page.save
-    @redis.get(@chat.current_page.cache_path).should include({:messages => @chat.current_page.messages}.to_json.gsub(/(^{|}$)/, ''))
+    @redis.get(@chat.current_page.cache_path).should include({:messages => @chat.current_page.messages}.to_json.gsub(/(^\{|\}$)/, ''))
   end
 
   it "includes parent chat in json output" do
     @chat.current_page.save
-    @redis.get(@chat.current_page.cache_path).should include({:chat => @chat.as_json}.to_json.gsub(/(^{|}$)/, ''))
+    @redis.get(@chat.current_page.cache_path).should include({:chat => @chat.as_json}.to_json.gsub(/(^\{|\}$)/, ''))
   end
 
   it "publishes to cache on save" do
     @chat.current_page.save
-    @redis.get(@chat.cache_path).should include({:updated_at => @chat.current_page.updated_at}.to_json.gsub(/(^{|}$)/, ''))
-    @redis.get(@chat.current_page.cache_path).should include({:updated_at => @chat.current_page.updated_at}.to_json.gsub(/(^{|}$)/, ''))
+    @redis.get(@chat.cache_path).should include({:updated_at => @chat.current_page.updated_at}.to_json.gsub(/(^\{|\}$)/, ''))
+    @redis.get(@chat.current_page.cache_path).should include({:updated_at => @chat.current_page.updated_at}.to_json.gsub(/(^\{|\}$)/, ''))
   end
 
 end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Chat do
+describe ChatThread do
   include MessageExampleHelperMethods
 
   before(:each) do
@@ -12,7 +12,7 @@ describe Chat do
     event_template = EventTemplate.create(name: 'Chat Event Template', template: body)
     data =  { "header" => "Hello World", "description" => "This is the description." }
     @event = Event.create!(name: 'Chat Test Event', scheduled_at: '2099-12-31', :event_template => event_template, :template_data => data)
-    @chat = @event.content_areas.chats.first.chat
+    @chat = @event.content_areas.select {|area| area.area_type == 'chat_area'}.first.chat
   end
 
   it "is closed by default" do

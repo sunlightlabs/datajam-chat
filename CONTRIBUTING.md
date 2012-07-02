@@ -16,7 +16,7 @@ The majority of Datajam Chat is a Backbone app and therefore is written in javas
 
 In development, Datajam Chat checks a JS flag called `Datajam.DEBUG` to determine whether to use the compiled version of the code, or to pull down all of the dependencies atomically with curl.js, Datajam's chosen dependency manager. This means you'll see changes as you make them to the app itself while developing, but in order for them to reflect in production, you'll have to build the app.
 
-Because the order of its modules is important, there is a rake task designated for automating builds. After making changes and testing, run `rake app:datajam_chat:build` to recompile the javascript, and you'll be ready to commit. If you add files, you'll need to insert their paths in the correct place in `build.manifest` so the build task will include it. The determining factor behind include order is the flow of dependencies--any modules required by your module must be defined above it.
+Because the order of its modules is important, there is a rake task designated for automating builds. After making changes and testing, run `rake datajam:chat:build` to recompile the javascript, and you'll be ready to commit. If you add files, you'll need to insert their paths in the correct place in `build.manifest` so the build task will include it. The determining factor behind include order is the flow of dependencies--any modules required by your module must be defined above it.
 
 Do not define your uncompressed modules with names, the build script will handle this as it processes them.
 

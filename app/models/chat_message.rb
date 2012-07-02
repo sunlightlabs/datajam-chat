@@ -8,8 +8,8 @@ class ChatMessage
   field :is_public,       type: Boolean,  default: false
   field :is_moderated,    type: Boolean,  default: false
 
-  belongs_to :chat,   class_name: "Chat",     inverse_of: :messages
-  belongs_to :page,   class_name: "ChatPage", inverse_of: :messages
+  belongs_to :chat,   class_name: "ChatThread",   inverse_of: :messages
+  belongs_to :page,   class_name: "ChatPage",     inverse_of: :messages
   belongs_to :user
 
   validates_presence_of :chat
@@ -66,14 +66,14 @@ class ChatMessage
   end
 
   def default_avatar_url_encoded
-    URI.escape(Datajam::Settings[:datajam_chat][:default_avatar_url]) rescue ''
+    URI.escape(Datajam::Settings[:chat][:default_avatar_url]) rescue ''
   end
 
   def shorten_urls
     self.text = self.text.gsub(/https?:\/\/[\w\-\/#\.%\?=&:,|]+[\w\-\/#=&]/) do |long_url|
       unless long_url =~ /\.(png|gif|jpe?g|bmp)$/
         begin
-          DatajamChat::bitly.shorten(long_url).short_url
+          Datajam::Chat::bitly.shorten(long_url).short_url
         rescue
           long_url
         end
