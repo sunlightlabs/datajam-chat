@@ -15,7 +15,7 @@ module Datajam
     end
 
     def self.bitly
-      @@bitly ||= Bitly.new(Datajam::Settings[:chat][:bitly_username], Datajam::Settings[:chat][:bitly_api_key])
+      @@bitly ||= Bitly.new(Datajam::Settings[:'datajam-chat'][:bitly_username], Datajam::Settings[:'datajam-chat'][:bitly_api_key])
     end
 
     def self.install_required?
@@ -23,7 +23,7 @@ module Datajam
     end
 
     def self.installed?
-      Datajam::Settings[:chat].any?
+      Datajam::Settings[:'datajam-chat'].any?
     end
   end
 end

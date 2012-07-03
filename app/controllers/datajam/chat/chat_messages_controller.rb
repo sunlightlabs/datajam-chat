@@ -5,7 +5,7 @@ module Datajam
 
       def index
         @chat = ChatThread.find(params[:chat_id])
-        @limit =  params[:limit] ? params[:limit].to_i : Datajam::Settings[:chat][:page_size].to_i
+        @limit =  params[:limit] ? params[:limit].to_i : Datajam::Settings[:'datajam-chat'][:page_size].to_i
         unless params[:status]
           @incoming = @chat.incoming_messages.limit @limit
           @approved = @chat.approved_messages.limit @limit

@@ -79,7 +79,7 @@ describe ChatMessage do
 
   it "can be repaginated" do
     # need to set page size to an odd number > 1 so current_page won't roll over
-    Datajam::Settings[:chat][:page_size] = 3
+    Datajam::Settings[:'datajam-chat'][:page_size] = 3
     @message = @chat.messages.create!(approved_message)
     (@chat.page_size).times do
       @chat.messages.create!(approved_message)

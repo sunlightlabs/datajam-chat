@@ -31,7 +31,7 @@ class ChatThread
   end
 
   def page_size
-    Datajam::Settings[:chat][:page_size].to_i
+    Datajam::Settings[:'datajam-chat'][:page_size].to_i
   end
 
   def incoming_messages

@@ -31,7 +31,7 @@ RSpec.configure do |config|
 
     # create DjC settings
     Datajam::Chat::Engine.load_seed
-    Setting.where(:namespace => 'chat', :name => 'page_size').first.update_attributes!(:value => 2)
+    Setting.where(:namespace => 'datajam-chat', :name => 'page_size').first.update_attributes!(:value => 2)
 
     # Create a site template if one doesn't exist.
     unless SiteTemplate.first

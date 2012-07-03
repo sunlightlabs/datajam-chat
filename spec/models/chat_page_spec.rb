@@ -31,7 +31,7 @@ describe ChatPage do
   end
 
   it "doesn't close itself when not full" do
-    Datajam::Settings[:chat][:page_size] = 11
+    Datajam::Settings[:'datajam-chat'][:page_size] = 11
     10.times do
       @chat.messages.create!(approved_message)
     end

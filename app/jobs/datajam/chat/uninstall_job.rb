@@ -11,7 +11,7 @@ module Datajam::Chat::UninstallJob
       event.content_areas.where(:area_type => 'chat_area').destroy_all
     end
     # Remove settings
-    Setting.where(:namespace => 'chat').destroy_all
-    Datajam::Settings.flush(:chat)
+    Setting.where(:namespace => 'datajam-chat').destroy_all
+    Datajam::Settings.flush('datajam-chat')
   end
 end
