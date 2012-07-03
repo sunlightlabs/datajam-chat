@@ -12,7 +12,7 @@ Gem::Specification.new do |gem|
   gem.homepage      = "http://datajam.org"
   gem.summary       = "A real-time chat engine for Datajam."
   gem.description   = File.open(File.expand_path("../README.md", __FILE__)).read rescue nil
-  gem.files         = `git ls-files`.split($\)
+  gem.files         = Dir["{app,config,db,lib,public}/**/*"] + ["LICENSE.md", "Rakefile", "README.md", "build.manifest"]
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
