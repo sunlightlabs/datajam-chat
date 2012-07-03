@@ -6,7 +6,7 @@ module Datajam
     class Engine < Rails::Engine
       initializer "datajam-chat.register_plugin" do
         Datajam.setup do |app|
-          gemspec = File.expand_path("../../../datajam-chat.gemspec", __FILE__)
+          gemspec = File.expand_path("../../../../datajam-chat.gemspec", __FILE__)
           app.plugins << Gem::Specification.load(gemspec)
         end
       end
