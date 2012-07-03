@@ -514,7 +514,7 @@
           }
         , flash: function(data){
             var msg = $(_.template(flashtmpl, data));
-            this.el.find('form').eq(0).append(msg);
+            this.el.find('form .well').eq(0).append(msg);
             msg.hide()
                .fadeIn()
                .delay(4000)
