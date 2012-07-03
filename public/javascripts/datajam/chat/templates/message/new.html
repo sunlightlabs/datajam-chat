@@ -1,5 +1,5 @@
-<div class="inputArea well clearfix">
-    <form action="#" name="new_message" class="new-message clearfix">
+<form action="#" name="new_message" class="new-message clearfix">
+    <div class="inputArea well clearfix">
         <p>
             <label for="<%= id %>_message">Posting as <strong><%= display_name %></strong> (<a href="#" class="destroyIdentity">change</a>)</label>
             <% if(typeof is_admin != 'undefined' && is_admin){ %>
@@ -11,13 +11,13 @@
             <% } %>
             <button type="submit" class="post btn">Post</button>
         </p>
-    </form>
-    <% if(typeof is_admin != 'undefined' && is_admin){ %>
-    <form action="/chats/upload.json" method="post" name="file_drop" class="fileDrop" id="file_drop">
-        <input type="file" name="chat_asset" id="chat_asset" class="dropArea" />
-        <% if(typeof csrf_token != 'undefined'){ %>
-        <input type="hidden" name="<%= csrf_param %>" value="<%= csrf_token %>" />
-        <% } %>
-    </form>
+    </div>
+</form>
+<% if(typeof is_admin != 'undefined' && is_admin){ %>
+<form action="/chats/upload.json" method="post" name="file_drop" class="fileDrop" id="file_drop">
+    <input type="file" name="chat_asset" id="chat_asset" class="dropArea" />
+    <% if(typeof csrf_token != 'undefined'){ %>
+    <input type="hidden" name="<%= csrf_param %>" value="<%= csrf_token %>" />
     <% } %>
-</div>
+</form>
+<% } %>
