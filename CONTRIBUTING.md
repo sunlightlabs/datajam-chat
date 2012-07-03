@@ -23,3 +23,9 @@ Do not define your uncompressed modules with names, the build script will handle
 **IMPORTANT:** Watch the output of the rake task, an exception will be raised if your js syntax prevents closure compiler from running properly.
 
 _Also note that templates are not compiled and therefore template changes do not necessitate a build._
+
+#### Automatically Building the JS
+
+You can have git run .pre-commit.sh every time you commit, by running the following:
+
+    cd .git/hooks && ln -s ../../.pre-commit.sh pre-commit
