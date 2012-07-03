@@ -27,10 +27,10 @@
       });
 
       it('alerts the user when a bootstrap error is encountered', function(){
-        _this.server.responses = []
+        _this.server.responses = [];
         _this.server.respondWith('GET', _this.url, TestResponses.chat.error);
         _this.server.respond();
-        expect(_this.view.el.find('div.crashed').length).toBeTruthy;
+        expect(_this.view.el.find('div.crashed').length).toBeTruthy();
       });
 
       describe('when live chat has not yet started', function(){
@@ -45,7 +45,6 @@
 
         it('opens itself correctly', function(){
           var el = _this.view.el;
-          console.log(el);
           _this.server.respond();
           expect(el.find('div.closed').length).toBeTruthy();
           _this.server.responses = [];
@@ -70,7 +69,7 @@
           _this.server.respond();
           expect(_this.view.pollForContent).toHaveBeenCalled();
           _this.view.pollForContent.restore();
-        })
+        });
 
         it('adds new messages to the dom', function(){
           _this.server.respond();
@@ -178,7 +177,7 @@
 
           beforeEach(function(){
             _this.server.respond();
-          })
+          });
 
           it('renders the choose a username box', function(){
             expect(_this.view.el.find('button.identify').length).toBeTruthy();
@@ -239,7 +238,7 @@
       describe('when live chat has ended', function(){
 
         beforeEach(function(){
-          _this.server.responses = []
+          _this.server.responses = [];
           _this.server.respondWith('GET', _this.url, TestResponses.chat.archived);
           _this.server.respond();
         });

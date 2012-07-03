@@ -25,8 +25,9 @@ namespace :chat do
   end
 
   desc "Concatenate and compile the backbone app after making changes"
-  task :build => :environment do
+  task :build do
     require 'httparty'
+    require 'active_support/core_ext'
 
     manifest = File.open(File.expand_path('../../../build.manifest', __FILE__), 'r')
     dir = File.expand_path('../../../public/javascripts/datajam/chat', __FILE__)
@@ -87,6 +88,8 @@ namespace :chat do
     File.open("#{dir}/app-compiled.min.js", "w+") do |file|
       file.print compiled
     end
+
+    puts 'JS Assets compiled and minified'
 
   end
 end

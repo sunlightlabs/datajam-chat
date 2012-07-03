@@ -15,7 +15,7 @@ Gem::Specification.new do |s|
 
   s.files = Dir["{app,config,db,lib,public}/**/*"] + ["LICENSE.md", "Rakefile", "README.md"]
 
-  s.add_dependency "facets", "~> 2.9"
+  s.add_dependency 'facets', '~> 2.9'
   s.add_dependency 'bitly', '~> 0.6'
   s.add_dependency 'formatize', '~> 1.0'
 
