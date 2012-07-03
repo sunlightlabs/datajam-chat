@@ -16,7 +16,7 @@ module Datajam
         Datajam.navigation << {
           title: 'Chat',
           items: [
-            { title: 'Chats', url: '/admin/chats', icon: 'list'},
+            { title: 'Settings', url: '/admin/plugins/datajam-chat', icon: 'cogs'},
           ]
         }
       end
