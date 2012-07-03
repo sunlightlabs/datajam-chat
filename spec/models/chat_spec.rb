@@ -54,7 +54,7 @@ describe ChatThread do
 
   it "caches to the correct path on save" do
     @chat.save
-    @redis.get(@chat.cache_path).should match({:updated_at => @chat.updated_at}.to_json.gsub(/(^{|}$)/, ''))
+    @redis.get(@chat.cache_path).should include({:updated_at => @chat.updated_at}.to_json.gsub(/(^\{|\}$)/, ''))
   end
 
   it "includes a chat page when open" do
