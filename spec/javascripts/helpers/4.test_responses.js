@@ -77,7 +77,7 @@ window.TestResponses = {
     confict: [
       200,
       {'Content-Type': 'application/json'},
-      '{"errors":["Name is already registered, please choose another"]}'
+      '{"errors":["Name is already registered, please choose another."]}'
       ],
     error: [
       500,

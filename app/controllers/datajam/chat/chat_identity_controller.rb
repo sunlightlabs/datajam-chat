@@ -60,7 +60,7 @@ module Datajam
       protected
 
       def error_name_taken
-        {:errors => ['Name is already registered, please choose another']}
+        {:errors => ['Name is already registered, please choose another.']}
       end
 
       def error_name_blank
