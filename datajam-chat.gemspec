@@ -24,4 +24,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'debugger'
   s.add_development_dependency 'jasmine'
   s.add_development_dependency 'httparty'
+  s.add_development_dependency 'fuubar'
 end
