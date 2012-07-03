@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-
-  scope :module => :chat do
-
+  scope :module => 'datajam/chat' do
     scope '/chats' do
       resources :identity, :controller => 'chat_identity', :only => [:index, :create]
       delete '/identity' => 'chat_identity#destroy'
@@ -15,17 +13,15 @@ Rails.application.routes.draw do
       resources :pages, :controller => 'chat_pages', :only => [:show]
     end
 
-    scope '/admin/plugins/chat' do
+    scope '/admin/plugins/datajam-chat' do
       get '/install' => 'plugin#install'
       get '/uninstall' => 'plugin#uninstall'
       get '/refresh_assets' => 'plugin#refresh_assets'
       get '/clear_sessions' => 'plugin#clear_sessions'
     end
-
   end
 
   namespace :admin do
-    resources :chats, :controller => 'chat_threads'
+    resources :chats
   end
-
 end
