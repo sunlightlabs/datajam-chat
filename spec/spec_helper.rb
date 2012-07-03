@@ -50,14 +50,12 @@ RSpec.configure do |config|
 
       </html>
       EOT
-      SiteTemplate.create!(name: 'Site', template: template_text)
+      SiteTemplate.create!(:name => 'Site', :template => template_text)
     end
-
   end
 
   config.after(:each) do
     DatabaseCleaner.clean
     @redis_db.keys("#{Rails.env.to_s}*").each {|key| @redis_db.del(key)}
   end
-
 end

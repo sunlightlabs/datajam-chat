@@ -1,5 +1,4 @@
 require 'rails/engine'
-require "active_support/dependencies"
 require 'bitly'
 
 module Datajam

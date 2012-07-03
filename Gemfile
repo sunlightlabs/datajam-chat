@@ -1,9 +1,9 @@
 # -*- ruby -*-
 source "http://rubygems.org"
-gemspec
-
 eval File.read(File.expand_path('../spec/datajam/Gemfile-deps', __FILE__)), binding
 
+gemspec
+
 group :development, :test do
-    gem 'fuubar'
+  gem 'fuubar'
 end
