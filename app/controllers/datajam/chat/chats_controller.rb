@@ -13,7 +13,7 @@ module Datajam
       end
 
       def show
-        @chat = Chat.find(params[:id])
+        @chat = ChatThread.find(params[:id])
         @page = @chat.current_page
 
         respond_to do |format|
@@ -23,7 +23,7 @@ module Datajam
       end
 
       def update
-        @chat = Chat.find(params[:id])
+        @chat = ChatThread.find(params[:id])
         @chat.update_attributes(params[:model])
         @page = @chat.current_page
         @page.save
