@@ -7,7 +7,7 @@ module Datajam
         begin
           Datajam::Chat::InstallJob.perform
           flash[:notice] = "Plugin installed."
-          redirect_to plugin_settings_path('datajam-chat')
+          redirect_to admin_plugin_path('datajam-chat')
         rescue
           flash[:error] = "Failed to install plugin: #{$!}"
           redirect_to admin_plugins_path
@@ -21,7 +21,7 @@ module Datajam
           redirect_to admin_plugins_path
         rescue
           flash[:error] = "Failed to uninstall plugin: #{$!}"
-          redirect_to plugin_settings_path('datajam-chat')
+          redirect_to admin_plugin_path('datajam-chat')
         end
       end
 
@@ -32,7 +32,7 @@ module Datajam
         rescue
           flash[:error] = "Failed to refresh assets: #{$!}"
         end
-        redirect_to plugin_settings_path('datajam-chat')
+        redirect_to admin_plugin_path('datajam-chat')
       end
 
       def clear_sessions
@@ -42,7 +42,7 @@ module Datajam
         rescue
           flash[:error] = "Failed to clear sessions: #{$!}"
         end
-        redirect_to plugin_settings_path('datajam-chat')
+        redirect_to admin_plugin_path('datajam-chat')
       end
     end
   end
