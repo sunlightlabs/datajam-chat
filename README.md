@@ -18,19 +18,19 @@ Add a chat area to your event template:
 
     {{ chat_area: Live Chat }}
 
-## Uninstall:
+## Uninstall
 
 Remove chat area from your template.
 
 Click `uninstall` link on the plugin settings page
 
-## Sessions:
+## Sessions
 
 Users are anonymous, but their session id is the key to reserving their nickname. Before each event starts, you should clear the chat sessions from the system via the 'Actions' tab:
 
 ![Clear sessions](https://img.skitch.com/20120705-b2x32qqb775gwb7e9jdfiabtq8.png)
 
-## Settings:
+## Settings
 
 Only page size is required.
 
