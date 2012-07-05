@@ -1,27 +1,36 @@
+# Chat
+
 [![Build Status](https://secure.travis-ci.org/sunlightlabs/datajam-datacard.png)](http://travis-ci.org/sunlightlabs/datajam-datacard)
 
 Datajam Chat adds live chat to your events.
 
-### Install:
+## Installation
 
-1. add datajam-chat to your gemfile; currently from github:
+Add datajam-chat to your gemfile; currently from github:
 
-    `gem 'datajam-chat', :git => 'git://github.com/sunlightlabs/datajam-chat.git'`
+    gem 'datajam-chat', :git => 'git://github.com/sunlightlabs/datajam-chat.git', :require => 'datajam/chat'
 
-2. run `bundle install`
-3. click `install` link on the plugin settings page
-4. add a chat area to your event template, e.g., `{{ chat_area: Live Chat }}`
+Run `bundle install`
 
-### Uninstall:
+Click `install` link on the plugin settings page
 
-1. remove chat area
-2. click `uninstall` link on the plugin settings page
+Add a chat area to your event template:
 
-### Sessions:
+    {{ chat_area: Live Chat }}
 
-Users are anonymous, but their session id is the key to reserving their nickname. Before each event starts, you should click the `clear sessions` link on the plugin settings page.
+## Uninstall:
 
-### Settings:
+Remove chat area from your template.
+
+Click `uninstall` link on the plugin settings page
+
+## Sessions:
+
+Users are anonymous, but their session id is the key to reserving their nickname. Before each event starts, you should clear the chat sessions from the system via the 'Actions' tab:
+
+![Clear sessions](https://img.skitch.com/20120705-b2x32qqb775gwb7e9jdfiabtq8.png)
+
+## Settings:
 
 Only page size is required.
 
@@ -32,3 +41,7 @@ __Page size:__ The maximum number of messages to return per call to the server
 
 __Tweet this via:__ If set, tweets from chat will reference the value
 as (via @myvalue)
+
+## Developers
+
+See [CONTRIBUTING.md](https://github.com/sunlightlabs/datajam-chat/blob/master/CONTRIBUTING.md)
