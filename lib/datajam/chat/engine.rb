@@ -13,12 +13,6 @@ module Datajam
 
       initializer "bitly.use_api_version_3" do
         Bitly.use_api_version_3
-        Datajam.navigation << {
-          title: 'Chat',
-          items: [
-            { title: 'Settings', url: '/admin/plugins/datajam-chat', icon: 'cogs'},
-          ]
-        }
       end
 
       if Rails.env =~ /^(development|test)$/
