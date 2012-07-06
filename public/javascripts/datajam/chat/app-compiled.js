@@ -460,6 +460,7 @@
             Datajam.debug('archiving');
             model && this.bootstrap(model);
             model && this.pollForContent();
+            this.el.removeClass('closed').removeClass('open').addClass('archived');
             this.model.set({'is_open': false, 'is_archived': true});
             this.pause();
           }
@@ -485,6 +486,7 @@
         , close: function(){
             Datajam.debug('closing');
             this.model.set({'is_open': false, 'is_archived': false});
+            this.el.removeClass('archived').removeClass('open').addClass('closed');
             this.pollForOpenness();
           }
         , destroy: function(){
@@ -612,6 +614,7 @@
                 , 'is_archived': false
             });
             this.bootstrap(model);
+            this.el.removeClass('archived').removeClass('closed').addClass('open');
             this.resume();
           }
         , pause: function(){
