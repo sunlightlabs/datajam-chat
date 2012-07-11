@@ -1,6 +1,9 @@
 language: ruby
 rvm:
   - 1.9.3
+notifications:
+  email:
+    - ddrinkard@sunlightfoundation.com
 before_script:
   - git submodule update --init --recursive
   - mongo datajam_test --eval 'db.addUser("travis", "test");'
