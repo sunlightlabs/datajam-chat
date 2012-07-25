@@ -2,15 +2,15 @@
 
 [![Build Status](https://secure.travis-ci.org/sunlightlabs/datajam-datacard.png)](http://travis-ci.org/sunlightlabs/datajam-datacard)
 
-Datajam Chat adds live chat to your events.
+Datajam Chat adds live chat to your Datajam events.
 
 ## Installation
 
-Add datajam-chat to your gemfile; currently from github:
+Add datajam-chat to your Plugins file; currently from github:
 
     gem 'datajam-chat', :git => 'git://github.com/sunlightlabs/datajam-chat.git', :require => 'datajam/chat'
 
-Run `bundle install`
+Run `bundle install` and deploy
 
 Click `install` link on the plugin settings page
 
@@ -20,7 +20,7 @@ Add a chat area to your event template:
 
 ## Uninstall
 
-Remove chat area from your template.
+Remove the chat area from your template.
 
 Click `uninstall` link on the plugin settings page
 
