@@ -6,7 +6,7 @@ Datajam Chat adds live chat to your Datajam events.
 
 ## Installation
 
-Add datajam-chat to your Plugins file; currently from github:
+Add datajam-chat to your Pluginfile; currently from github:
 
     gem 'datajam-chat', :git => 'git://github.com/sunlightlabs/datajam-chat.git', :require => 'datajam/chat'
 
