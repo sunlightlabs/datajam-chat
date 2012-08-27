@@ -14,7 +14,6 @@ class ChatThread
 
   after_save :cache_instance
 
-
   def current_page
     save unless persisted?
 
@@ -32,6 +31,10 @@ class ChatThread
 
   def page_size
     Datajam::Settings[:'datajam-chat'][:page_size].to_i
+  end
+
+  def closed_chat_message
+    Datajam::Settings[:'datajam-chat'][:closed_chat_message]
   end
 
   def incoming_messages
@@ -53,6 +56,10 @@ class ChatThread
   def cache_reset!
     pages.each {|page| page.save! }
     save!
+  end
+
+  def as_json(options={})
+    super.merge({ :closed_chat_message => closed_chat_message })
   end
 
   protected
