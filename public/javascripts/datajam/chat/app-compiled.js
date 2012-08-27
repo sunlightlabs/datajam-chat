@@ -692,7 +692,7 @@
 
             // if the model is closed, render the closed message
             if(!data.is_open && !data.is_archived){
-              this.el.html(closedmessage);
+              this.el.html(closedmessage(data));
               return this;
             }
 
