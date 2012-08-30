@@ -220,7 +220,7 @@
       ;
 
       App.Views.Message = Backbone.View.extend({
-          linkP: /https?:\/\/[\w\-\/#\.%\?=&:,|]+[\w\-\/#=&]/g
+          linkP: /https?:\/\/[\w\-\/#\.%\?\+\~\!\|=&:,|]+[\w\-\/#=&]/g
         , imageP: /\.(jpe?g|gif|png|bmp|tiff?)$/
         , events: {
               'click .edit': 'edit'
