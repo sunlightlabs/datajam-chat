@@ -242,7 +242,7 @@
                     , '_url'
                     );
 
-            this.model || (this.model = new App.Models.Message);
+            this.model || (this.model = new App.Models.Message());
             this.model.bind('change', this.render);
           }
         , 'delete': function(evt){
@@ -325,11 +325,11 @@
             return text.replace(/\n/g, '<br>');
           }
         , _linkify: function(text){
-            var text = text.replace(this.linkP, function(match,offset){return match.link(match)});
+            text = text.replace(this.linkP, function(match,offset){return match.link(match);});
             return text.replace('<a ', '<a target="_blank" ');
           }
         , _spaceify: function(text){
-            return text.replace(/(\s)\s/g, '$1&nbsp;')
+            return text.replace(/(\s)\s/g, '$1&nbsp;');
           }
         , _strip_tags: function(text){
             return $('<div>' + text + '</div>').text();
@@ -443,7 +443,7 @@
 
             // append in order
             if(items.length && this.collection.indexOf(model) < items.length){
-              items.eq(this.collection.indexOf(model)).before(message.render().el)
+              items.eq(this.collection.indexOf(model)).before(message.render().el);
             }else{
               scroller.append(message.render().el);
             }
@@ -520,7 +520,7 @@
             msg.hide()
                .fadeIn()
                .delay(4000)
-               .fadeOut(function(){$(this).remove()});
+               .fadeOut(function(){$(this).remove();});
           }
         , handleBlur: function(evt){
             this._focusTimeout = setTimeout(_.bind(function(){
@@ -558,7 +558,7 @@
             clipper = this.el.find('div.commentsClip');
             scroller = clipper.find('.comments');
             // anchor if user scrolls to the top of the range
-            if(clipper.scrollTop() == 0){
+            if(clipper.scrollTop() === 0){
             // if(clipper.height() + clipper.scrollTop() >= scroller.height()){
               this.model.set({'_scroll_anchored': true}, {'silent': true});
             }else{
@@ -630,7 +630,7 @@
               this._request.abort();
               this._request = null;
             }
-            this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')))
+            this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')));
             // // trigger scroll if we opened to a blank page
             // if(!this.el.children('ul.comments > li').length){
             //   this.el.children('.commentsClip').trigger('scroll');
@@ -685,7 +685,7 @@
               , html = _.template(showtmpl)
               , closedmessage = _.template(closedtmpl)
               , identityform = _.template(identitytmpl)
-              , submitform = _.template(newmessagetmpl)
+              , submitform = _.template(newmessagetmpl);
 
             // if the model doesn't have an id, skip for now
             if(!data.id) return this;
@@ -714,7 +714,7 @@
               if(this.model.get('display_name')){
                 this.el.find('.tip').after(submitform(data));
               }else{
-                this.el.find('.tip').after(identityform(data))
+                this.el.find('.tip').after(identityform(data));
               }
             }else{
               this.el.find('.tip').remove();
@@ -794,7 +794,7 @@
                       }
                     }, this)
                 });
-            };
+            }
           }
       });
   });
@@ -822,7 +822,7 @@
                 {is_open: false, is_archived: false}
               , {is_open: true, is_archived: false}
               , {is_open: false, is_archived: true}
-            ]
+            ];
             try{
               var modal = this.el.parents('.modal')
                 , areaId = modal.attr('id').replace('modal-', '');
@@ -885,7 +885,7 @@
                     , 'render'
                     , '_url');
 
-            this.model || (this.model = new App.Models.Message);
+            this.model || (this.model = new App.Models.Message());
             this.model.bind('change', this.render);
           }
         , approve: function(evt){
@@ -971,7 +971,7 @@
                     , 'render'
                     , '_url');
 
-            this.model || (this.model = new App.Models.Message);
+            this.model || (this.model = new App.Models.Message());
             this.model.bind('change', this.render);
           }
         , approve: function(evt){
@@ -991,7 +991,7 @@
         , deleteAttachments: function(evt){
             evt.preventDefault();
             var urls = this.getImages()
-              , filenames = []
+              , filenames = [];
             _(urls).each(function(url, idx){
               filenames.push(_.last(url.split('/')));
             });
@@ -1150,7 +1150,7 @@
           }
         , render: function(){
             var data = this.model.toJSON()
-              , html = _.template(showtmpl)
+              , html = _.template(showtmpl);
 
             $(this.el).html(html(data));
             $(this.el).prepend('<h3>' + this.model.get('name') + '</h3>');
@@ -1189,7 +1189,7 @@
               badge = navLink.append(' <span class="badge badge-warning"></span>').find('.badge');
             }
             badge.html(count);
-            if(count == 0){
+            if(count === 0){
               badge.hide();
             }else{
               badge.show();
