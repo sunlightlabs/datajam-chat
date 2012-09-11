@@ -41,14 +41,14 @@
 
             this.el.data('chat', this);
 
-            this.model = new App.Models.ModeratorChat;
+            this.model = new App.Models.ModeratorChat();
             this.model.url = this.el.attr('data-url');
             this.model.set({interval: this.el.attr('data-interval')
                           , _scroll_anchored: true
                           });
             this.model.bind('change', this.render);
 
-            this.collection  = new App.Collections.ModeratorMessage;
+            this.collection  = new App.Collections.ModeratorMessage();
             this.collection.url = this.model.url.replace('.json', '/messages.json') + '?status=' + this.el.attr('data-status');
             this.collection.view = this;
             this.collection.bind('reset', this.renderCollection);
@@ -103,7 +103,7 @@
           }
         , render: function(){
             var data = this.model.toJSON()
-              , html = _.template(showtmpl)
+              , html = _.template(showtmpl);
 
             $(this.el).html(html(data));
             $(this.el).prepend('<h3>' + this.model.get('name') + '</h3>');
@@ -142,7 +142,7 @@
               badge = navLink.append(' <span class="badge badge-warning"></span>').find('.badge');
             }
             badge.html(count);
-            if(count == 0){
+            if(count === 0){
               badge.hide();
             }else{
               badge.show();
@@ -150,4 +150,4 @@
           }
       });
   });
-})(curl.define, curl);
+})(define, require);

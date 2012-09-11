@@ -28,7 +28,7 @@
                     , 'render'
                     , '_url');
 
-            this.model || (this.model = new App.Models.Message);
+            this.model || (this.model = new App.Models.Message());
             this.model.bind('change', this.render);
           }
         , approve: function(evt){
@@ -48,7 +48,7 @@
         , deleteAttachments: function(evt){
             evt.preventDefault();
             var urls = this.getImages()
-              , filenames = []
+              , filenames = [];
             _(urls).each(function(url, idx){
               filenames.push(_.last(url.split('/')));
             });
@@ -101,4 +101,4 @@
       });
 
   });
-})(curl.define, curl);
+})(define, require);

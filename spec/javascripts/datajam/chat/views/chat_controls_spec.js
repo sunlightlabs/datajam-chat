@@ -9,7 +9,7 @@
         _this.server = sinon.fakeServer.create();
         _this.server.respondWith('GET', _this.url, TestResponses.chat.open);
         _this.view = new app.Views.ChatControls({ el: $('<div></div>') });
-        _this.model = new app.Models.Chat;
+        _this.model = new App.Models.Chat();
         _this.model.url = _this.url;
         _this.view.model = _this.model;
         _this.view.render();

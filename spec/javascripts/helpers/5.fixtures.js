@@ -1,5 +1,5 @@
 (function($){
-  curl(['js!chat/plugins/moment.min.js'], function(){
+  curl(['chat/libs/moment.min'], function(){
 
     Fixtures = {
       message: {

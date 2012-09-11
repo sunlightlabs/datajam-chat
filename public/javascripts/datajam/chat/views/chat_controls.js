@@ -21,7 +21,7 @@
                 {is_open: false, is_archived: false}
               , {is_open: true, is_archived: false}
               , {is_open: false, is_archived: true}
-            ]
+            ];
             try{
               var modal = this.el.parents('.modal')
                 , areaId = modal.attr('id').replace('modal-', '');
@@ -54,4 +54,4 @@
           }
       });
   });
-})(curl.define, curl);
+})(define, require);

@@ -9,4 +9,4 @@
       });
 
   });
-})(curl.define, curl);
+})(define, require);

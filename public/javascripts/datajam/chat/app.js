@@ -6,10 +6,10 @@
 (function($, define, require){
 
   define('chat/common', [
-    , 'js!chat/plugins/underscore_mixins.js'
-    , 'js!chat/plugins/jquery.imagesloaded.js'
-    , 'js!chat/plugins/jquery.scrollTo-1.4.2-min.js'
-    , 'js!chat/plugins/moment.min.js'
+      'chat/libs/underscore_mixins'
+    , 'chat/libs/jquery.imagesloaded'
+    , 'chat/libs/jquery.scrollTo-1.4.2-min'
+    , 'chat/libs/moment.min'
     ]
   , function(){
       window.Datajam || (Datajam = {});
@@ -31,9 +31,9 @@
       });
     });
 
-  define('chat/upload', ['js!chat/plugins/jquery.form.js'], $.noop);
+  define('chat/upload', ['chat/libs/jquery.form'], $.noop);
 
-  define('chat/tweet', ['js!//platform.twitter.com/widgets.js'], $.noop);
+  define('chat/tweet', ['//platform.twitter.com/widgets'], $.noop);
 
   // Bootstrap the app
   require(['chat/common', 'chat/views/chat'], function(){

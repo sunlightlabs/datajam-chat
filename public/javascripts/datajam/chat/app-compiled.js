@@ -15,10 +15,10 @@
 (function($, define, require){
 
   define('chat/common', [
-    , 'js!chat/plugins/underscore_mixins.js'
-    , 'js!chat/plugins/jquery.imagesloaded.js'
-    , 'js!chat/plugins/jquery.scrollTo-1.4.2-min.js'
-    , 'js!chat/plugins/moment.min.js'
+      'chat/libs/underscore_mixins'
+    , 'chat/libs/jquery.imagesloaded'
+    , 'chat/libs/jquery.scrollTo-1.4.2-min'
+    , 'chat/libs/moment.min'
     ]
   , function(){
       window.Datajam || (Datajam = {});
@@ -40,9 +40,9 @@
       });
     });
 
-  define('chat/upload', ['js!chat/plugins/jquery.form.js'], $.noop);
+  define('chat/upload', ['chat/libs/jquery.form'], $.noop);
 
-  define('chat/tweet', ['js!//platform.twitter.com/widgets.js'], $.noop);
+  define('chat/tweet', ['//platform.twitter.com/widgets'], $.noop);
 
 
 
@@ -118,7 +118,7 @@
           }
       });
   });
-})(curl.define, curl);
+})(define, require);
 (function(define, require){
   define('chat/collections/moderator_message', ['chat/common'], function(){
 
@@ -140,7 +140,7 @@
       });
 
   });
-})(curl.define, curl);
+})(define, require);
 (function(define, require){
   define('chat/models/chat', ['chat/common'], function(){
     var $ = jQuery
@@ -172,7 +172,7 @@
 
       });
   });
-})(curl.define, curl);
+})(define, require);
 (function(define, require){
   define('chat/models/message', ['chat/common'], function(){
     var $ = jQuery
@@ -184,7 +184,7 @@
       });
 
   });
-})(curl.define, curl);
+})(define, require);
 (function(define, require){
   define('chat/models/moderator_chat', ['chat/common'], function(){
     var $ = jQuery
@@ -206,13 +206,13 @@
       });
 
   });
-})(curl.define, curl);
+})(define, require);
 (function(define, require){
   define('chat/views/message', [
       'text!chat/templates/message/show.html'
     , 'chat/common'
     , 'chat/tweet'
-    , 'js!chat/plugins/md5.js'
+    , 'chat/libs/md5'
     , 'chat/models/message' ], function(showtmpl){
 
     var $ = jQuery
@@ -340,7 +340,7 @@
       });
 
   });
-})(curl.define, curl);
+})(define, require);
 (function(define, require){
   define('chat/views/chat', [
       'text!chat/templates/chat/show.html'
@@ -406,7 +406,7 @@
             this.loading();
 
             this.el.data('chat', this);
-            this.model = new App.Models.Chat;
+            this.model = new App.Models.Chat();
             this.model.url = this.el.attr('data-url');
             this.model.set({interval: this.el.attr('data-interval'), _scroll_anchored: true });
             this.model.bind('change', this.render);
@@ -467,7 +467,7 @@
         , bootstrap: function(model){
             Datajam.debug('bootstrapping');
             if(!this.collection){
-              this.collection = new App.Collections.Message;
+              this.collection = new App.Collections.Message();
               this.collection.bind('add', this.addMessage);
               this.collection.bind('remove', this.removeMessage);
               this.collection.ajaxOptions = model.ajaxOptions;
@@ -798,7 +798,7 @@
           }
       });
   });
-})(curl.define, curl);
+})(define, require);
 (function(define, require){
   define('chat/views/chat_controls', [
       'text!chat/templates/chat/controls.html'
@@ -855,7 +855,7 @@
           }
       });
   });
-})(curl.define, curl);
+})(define, require);
 (function(define, require){
   define('chat/views/incoming_message', [
       'text!chat/templates/message/incoming.html'
@@ -940,7 +940,7 @@
       });
 
   });
-})(curl.define, curl);
+})(define, require);
 (function(define, require){
   define('chat/views/rejected_message', [
       'text!chat/templates/message/rejected.html'
@@ -1044,7 +1044,7 @@
       });
 
   });
-})(curl.define, curl);
+})(define, require);
 (function(define, require){
   define('chat/views/moderator_chat', [
       'text!chat/templates/chat/show.html'
@@ -1088,14 +1088,14 @@
 
             this.el.data('chat', this);
 
-            this.model = new App.Models.ModeratorChat;
+            this.model = new App.Models.ModeratorChat();
             this.model.url = this.el.attr('data-url');
             this.model.set({interval: this.el.attr('data-interval')
                           , _scroll_anchored: true
                           });
             this.model.bind('change', this.render);
 
-            this.collection  = new App.Collections.ModeratorMessage;
+            this.collection  = new App.Collections.ModeratorMessage();
             this.collection.url = this.model.url.replace('.json', '/messages.json') + '?status=' + this.el.attr('data-status');
             this.collection.view = this;
             this.collection.bind('reset', this.renderCollection);
@@ -1197,7 +1197,7 @@
           }
       });
   });
-})(curl.define, curl);
+})(define, require);
 
 
   require(['chat/common', 'chat/views/chat'], function(){

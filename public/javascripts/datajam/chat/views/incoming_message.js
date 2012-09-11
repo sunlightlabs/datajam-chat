@@ -27,7 +27,7 @@
                     , 'render'
                     , '_url');
 
-            this.model || (this.model = new App.Models.Message);
+            this.model || (this.model = new App.Models.Message());
             this.model.bind('change', this.render);
           }
         , approve: function(evt){
@@ -82,4 +82,4 @@
       });
 
   });
-})(curl.define, curl);
+})(define, require);

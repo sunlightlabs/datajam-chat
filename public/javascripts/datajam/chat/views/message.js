@@ -3,7 +3,7 @@
       'text!chat/templates/message/show.html'
     , 'chat/common'
     , 'chat/tweet'
-    , 'js!chat/plugins/md5.js'
+    , 'chat/libs/md5'
     , 'chat/models/message' ], function(showtmpl){
 
     var $ = jQuery
@@ -33,7 +33,7 @@
                     , '_url'
                     );
 
-            this.model || (this.model = new App.Models.Message);
+            this.model || (this.model = new App.Models.Message());
             this.model.bind('change', this.render);
           }
         , 'delete': function(evt){
@@ -116,11 +116,11 @@
             return text.replace(/\n/g, '<br>');
           }
         , _linkify: function(text){
-            var text = text.replace(this.linkP, function(match,offset){return match.link(match)});
+            text = text.replace(this.linkP, function(match,offset){return match.link(match);});
             return text.replace('<a ', '<a target="_blank" ');
           }
         , _spaceify: function(text){
-            return text.replace(/(\s)\s/g, '$1&nbsp;')
+            return text.replace(/(\s)\s/g, '$1&nbsp;');
           }
         , _strip_tags: function(text){
             return $('<div>' + text + '</div>').text();
@@ -131,4 +131,4 @@
       });
 
   });
-})(curl.define, curl);
+})(define, require);

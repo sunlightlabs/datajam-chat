@@ -6,7 +6,7 @@
 
       beforeEach(function(){
         _this.server = sinon.fakeServer.create();
-        _this.collection = new app.Collections.Message;
+        _this.collection = new App.Collections.Message();
         _this.collection.view = {
             archive: function(){}
           , close: function(){}

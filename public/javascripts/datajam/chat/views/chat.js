@@ -63,7 +63,7 @@
             this.loading();
 
             this.el.data('chat', this);
-            this.model = new App.Models.Chat;
+            this.model = new App.Models.Chat();
             this.model.url = this.el.attr('data-url');
             this.model.set({interval: this.el.attr('data-interval'), _scroll_anchored: true });
             this.model.bind('change', this.render);
@@ -100,7 +100,7 @@
 
             // append in order
             if(items.length && this.collection.indexOf(model) < items.length){
-              items.eq(this.collection.indexOf(model)).before(message.render().el)
+              items.eq(this.collection.indexOf(model)).before(message.render().el);
             }else{
               scroller.append(message.render().el);
             }
@@ -124,7 +124,7 @@
         , bootstrap: function(model){
             Datajam.debug('bootstrapping');
             if(!this.collection){
-              this.collection = new App.Collections.Message;
+              this.collection = new App.Collections.Message();
               this.collection.bind('add', this.addMessage);
               this.collection.bind('remove', this.removeMessage);
               this.collection.ajaxOptions = model.ajaxOptions;
@@ -177,7 +177,7 @@
             msg.hide()
                .fadeIn()
                .delay(4000)
-               .fadeOut(function(){$(this).remove()});
+               .fadeOut(function(){$(this).remove();});
           }
         , handleBlur: function(evt){
             this._focusTimeout = setTimeout(_.bind(function(){
@@ -215,7 +215,7 @@
             clipper = this.el.find('div.commentsClip');
             scroller = clipper.find('.comments');
             // anchor if user scrolls to the top of the range
-            if(clipper.scrollTop() == 0){
+            if(clipper.scrollTop() === 0){
             // if(clipper.height() + clipper.scrollTop() >= scroller.height()){
               this.model.set({'_scroll_anchored': true}, {'silent': true});
             }else{
@@ -287,7 +287,7 @@
               this._request.abort();
               this._request = null;
             }
-            this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')))
+            this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')));
             // // trigger scroll if we opened to a blank page
             // if(!this.el.children('ul.comments > li').length){
             //   this.el.children('.commentsClip').trigger('scroll');
@@ -342,7 +342,7 @@
               , html = _.template(showtmpl)
               , closedmessage = _.template(closedtmpl)
               , identityform = _.template(identitytmpl)
-              , submitform = _.template(newmessagetmpl)
+              , submitform = _.template(newmessagetmpl);
 
             // if the model doesn't have an id, skip for now
             if(!data.id) return this;
@@ -371,7 +371,7 @@
               if(this.model.get('display_name')){
                 this.el.find('.tip').after(submitform(data));
               }else{
-                this.el.find('.tip').after(identityform(data))
+                this.el.find('.tip').after(identityform(data));
               }
             }else{
               this.el.find('.tip').remove();
@@ -451,8 +451,8 @@
                       }
                     }, this)
                 });
-            };
+            }
           }
       });
   });
-})(curl.define, curl);
+})(define, require);

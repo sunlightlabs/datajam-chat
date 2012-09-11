@@ -8,7 +8,7 @@
         _this.server = sinon.fakeServer.create();
         _this.url = '/chats/1/pages/2.json?status=incoming';
         _this.server.respondWith('GET', _this.url, TestResponses.chat.moderator);
-        _this.collection = new app.Collections.ModeratorMessage;
+        _this.collection = new App.Collections.ModeratorMessage();
         _this.collection.url = _this.url;
         _this.collection.model = app.Models.Message;
         _this.collection.fetch({add: true});

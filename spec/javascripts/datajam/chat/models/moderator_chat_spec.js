@@ -7,7 +7,7 @@
 
       beforeEach(function(){
         _this.server = sinon.fakeServer.create();
-        _this.chat = new app.Models.ModeratorChat;
+        _this.chat = new App.Models.ModeratorChat();
       });
 
       afterEach(function(){
