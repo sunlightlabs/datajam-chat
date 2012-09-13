@@ -32,7 +32,7 @@ class ChatPage
   end
 
   def as_json(options={})
-    super(options).update(
+    super.update(
       'is_open' => is_open?,
       'next_page' => (next_page.cache_path rescue nil),
       'prev_page' => (prev_page.cache_path rescue nil)

@@ -10,11 +10,11 @@ class ChatArea < ContentArea
   after_initialize :ensure_chat
 
   def render_head
-    render_to_string(:partial => "datajam/chat/chat_areas/head_assets")
+    render_to_string :partial => "datajam/chat/chat_areas/head_assets"
   end
 
   def render_body
-    render_to_string(:partial => "datajam/chat/chat_areas/body_assets")
+    render_to_string :partial => "datajam/chat/chat_areas/body_assets"
   end
 
   def render
