@@ -30,8 +30,8 @@ namespace :chat do
     require 'active_support/core_ext'
 
     manifest = File.open(File.expand_path('../../../.javascripts-manifest', __FILE__), 'r')
-    dir = File.expand_path('../../../public/javascripts/datajam/chat', __FILE__)
-    build = File.open("#{dir}/app-compiled.js", "w+")
+    dir = File.expand_path('../../../public/javascripts/datajam', __FILE__)
+    build = File.open("#{dir}/chat/application-compiled.js", "w+")
 
     build.puts <<-EOT.strip_heredoc
       /**
@@ -44,7 +44,7 @@ namespace :chat do
     EOT
 
     while (line = manifest.gets)
-      build.puts(File.open("#{dir}/#{line.chomp}").read.sub("define(", "define('chat/#{line.chomp.sub('.js', '')}', "))
+      build.puts(File.open("#{dir}/#{line.chomp}").read.sub("define([", "define('#{line.chomp.sub('.js', '')}', ["))
     end
 
     build.puts <<-EOT.strip_heredoc
@@ -69,7 +69,7 @@ namespace :chat do
     end
 
 
-    File.open("#{dir}/app-compiled.min.js", "w+") do |file|
+    File.open("#{dir}/chat/application-compiled.min.js", "w+") do |file|
       file.print compiled
     end
 
