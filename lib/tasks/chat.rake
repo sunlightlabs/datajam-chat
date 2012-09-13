@@ -25,11 +25,11 @@ namespace :chat do
   end
 
   desc "Concatenate and compile the backbone app after making changes"
-  task :build do
+  task :build_javascripts do
     require 'httparty'
     require 'active_support/core_ext'
 
-    manifest = File.open(File.expand_path('../../../build.manifest', __FILE__), 'r')
+    manifest = File.open(File.expand_path('../../../.javascripts-manifest', __FILE__), 'r')
     dir = File.expand_path('../../../public/javascripts/datajam/chat', __FILE__)
     build = File.open("#{dir}/app-compiled.js", "w+")
 
@@ -61,7 +61,8 @@ namespace :chat do
         compilation_level: 'SIMPLE_OPTIMIZATIONS',
         output_format: 'text',
         output_info: 'compiled_code',
-        js_code: code})
+        js_code: code
+        })
 
     if compiled.strip === ''
       raise 'Unable to build with closure compiler. Please ensure your syntax is correct.'

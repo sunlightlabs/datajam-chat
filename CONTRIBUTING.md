@@ -34,7 +34,7 @@ Because the order of its modules is important, there is a rake task designated f
 
     $ rake chat:build
 
-to recompile the javascript, and you'll be ready to commit. If you add files, you'll need to insert their paths in the correct place in `build.manifest` so the build task will include it. The determining factor behind include order is the flow of dependencies--any modules required by your module must be defined above it.
+to recompile the javascript, and you'll be ready to commit. If you add files, you'll need to insert their paths in the correct place in `.javascripts-manifest` so the build task will include it. The determining factor behind include order is the flow of dependencies--any modules required by your module must be defined above it.
 
 Do not define your uncompressed modules with names, the build script will handle this as it processes them.
 
