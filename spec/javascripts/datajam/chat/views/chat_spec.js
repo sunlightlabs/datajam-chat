@@ -1,5 +1,5 @@
 (function($){
-  curl(['chat/views/chat'], function(){
+  require(['chat/views/chat'], function(){
     describe('Chat view', function(){
       var _this = this
         , app = _.extend({}, Datajam.Chat);
@@ -9,7 +9,7 @@
         _this.pageUrl = '/chats/1/pages/2.json';
         _this.server = sinon.fakeServer.create();
         _this.server.respondWith('GET', _this.url, TestResponses.chat.closed);
-        _this.view = new app.Views.Chat({ el: $('<div data-url="' + _this.url + '" data-interval="3000"></div>') });
+        _this.view = new app.views.Chat({ el: $('<div data-url="' + _this.url + '" data-interval="3000"></div>') });
       });
 
       afterEach(function(){
@@ -20,7 +20,7 @@
 
       it('destroys itself correctly', function(){
         _this.server.respond();
-        var el = _this.view.el;
+        var el = _this.view.$el;
         expect(el.find('div.closed').length).toBeTruthy();
         _this.view.destroy();
         expect(el.html()).toBeFalsy();
@@ -30,7 +30,7 @@
         _this.server.responses = [];
         _this.server.respondWith('GET', _this.url, TestResponses.chat.error);
         _this.server.respond();
-        expect(_this.view.el.find('div.crashed').length).toBeTruthy();
+        expect(_this.view.$el.find('div.crashed').length).toBeTruthy();
       });
 
       describe('when live chat has not yet started', function(){
@@ -44,7 +44,7 @@
         });
 
         it('opens itself correctly', function(){
-          var el = _this.view.el;
+          var el = _this.view.$el;
           _this.server.respond();
           expect(el.find('div.closed').length).toBeTruthy();
           _this.server.responses = [];
@@ -73,14 +73,14 @@
 
         it('adds new messages to the dom', function(){
           _this.server.respond();
-          expect(_this.view.el.find('.comments li').length).toBeTruthy();
+          expect(_this.view.$el.find('.comments li').length).toBeTruthy();
         });
 
         it('appends messages to the dom in the right order', function(){
           _this.server.respond();
           // last is first, first is last
-          expect(_this.view.el.find('.comments li').first().attr('id')).toEqual('message_4f1b7409340942000100001f');
-          expect(_this.view.el.find('.comments li').last().attr('id')).toEqual('message_4f1b73ff340942000100001e');
+          expect(_this.view.$el.find('.comments li').first().attr('id')).toEqual('message_4f1b7409340942000100001f');
+          expect(_this.view.$el.find('.comments li').last().attr('id')).toEqual('message_4f1b73ff340942000100001e');
         });
 
         it('resets the polling interval when a message is received', function(){
@@ -91,12 +91,12 @@
 
         it('can archive itself correctly', function(){
           _this.server.respond();
-          expect(_this.view.el.find('form').length).toBeTruthy();
+          expect(_this.view.$el.find('form').length).toBeTruthy();
           _this.server.responses.pop();
           _this.server.respondWith('GET', _this.pageUrl, TestResponses.page.archived);
           _this.view.pollForContent();
           _this.server.respond();
-          expect(_this.view.el.find('.archived').length).toBeTruthy();
+          expect(_this.view.$el.find('.archived').length).toBeTruthy();
         });
 
         it('can bootstrap itself correctly', function(){
@@ -108,25 +108,25 @@
 
         it('can close itself correctly', function(){
           _this.server.respond();
-          expect(_this.view.el.find('form').length).toBeTruthy();
+          expect(_this.view.$el.find('form').length).toBeTruthy();
           _this.server.responses = [];
           _this.server.respondWith('GET', _this.url, TestResponses.chat.closed);
           _this.server.respondWith('GET', _this.pageUrl, TestResponses.page.closed);
           _this.view.pollForContent();
           _this.server.respond();
-          expect(_this.view.el.find('.closed').length).toBeTruthy();
+          expect(_this.view.$el.find('.closed').length).toBeTruthy();
         });
 
         it('displays flash messages correctly', function(){
           _this.server.respond();
           _this.view.flash({type: 'error', message: 'hello, world!'});
-          expect(_this.view.el.find('.alert').html()).toContain('hello, world!');
+          expect(_this.view.$el.find('.alert').html()).toContain('hello, world!');
         });
 
         it('indicates when content is loading', function(){
-          expect(_this.view.el.hasClass('loading')).toBeTruthy();
+          expect(_this.view.$el.hasClass('loading')).toBeTruthy();
           _this.server.respond();
-          expect(_this.view.el.hasClass('loading')).toBeFalsy();
+          expect(_this.view.$el.hasClass('loading')).toBeFalsy();
         });
 
         it('pauses itself correctly', function(){
@@ -140,7 +140,7 @@
         it('paginates backward when scrolled to the end', function(){
           _this.server.respond();
           sinon.stub(_this.view, 'prevPage');
-          _this.view.el.find('.comments').trigger('scroll')
+          _this.view.$el.find('.comments').trigger('scroll')
               .trigger('scroll');
           expect(_this.view.prevPage).toHaveBeenCalledTwice();
           _this.view.prevPage.restore();
@@ -150,7 +150,7 @@
           _this.server.respondWith('GET', '/chats/1/pages/1.json', TestResponses.page.prev);
           _this.server.respond();
           sinon.stub(_this.view.collection, 'fetch');
-          _this.view.el.find('.comments').trigger('scroll');
+          _this.view.$el.find('.comments').trigger('scroll');
           _this.server.respond();
           expect(_this.view.collection.fetch).not.toHaveBeenCalled();
           _this.view.collection.fetch.restore();
@@ -158,9 +158,9 @@
 
         it('removes messages that have been deleted', function(){
           _this.server.respond();
-          expect(_this.view.el.find('.comments li').length).toEqual(3);
+          expect(_this.view.$el.find('.comments li').length).toEqual(3);
           _this.view.collection.remove(_this.view.collection.first());
-          expect(_this.view.el.find('.comments li').length).toEqual(2);
+          expect(_this.view.$el.find('.comments li').length).toEqual(2);
         });
 
         it('resumes polling correctly', function(){
@@ -180,12 +180,12 @@
           });
 
           it('renders the choose a username box', function(){
-            expect(_this.view.el.find('button.identify').length).toBeTruthy();
+            expect(_this.view.$el.find('button.identify').length).toBeTruthy();
           });
 
           it('identifies the user correctly', function(){
             _this.server.respondWith('POST', '/chats/identity.json', TestResponses.identity.create);
-            _this.view.el.find('input[name=display_name]').val('John Doe').parents('form').submit();
+            _this.view.$el.find('input[name=display_name]').val('John Doe').parents('form').submit();
             _this.server.respond();
             expect(_this.view.model.get('display_name')).toEqual('John Doe');
           });
@@ -197,28 +197,28 @@
           beforeEach(function(){
             _this.server.respond();
             _this.server.respondWith('POST', '/chats/identity.json', TestResponses.identity.create);
-            _this.view.el.find('input[name=display_name]').val('John Doe').parents('form').submit();
+            _this.view.$el.find('input[name=display_name]').val('John Doe').parents('form').submit();
             _this.server.respond();
           });
 
           it('renders the chat box', function(){
-            expect(_this.view.el.find('form.new-message').length).toBeTruthy();
+            expect(_this.view.$el.find('form.new-message').length).toBeTruthy();
           });
 
           it('destroys the user\'s identity correctly', function(){
             _this.server.responses.pop();
             _this.server.respondWith('POST', '/chats/identity.json', TestResponses.identity.destroy);
-            _this.view.el.find('.destroyIdentity').click();
+            _this.view.$el.find('.destroyIdentity').click();
             _this.server.respond();
             expect(_this.view.model.get('display_name')).toBeFalsy();
-            expect(_this.view.el.find('form.new-message').length).toBeFalsy();
-            expect(_this.view.el.find('button.identify').length).toBeTruthy();
+            expect(_this.view.$el.find('form.new-message').length).toBeFalsy();
+            expect(_this.view.$el.find('button.identify').length).toBeTruthy();
           });
 
           it('won\'t double-post messages', function(){
             sinon.stub($, 'ajax');
-            _this.view.el.find('form textarea').val('hello, world!').parents('form').submit();
-            _this.view.el.find('form textarea').val('goodnight, moon!').parents('form').submit();
+            _this.view.$el.find('form textarea').val('hello, world!').parents('form').submit();
+            _this.view.$el.find('form textarea').val('goodnight, moon!').parents('form').submit();
             expect($.ajax).toHaveBeenCalledOnce();
             $.ajax.restore();
           });
@@ -226,7 +226,7 @@
           it('submits the message when ctrl or cmd-enter is typed', function(){
             sinon.spy($, 'ajax');
             var evt = $.Event('keydown', {keyCode: 13, ctrlKey: true, metaKey: true});
-            _this.view.el.find('form textarea').val('hello, world!').trigger(evt);
+            _this.view.$el.find('form textarea').val('hello, world!').trigger(evt);
             expect($.ajax).toHaveBeenCalled();
             $.ajax.restore();
           });
@@ -244,7 +244,7 @@
         });
 
         it('displays an archive message', function(){
-          expect(_this.view.el.find('.archived').length).toBeTruthy();
+          expect(_this.view.$el.find('.archived').length).toBeTruthy();
         });
 
       });

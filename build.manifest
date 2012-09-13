@@ -1,3 +1,4 @@
+init.js
 collections/message.js
 collections/moderator_message.js
 models/chat.js
@@ -9,3 +10,4 @@ views/chat_controls.js
 views/incoming_message.js
 views/rejected_message.js
 views/moderator_chat.js
+app.js

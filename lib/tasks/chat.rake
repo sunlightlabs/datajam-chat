@@ -40,32 +40,15 @@ namespace :chat do
        */
 
       (function($, define, require){
-        if(window.Datajam.DEBUG){
-          $.getScript('/javascripts/datajam/chat/app.js');
-        }else{
+
     EOT
 
-    File.open("#{dir}/app.js", "r") do |file|
-      until (line = (file.gets || '')) and (line.include?  '// Bootstrap the app')
-        build.puts line
-      end
-
-      2.times { build.puts("\n") }
-
-      while (line = manifest.gets)
-        build.puts(File.open("#{dir}/#{line.chomp}").read.sub("define(", "define('chat/#{line.chomp.sub('.js', '')}', "))
-      end
-
-      2.times { build.puts("\n") }
-
-      while (line = file.gets)
-        build.puts line
-      end
+    while (line = manifest.gets)
+      build.puts(File.open("#{dir}/#{line.chomp}").read.sub("define(", "define('chat/#{line.chomp.sub('.js', '')}', "))
     end
 
     build.puts <<-EOT.strip_heredoc
-        }
-      })(jQuery, curl.define, curl);
+      })(jQuery, define, require);
     EOT
 
     build.rewind

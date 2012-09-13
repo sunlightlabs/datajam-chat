@@ -1,12 +1,12 @@
 (function($){
-  curl(['chat/models/chat'], function(){
+  require(['chat/models/chat'], function(){
     describe('Chat model', function(){
       var _this = this
         , app = Datajam.Chat;
 
       beforeEach(function(){
         _this.server = sinon.fakeServer.create();
-        _this.chat = new App.Models.Chat();
+        _this.chat = new app.models.Chat();
       });
 
       afterEach(function(){

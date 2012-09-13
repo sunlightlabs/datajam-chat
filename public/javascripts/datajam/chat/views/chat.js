@@ -1,3 +1,4 @@
+/*jshint laxcomma:true, expr:true, evil:true */
 (function(define, require){
   define([
       'text!chat/templates/chat/show.html'
@@ -6,8 +7,7 @@
     , 'text!chat/templates/chat/identity.html'
     , 'text!chat/templates/common/flash.html'
     , 'text!chat/templates/message/new.html'
-    , 'chat/common'
-    , 'chat/upload'
+    , 'chat/init'
     , 'chat/models/chat'
     , 'chat/models/message'
     , 'chat/views/message'
@@ -17,7 +17,7 @@
       , App = Datajam.Chat
       ;
 
-      App.Views.Chat = Backbone.View.extend({
+      App.views.Chat = Backbone.View.extend({
           events: {
               "submit form[name=new_message]": "submit"
             , "submit form[name=identify]": "identify"
@@ -62,10 +62,10 @@
                           );
             this.loading();
 
-            this.el.data('chat', this);
-            this.model = new App.Models.Chat();
-            this.model.url = this.el.attr('data-url');
-            this.model.set({interval: this.el.attr('data-interval'), _scroll_anchored: true });
+            this.$el.data('chat', this);
+            this.model = new App.models.Chat();
+            this.model.url = this.$el.attr('data-url');
+            this.model.set({interval: this.$el.attr('data-interval'), _scroll_anchored: true });
             this.model.bind('change', this.render);
             this.model.bind('change', this.handleChange);
 
@@ -86,23 +86,23 @@
 
           }
         , addMessage: function(model){
-            var clipper = this.el.find('.commentsClip')
+            var clipper = this.$el.find('.commentsClip')
               , scroller = clipper.find('.comments')
               , offset = clipper.scrollTop()
               , height = scroller.height()
               , items = scroller.find('li')
-              , message = new App.Views.Message({
+              , message = new App.views.Message({
                      model: model
                 });
 
             // make sure the polling timeout is something sane
-            this.model.set({interval:this.el.attr('data-interval')}, {'silent': true});
+            this.model.set({interval:this.$el.attr('data-interval')}, {'silent': true});
 
             // append in order
             if(items.length && this.collection.indexOf(model) < items.length){
-              items.eq(this.collection.indexOf(model)).before(message.render().el);
+              items.eq(this.collection.indexOf(model)).before(message.render().$el);
             }else{
-              scroller.append(message.render().el);
+              scroller.append(message.render().$el);
             }
 
             // maintain scroll offset if not anchored
@@ -117,14 +117,14 @@
             Datajam.debug('archiving');
             model && this.bootstrap(model);
             model && this.pollForContent();
-            this.el.removeClass('closed').removeClass('open').addClass('archived');
+            this.$el.removeClass('closed').removeClass('open').addClass('archived');
             this.model.set({'is_open': false, 'is_archived': true});
             this.pause();
           }
         , bootstrap: function(model){
             Datajam.debug('bootstrapping');
             if(!this.collection){
-              this.collection = new App.Collections.Message();
+              this.collection = new App.collections.Message();
               this.collection.bind('add', this.addMessage);
               this.collection.bind('remove', this.removeMessage);
               this.collection.ajaxOptions = model.ajaxOptions;
@@ -138,17 +138,17 @@
               this.collection.reset();
             }
             // trigger scroll once just in case we opened to a blank page
-            this.el.children('.commentsClip').trigger('scroll');
+            this.$el.children('.commentsClip').trigger('scroll');
           }
         , close: function(){
             Datajam.debug('closing');
             this.model.set({'is_open': false, 'is_archived': false});
-            this.el.removeClass('archived').removeClass('open').addClass('closed');
+            this.$el.removeClass('archived').removeClass('open').addClass('closed');
             this.pollForOpenness();
           }
         , destroy: function(){
             this.pause();
-            this.el.html('');
+            this.$el.html('');
           }
         , destroyIdentity: function(evt){
             evt.preventDefault();
@@ -163,17 +163,17 @@
             this.model.set({'display_name': null});
           }
         , disableSubmit: function(){
-            this.el.find('form').addClass('disabled');
+            this.$el.find('form').addClass('disabled');
           }
         , enableSubmit: function(){
-            this.el.find('form').removeClass('disabled');
+            this.$el.find('form').removeClass('disabled');
           }
         , error: function(){
-            this.el.html(_.template(errortmpl, {}));
+            this.$el.html(_.template(errortmpl, {}));
           }
         , flash: function(data){
             var msg = $(_.template(flashtmpl, data));
-            this.el.find('form .well').eq(0).append(msg);
+            this.$el.find('form .well').eq(0).append(msg);
             msg.hide()
                .fadeIn()
                .delay(4000)
@@ -199,20 +199,14 @@
             $(evt.target).parents('.datajamChatThread').addClass('active');
           }
         , handleKeyDown: function(evt){
-            switch(evt.keyCode){
-              case 13:
-                if(evt.ctrlKey || evt.metaKey){
-                  // submit with jQuery so analytics can be bolted on from outside
-                  $(evt.target).parents('form').submit();
-                }
-              break;
-              default:
-              break;
+            if(evt.keyCode === 13 && (evt.ctrlKey || evt.metaKey)){
+              // submit with jQuery so analytics can be bolted on from outside
+              $(evt.target).parents('form').submit();
             }
           }
         , handleScroll: function(evt){
             var clipper, scroller;
-            clipper = this.el.find('div.commentsClip');
+            clipper = this.$el.find('div.commentsClip');
             scroller = clipper.find('.comments');
             // anchor if user scrolls to the top of the range
             if(clipper.scrollTop() === 0){
@@ -237,7 +231,7 @@
         , identify: function(evt){
             evt.preventDefault();
             // evt.stopPropagation();
-            var display_name = this.el.find('input[name=display_name]').val();
+            var display_name = this.$el.find('input[name=display_name]').val();
             if(display_name){
               $.ajax({
                   url: '/chats/identity.json'
@@ -259,10 +253,10 @@
             }
           }
         , loading: function(){
-            this.el.addClass('loading');
+            this.$el.addClass('loading');
           }
         , loaded: function(){
-            this.el.removeClass('loading');
+            this.$el.removeClass('loading');
           }
         , open: function(model){
             Datajam.debug('opening');
@@ -271,7 +265,7 @@
                 , 'is_archived': false
             });
             this.bootstrap(model);
-            this.el.removeClass('archived').removeClass('closed').addClass('open');
+            this.$el.removeClass('archived').removeClass('closed').addClass('open');
             this.resume();
           }
         , pause: function(){
@@ -289,8 +283,8 @@
             }
             this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')));
             // // trigger scroll if we opened to a blank page
-            // if(!this.el.children('ul.comments > li').length){
-            //   this.el.children('.commentsClip').trigger('scroll');
+            // if(!this.$el.children('ul.comments > li').length){
+            //   this.$el.children('.commentsClip').trigger('scroll');
             // }
             if(!this.model.get('paused')){
               this._timeout = setTimeout(this.pollForContent, this.model.get('interval'));
@@ -332,57 +326,57 @@
             }
           }
         , removeMessage: function(model){
-            var scroller = this.el.find('.comments')
-              , item = scroller.find('li#message_' + model.get('id'));
+            var scroller = this.$el.find('.comments')
+              , item = scroller.find('li#message_' + model.id);
             item && item.remove();
           }
         , render: function(){
             Datajam.debug('rendering');
-            var data = _(this.model.toJSON()).extend(App.csrf)
+            var data = _(this.model.toJSON()).extend(Datajam.csrf)
               , html = _.template(showtmpl)
               , closedmessage = _.template(closedtmpl)
               , identityform = _.template(identitytmpl)
               , submitform = _.template(newmessagetmpl);
 
             // if the model doesn't have an id, skip for now
-            if(!data.id) return this;
+            if(!data._id) return this;
 
             // if the model is closed, render the closed message
             if(!data.is_open && !data.is_archived){
-              this.el.html(closedmessage(data));
+              this.$el.html(closedmessage(data));
               return this;
             }
 
             // only redraw the thread if we aren't identified...
-            if(! this.el.children().not('.closed').length){
-              this.el.html('');
+            if(! this.$el.children().not('.closed').length){
+              this.$el.html('');
 
-              this.el.append(html(data));
+              this.$el.append(html(data));
               // use jquery to synthesize scroll events, triggering an event
               // on an element via backbone builtin handler requires the event to bubble
-              this.el.find('.commentsClip').scroll(_.bind(function(){
-                this.el.trigger('chatWindow:scroll');
+              this.$el.find('.commentsClip').scroll(_.bind(function(){
+                this.$el.trigger('chatWindow:scroll');
               }, this));
             }
 
             // draw the correct form, if needed
-            this.el.find('form, .archived').remove();
+            this.$el.find('form, .archived').remove();
             if(data.is_open){
               if(this.model.get('display_name')){
-                this.el.find('.tip').after(submitform(data));
+                this.$el.find('.tip').after(submitform(data));
               }else{
-                this.el.find('.tip').after(identityform(data));
+                this.$el.find('.tip').after(identityform(data));
               }
             }else{
-              this.el.find('.tip').remove();
+              this.$el.find('.tip').remove();
             }
             if(data.is_archived){
-              this.el.prepend('<p class="archived">This is an archived event, comments are no longer being accepted.</p>');
+              this.$el.prepend('<p class="archived">This is an archived event, comments are no longer being accepted.</p>');
             }
 
             // focus if focus is sticky
             if(this.model.get('_keep_focus')){
-              this.el.find('textarea, input[type=text]').focus();
+              this.$el.find('textarea, input[type=text]').focus();
             }
             this.delegateEvents();
             return this;
@@ -395,20 +389,20 @@
         , submit: function(evt){
             evt.preventDefault();
             // evt.stopPropagation();
-            this.el.find('form textarea').eq(0).focus();
-            if(this.el.find('form').eq(0).hasClass('disabled')){
+            this.$el.find('form textarea').eq(0).focus();
+            if(this.$el.find('form').eq(0).hasClass('disabled')){
               return;
             }
             var text;
-            text = this.el.find('textarea').val();
+            text = this.$el.find('textarea').val();
             if(text){
               this.disableSubmit();
-              message = new App.Models.Message({text: text});
+              message = new App.models.Message({text: text});
               message.url = this.model.get('_submit_url');
               message.save(null, {
                   dataType: 'json'
                 , success: _.bind(function(data){
-                    this.el.find('textarea').val('');
+                    this.$el.find('textarea').val('');
                     if(!data.is_public){
                       this.flash({type: 'info', message: 'Your message is awaiting moderation.'});
                     }else{

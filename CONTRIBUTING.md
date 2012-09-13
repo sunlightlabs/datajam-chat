@@ -28,7 +28,7 @@ to run the respective suites.
 
 The majority of Datajam Chat is a Backbone app and therefore is written in javascript. It includes many models, views and collections, and for performance bundles all of them into one minified file for use in production environments.
 
-In development, Datajam Chat checks a JS flag called `Datajam.DEBUG` to determine whether to use the compiled version of the code, or to pull down all of the dependencies atomically with curl.js, Datajam's chosen dependency manager. This means you'll see changes as you make them to the app itself while developing, but in order for them to reflect in production, you'll have to build the app.
+In development, Datajam Chat checks a JS flag called `Datajam.DEBUG` to determine whether to use the compiled version of the code, or to pull down all of the dependencies atomically with require.js, Datajam's chosen dependency manager. This means you'll see changes as you make them to the app itself while developing, but in order for them to reflect in production, you'll have to build the app.
 
 Because the order of its modules is important, there is a rake task designated for automating builds. After making changes and testing, run:
 

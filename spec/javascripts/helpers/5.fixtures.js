@@ -1,11 +1,12 @@
+/*jshint multistr:true */
 (function($){
-  curl(['chat/libs/moment.min'], function(){
+  require(['//cdnjs.cloudflare.com/ajax/libs/moment.js/1.7.0/moment.min.js'], function(){
 
     Fixtures = {
       message: {
         incoming: (function(){
           var attrs = {};
-          attrs.id = '1';
+          attrs._id = '1';
           attrs.user = null;
           attrs.display_name = 'John Doe';
           attrs.created_at = "2012-01-23T22:42:01Z";
@@ -22,7 +23,7 @@
         })(),
         approved: (function(){
           var attrs = {};
-          attrs.id = '1';
+          attrs._id = '1';
           attrs.user = null;
           attrs.display_name = 'John Doe';
           attrs.created_at = "2012-01-23T22:42:01Z";
@@ -39,7 +40,7 @@
         })(),
         rejected: (function(){
           var attrs = {};
-          attrs.id = '1';
+          attrs._id = '1';
           attrs.user = null;
           attrs.display_name = 'John Doe';
           attrs.created_at = "2012-01-23T22:42:01Z";
@@ -55,7 +56,7 @@
           return attrs;
         })()
       }
-    }
+    };
 
   });
 })(jQuery);

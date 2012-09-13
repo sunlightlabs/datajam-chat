@@ -1,7 +1,8 @@
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
   define([
       'text!chat/templates/message/incoming.html'
-    , 'chat/common'
+    , 'chat/init'
     , 'chat/views/message'
     , 'chat/models/message' ], function(showtmpl){
 
@@ -9,7 +10,7 @@
       , App = Datajam.Chat
       ;
 
-      App.Views.IncomingMessage = App.Views.Message.extend({
+      App.views.IncomingMessage = App.views.Message.extend({
           events: {
               "click .approve": "approve"
             , "click .reject": "reject"
@@ -27,7 +28,7 @@
                     , 'render'
                     , '_url');
 
-            this.model || (this.model = new App.Models.Message());
+            this.model || (this.model = new App.models.Message());
             this.model.bind('change', this.render);
           }
         , approve: function(evt){
@@ -37,7 +38,7 @@
             this.model.set({is_moderated:true, is_public: true}, {silent: true});
             this.model.save()
               .success(_.bind(function(){
-                $('#' + $(this.el).attr('id')).remove();
+                $('#' + this.$el.attr('id')).remove();
               }, this))
               .error(function(){
                 alert('There was an error approving this message.');
@@ -45,10 +46,10 @@
 
           }
         , empty: function(){
-            $(this.el).html('');
+            this.$el.html('');
           }
         , loading: function(){
-            $(this.el).addClass('loading');
+            this.$el.addClass('loading');
           }
         , reject: function(evt){
             evt.preventDefault();
@@ -57,7 +58,7 @@
             this.model.set({is_moderated:true, is_public: false}, {silent: true});
             this.model.save()
               .success(_.bind(function(){
-                $('#' + $(this.el).attr('id')).remove();
+                $('#' + this.$el.attr('id')).remove();
               }, this))
               .error(function(){
                 alert('There was an error rejecting this message.');
@@ -72,10 +73,10 @@
             data.text = this._spaceify(data.text);
             data.text = this._linebreaks(data.text);
             // set up the container element because replacing it is too painful
-            $(this.el).attr('id', 'message_' + data.id)
+            this.$el.attr('id', 'message_' + data._id)
                       .attr('data-timestamp', data.updated_at);
-            if(parent_model && parent_model.get('is_admin')) $(this.el).addClass('sunlight');
-            $(this.el).html(_.template(showtmpl, data));
+            if(parent_model && parent_model.get('is_admin')) this.$el.addClass('sunlight');
+            this.$el.html(_.template(showtmpl, data));
             this.delegateEvents();
             return this;
           }

@@ -1,8 +1,8 @@
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
   define([
       'text!chat/templates/message/show.html'
-    , 'chat/common'
-    , 'chat/tweet'
+    , 'chat/init'
     , 'chat/libs/md5'
     , 'chat/models/message' ], function(showtmpl){
 
@@ -10,7 +10,7 @@
       , App = Datajam.Chat
       ;
 
-      App.Views.Message = Backbone.View.extend({
+      App.views.Message = Backbone.View.extend({
           linkP: /https?:\/\/[\w\-\/#\.%\?\+\~\!\|=&:,|]+[\w\-\/#=&]/g
         , imageP: /\.(jpe?g|gif|png|bmp|tiff?)$/
         , events: {
@@ -33,13 +33,13 @@
                     , '_url'
                     );
 
-            this.model || (this.model = new App.Models.Message());
+            this.model || (this.model = new App.models.Message());
             this.model.bind('change', this.render);
           }
         , 'delete': function(evt){
             evt.preventDefault();
             var parent_model = this.parentModel();
-            if(parent_model && parent_model.get('is_admin') && $(this.el).parents('.datajamChatAdmin').length){
+            if(parent_model && parent_model.get('is_admin') && this.$el.parents('.datajamChatAdmin').length){
               Datajam.debug('deleting');
               if(confirm('Really delete this comment?')){
                 this.model.url = this._url();
@@ -52,7 +52,7 @@
           }
         , edit: function(evt){
             var parent_model = this.parentModel();
-            if(parent_model && parent_model.get('is_admin') && $(this.el).parents('.datajamChatAdmin').length){
+            if(parent_model && parent_model.get('is_admin') && this.$el.parents('.datajamChatAdmin').length){
               evt.preventDefault();
               var text = prompt("Enter the new text", this.model.get('text'));
               Datajam.debug(text);
@@ -82,7 +82,7 @@
           }
         , parentView: function(){
             // gets the chat that this message belongs to
-            return $(this.el).parents('.datajamChatThread').data('chat') || null;
+            return this.$el.parents('.datajamChatThread').data('chat') || null;
           }
         , render: function(){
             var data = this.model.toJSON()
@@ -95,10 +95,10 @@
               .linebreaks()
               .value();
             // set up the container element because replacing it is too painful
-            $(this.el).attr('id', 'message_' + data.id)
+            this.$el.attr('id', 'message_' + data._id)
                       .attr('data-timestamp', data.updated_at);
-            if(parent_model && parent_model.get('is_admin')) $(this.el).addClass('sunlight');
-            $(this.el).html(_.template(showtmpl, data));
+            if(parent_model && parent_model.get('is_admin')) this.$el.addClass('sunlight');
+            this.$el.html(_.template(showtmpl, data));
             this.delegateEvents();
             return this;
           }

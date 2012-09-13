@@ -1,10 +1,11 @@
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
-  define(['chat/common'], function(){
+  define(['chat/init'], function(){
     var $ = jQuery
       , App = Datajam.Chat
       ;
 
-      App.Models.Message = Backbone.Model.extend({
+      App.models.Message = Backbone.Model.extend({
 
       });
 

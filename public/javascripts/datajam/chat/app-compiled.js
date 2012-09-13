@@ -4,55 +4,39 @@
  */
 
 (function($, define, require){
-  if(window.Datajam.DEBUG){
-    $.getScript('/javascripts/datajam/chat/app.js');
-  }else{
-/**
- * DataJam Chat
- * Rails Messaging Engine
- * @author Dan Drinkard <ddrinkard@sunlightfoundation.com>
- */
+
+/*jshint laxcomma:true, expr:true, evil:true */
 (function($, define, require){
 
-  define('chat/common', [
-      'chat/libs/underscore_mixins'
-    , 'chat/libs/jquery.imagesloaded'
-    , 'chat/libs/jquery.scrollTo-1.4.2-min'
-    , 'chat/libs/moment.min'
-    ]
-  , function(){
-      window.Datajam || (Datajam = {});
-      Datajam.Chat = {
-          Models: {}
-        , Views: {}
-        , Collections: {}
-      };
-      Datajam.Chat.csrf = {
-          csrf_param: $('meta[name=csrf-param]').attr('content')
-        , csrf_token: $('meta[name=csrf-token]').attr('content')
-      };
-      Datajam.Chat.constants = {
-          deleted_message_text: '[deleted]'
-      };
-      // ensure we have the real token
-      $('document').bind('csrfloaded', function(){
-        Datajam.Chat.csrf.csrf_token = $('meta[name=csrf-token]').attr('content');
-      });
-    });
+  define('chat/init', [ 'datajam/init'
+         , 'chat/libs/underscore_mixins'
+         , 'chat/libs/jquery.imagesloaded'
+         , 'chat/libs/jquery.scrollTo-1.4.2-min'
+         , 'chat/libs/jquery.form'
+         , '//cdnjs.cloudflare.com/ajax/libs/moment.js/1.7.0/moment.min.js'
+         , '//platform.twitter.com/widgets.js'
+         ], function(){
 
-  define('chat/upload', ['chat/libs/jquery.form'], $.noop);
+    window.Datajam || (Datajam = {});
+    Datajam.Chat = {
+        models: {}
+      , views: {}
+      , collections: {}
+    };
+    Datajam.Chat.constants = {
+      deleted_message_text: '[deleted]'
+    };
+  });
 
-  define('chat/tweet', ['//platform.twitter.com/widgets'], $.noop);
-
-
-
+})(jQuery, define, require);
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
-  define('chat/collections/message', ['chat/common'], function(){
+  define('chat/collections/message', ['chat/init'], function(){
     var $ = jQuery
       , App = Datajam.Chat
       ;
 
-      App.Collections.Message = Backbone.Collection.extend({
+      App.collections.Message = Backbone.Collection.extend({
           add: function(models, options){
             if(_.isArray(models)){
               $.each(models, _.bind(function(idx, model){
@@ -66,10 +50,10 @@
             return this;
           }
         , handle_message: function(model, options){
-            var existing = this.get(model.id);
+            var existing = this.get(model._id);
             if(!existing){
               if(model.text && model.text != App.constants.deleted_message_text){
-                this._add(model, options);
+                Backbone.Collection.prototype.add.call(this, model, options);
               }
             }else if(model.updated_at > existing.get('updated_at')){
               if(model.text && model.text != App.constants.deleted_message_text){
@@ -89,7 +73,7 @@
               this._oldest_seen_page = page;
             }
             if(typeof this._newest_seen_page == 'undefined'){
-              this._newest_seen_page = page
+              this._newest_seen_page = page;
             }
             // if we are on the oldest seen page, bump it back one;
             // if there's a newer page, set it forward.
@@ -111,56 +95,53 @@
             return resp.page.messages;
           }
         , _clean: function(model) {
-            model.id = model._id;
-            delete model._id;
             model.timestamp = moment(model.updated_at, 'YYYY-MM-DDTHH:mm:ss');
             return model;
           }
       });
   });
 })(define, require);
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
-  define('chat/collections/moderator_message', ['chat/common'], function(){
+  define('chat/collections/moderator_message', ['chat/init'], function(){
 
     var $ = jQuery
       , App = Datajam.Chat
       ;
 
-      App.Collections.ModeratorMessage = Backbone.Collection.extend({
+      App.collections.ModeratorMessage = Backbone.Collection.extend({
           comparator: function(obj){
             return Date.parse(obj.get('updated_at'));
           }
         , parse: function(resp, xhr) {
-            _(resp.messages).each(function(message, idx){
-              resp.messages[idx].id = message._id;
-              delete resp.messages[idx]['_id'];
-            });
             return resp.messages;
           }
       });
 
   });
 })(define, require);
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
-  define('chat/models/chat', ['chat/common'], function(){
+  define('chat/models/chat', ['chat/init'], function(){
     var $ = jQuery
       , App = Datajam.Chat
       ;
 
-      App.Models.Chat = Backbone.Model.extend({
+      App.models.Chat = Backbone.Model.extend({
           defaults: {
               'ajaxOptions': {
                   cache: ($.browser.msie) ? false : true
               }
           }
         , initialize: function(){}
+        , isNew: function(){
+          return false;
+        }
         , parse: function(data){
             var model;
-            data.chat.id = data.chat._id;
-            delete data.chat._id;
             model = data.chat;
             try{
-              model._newest_seen_page = '/chats/' + data.chat.id + '/pages/' + data.page._id + '.json';
+              model._newest_seen_page = '/chats/' + data.chat._id + '/pages/' + data.page._id + '.json';
               model._oldest_seen_page = data.page.prev_page || model._newest_seen_page;
             }catch(e){
               model._newest_seen_page = null;
@@ -173,31 +154,34 @@
       });
   });
 })(define, require);
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
-  define('chat/models/message', ['chat/common'], function(){
+  define('chat/models/message', ['chat/init'], function(){
     var $ = jQuery
       , App = Datajam.Chat
       ;
 
-      App.Models.Message = Backbone.Model.extend({
+      App.models.Message = Backbone.Model.extend({
 
       });
 
   });
 })(define, require);
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
-  define('chat/models/moderator_chat', ['chat/common'], function(){
+  define('chat/models/moderator_chat', ['chat/init'], function(){
     var $ = jQuery
       , App = Datajam.Chat
       ;
 
-      App.Models.ModeratorChat = Backbone.Model.extend({
+      App.models.ModeratorChat = Backbone.Model.extend({
           defaults: {}
         , initialize: function(){}
+        , isNew: function(){
+          return false;
+        }
         , parse: function(data){
             var model;
-            data.chat.id = data.chat._id;
-            delete data.chat._id;
             model = data.chat;
             model._submit_url = this.url.replace('.json', '/messages.json');
             return model;
@@ -207,11 +191,11 @@
 
   });
 })(define, require);
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
   define('chat/views/message', [
       'text!chat/templates/message/show.html'
-    , 'chat/common'
-    , 'chat/tweet'
+    , 'chat/init'
     , 'chat/libs/md5'
     , 'chat/models/message' ], function(showtmpl){
 
@@ -219,7 +203,7 @@
       , App = Datajam.Chat
       ;
 
-      App.Views.Message = Backbone.View.extend({
+      App.views.Message = Backbone.View.extend({
           linkP: /https?:\/\/[\w\-\/#\.%\?\+\~\!\|=&:,|]+[\w\-\/#=&]/g
         , imageP: /\.(jpe?g|gif|png|bmp|tiff?)$/
         , events: {
@@ -242,13 +226,13 @@
                     , '_url'
                     );
 
-            this.model || (this.model = new App.Models.Message());
+            this.model || (this.model = new App.models.Message());
             this.model.bind('change', this.render);
           }
         , 'delete': function(evt){
             evt.preventDefault();
             var parent_model = this.parentModel();
-            if(parent_model && parent_model.get('is_admin') && $(this.el).parents('.datajamChatAdmin').length){
+            if(parent_model && parent_model.get('is_admin') && this.$el.parents('.datajamChatAdmin').length){
               Datajam.debug('deleting');
               if(confirm('Really delete this comment?')){
                 this.model.url = this._url();
@@ -261,7 +245,7 @@
           }
         , edit: function(evt){
             var parent_model = this.parentModel();
-            if(parent_model && parent_model.get('is_admin') && $(this.el).parents('.datajamChatAdmin').length){
+            if(parent_model && parent_model.get('is_admin') && this.$el.parents('.datajamChatAdmin').length){
               evt.preventDefault();
               var text = prompt("Enter the new text", this.model.get('text'));
               Datajam.debug(text);
@@ -291,7 +275,7 @@
           }
         , parentView: function(){
             // gets the chat that this message belongs to
-            return $(this.el).parents('.datajamChatThread').data('chat') || null;
+            return this.$el.parents('.datajamChatThread').data('chat') || null;
           }
         , render: function(){
             var data = this.model.toJSON()
@@ -304,10 +288,10 @@
               .linebreaks()
               .value();
             // set up the container element because replacing it is too painful
-            $(this.el).attr('id', 'message_' + data.id)
+            this.$el.attr('id', 'message_' + data._id)
                       .attr('data-timestamp', data.updated_at);
-            if(parent_model && parent_model.get('is_admin')) $(this.el).addClass('sunlight');
-            $(this.el).html(_.template(showtmpl, data));
+            if(parent_model && parent_model.get('is_admin')) this.$el.addClass('sunlight');
+            this.$el.html(_.template(showtmpl, data));
             this.delegateEvents();
             return this;
           }
@@ -341,6 +325,7 @@
 
   });
 })(define, require);
+/*jshint laxcomma:true, expr:true, evil:true */
 (function(define, require){
   define('chat/views/chat', [
       'text!chat/templates/chat/show.html'
@@ -349,8 +334,7 @@
     , 'text!chat/templates/chat/identity.html'
     , 'text!chat/templates/common/flash.html'
     , 'text!chat/templates/message/new.html'
-    , 'chat/common'
-    , 'chat/upload'
+    , 'chat/init'
     , 'chat/models/chat'
     , 'chat/models/message'
     , 'chat/views/message'
@@ -360,7 +344,7 @@
       , App = Datajam.Chat
       ;
 
-      App.Views.Chat = Backbone.View.extend({
+      App.views.Chat = Backbone.View.extend({
           events: {
               "submit form[name=new_message]": "submit"
             , "submit form[name=identify]": "identify"
@@ -405,10 +389,10 @@
                           );
             this.loading();
 
-            this.el.data('chat', this);
-            this.model = new App.Models.Chat();
-            this.model.url = this.el.attr('data-url');
-            this.model.set({interval: this.el.attr('data-interval'), _scroll_anchored: true });
+            this.$el.data('chat', this);
+            this.model = new App.models.Chat();
+            this.model.url = this.$el.attr('data-url');
+            this.model.set({interval: this.$el.attr('data-interval'), _scroll_anchored: true });
             this.model.bind('change', this.render);
             this.model.bind('change', this.handleChange);
 
@@ -429,23 +413,23 @@
 
           }
         , addMessage: function(model){
-            var clipper = this.el.find('.commentsClip')
+            var clipper = this.$el.find('.commentsClip')
               , scroller = clipper.find('.comments')
               , offset = clipper.scrollTop()
               , height = scroller.height()
               , items = scroller.find('li')
-              , message = new App.Views.Message({
+              , message = new App.views.Message({
                      model: model
                 });
 
             // make sure the polling timeout is something sane
-            this.model.set({interval:this.el.attr('data-interval')}, {'silent': true});
+            this.model.set({interval:this.$el.attr('data-interval')}, {'silent': true});
 
             // append in order
             if(items.length && this.collection.indexOf(model) < items.length){
-              items.eq(this.collection.indexOf(model)).before(message.render().el);
+              items.eq(this.collection.indexOf(model)).before(message.render().$el);
             }else{
-              scroller.append(message.render().el);
+              scroller.append(message.render().$el);
             }
 
             // maintain scroll offset if not anchored
@@ -460,14 +444,14 @@
             Datajam.debug('archiving');
             model && this.bootstrap(model);
             model && this.pollForContent();
-            this.el.removeClass('closed').removeClass('open').addClass('archived');
+            this.$el.removeClass('closed').removeClass('open').addClass('archived');
             this.model.set({'is_open': false, 'is_archived': true});
             this.pause();
           }
         , bootstrap: function(model){
             Datajam.debug('bootstrapping');
             if(!this.collection){
-              this.collection = new App.Collections.Message();
+              this.collection = new App.collections.Message();
               this.collection.bind('add', this.addMessage);
               this.collection.bind('remove', this.removeMessage);
               this.collection.ajaxOptions = model.ajaxOptions;
@@ -481,17 +465,17 @@
               this.collection.reset();
             }
             // trigger scroll once just in case we opened to a blank page
-            this.el.children('.commentsClip').trigger('scroll');
+            this.$el.children('.commentsClip').trigger('scroll');
           }
         , close: function(){
             Datajam.debug('closing');
             this.model.set({'is_open': false, 'is_archived': false});
-            this.el.removeClass('archived').removeClass('open').addClass('closed');
+            this.$el.removeClass('archived').removeClass('open').addClass('closed');
             this.pollForOpenness();
           }
         , destroy: function(){
             this.pause();
-            this.el.html('');
+            this.$el.html('');
           }
         , destroyIdentity: function(evt){
             evt.preventDefault();
@@ -506,17 +490,17 @@
             this.model.set({'display_name': null});
           }
         , disableSubmit: function(){
-            this.el.find('form').addClass('disabled');
+            this.$el.find('form').addClass('disabled');
           }
         , enableSubmit: function(){
-            this.el.find('form').removeClass('disabled');
+            this.$el.find('form').removeClass('disabled');
           }
         , error: function(){
-            this.el.html(_.template(errortmpl, {}));
+            this.$el.html(_.template(errortmpl, {}));
           }
         , flash: function(data){
             var msg = $(_.template(flashtmpl, data));
-            this.el.find('form .well').eq(0).append(msg);
+            this.$el.find('form .well').eq(0).append(msg);
             msg.hide()
                .fadeIn()
                .delay(4000)
@@ -542,20 +526,14 @@
             $(evt.target).parents('.datajamChatThread').addClass('active');
           }
         , handleKeyDown: function(evt){
-            switch(evt.keyCode){
-              case 13:
-                if(evt.ctrlKey || evt.metaKey){
-                  // submit with jQuery so analytics can be bolted on from outside
-                  $(evt.target).parents('form').submit();
-                }
-              break;
-              default:
-              break;
+            if(evt.keyCode === 13 && (evt.ctrlKey || evt.metaKey)){
+              // submit with jQuery so analytics can be bolted on from outside
+              $(evt.target).parents('form').submit();
             }
           }
         , handleScroll: function(evt){
             var clipper, scroller;
-            clipper = this.el.find('div.commentsClip');
+            clipper = this.$el.find('div.commentsClip');
             scroller = clipper.find('.comments');
             // anchor if user scrolls to the top of the range
             if(clipper.scrollTop() === 0){
@@ -580,7 +558,7 @@
         , identify: function(evt){
             evt.preventDefault();
             // evt.stopPropagation();
-            var display_name = this.el.find('input[name=display_name]').val();
+            var display_name = this.$el.find('input[name=display_name]').val();
             if(display_name){
               $.ajax({
                   url: '/chats/identity.json'
@@ -602,10 +580,10 @@
             }
           }
         , loading: function(){
-            this.el.addClass('loading');
+            this.$el.addClass('loading');
           }
         , loaded: function(){
-            this.el.removeClass('loading');
+            this.$el.removeClass('loading');
           }
         , open: function(model){
             Datajam.debug('opening');
@@ -614,7 +592,7 @@
                 , 'is_archived': false
             });
             this.bootstrap(model);
-            this.el.removeClass('archived').removeClass('closed').addClass('open');
+            this.$el.removeClass('archived').removeClass('closed').addClass('open');
             this.resume();
           }
         , pause: function(){
@@ -632,8 +610,8 @@
             }
             this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')));
             // // trigger scroll if we opened to a blank page
-            // if(!this.el.children('ul.comments > li').length){
-            //   this.el.children('.commentsClip').trigger('scroll');
+            // if(!this.$el.children('ul.comments > li').length){
+            //   this.$el.children('.commentsClip').trigger('scroll');
             // }
             if(!this.model.get('paused')){
               this._timeout = setTimeout(this.pollForContent, this.model.get('interval'));
@@ -675,57 +653,57 @@
             }
           }
         , removeMessage: function(model){
-            var scroller = this.el.find('.comments')
-              , item = scroller.find('li#message_' + model.get('id'));
+            var scroller = this.$el.find('.comments')
+              , item = scroller.find('li#message_' + model.id);
             item && item.remove();
           }
         , render: function(){
             Datajam.debug('rendering');
-            var data = _(this.model.toJSON()).extend(App.csrf)
+            var data = _(this.model.toJSON()).extend(Datajam.csrf)
               , html = _.template(showtmpl)
               , closedmessage = _.template(closedtmpl)
               , identityform = _.template(identitytmpl)
               , submitform = _.template(newmessagetmpl);
 
             // if the model doesn't have an id, skip for now
-            if(!data.id) return this;
+            if(!data._id) return this;
 
             // if the model is closed, render the closed message
             if(!data.is_open && !data.is_archived){
-              this.el.html(closedmessage(data));
+              this.$el.html(closedmessage(data));
               return this;
             }
 
             // only redraw the thread if we aren't identified...
-            if(! this.el.children().not('.closed').length){
-              this.el.html('');
+            if(! this.$el.children().not('.closed').length){
+              this.$el.html('');
 
-              this.el.append(html(data));
+              this.$el.append(html(data));
               // use jquery to synthesize scroll events, triggering an event
               // on an element via backbone builtin handler requires the event to bubble
-              this.el.find('.commentsClip').scroll(_.bind(function(){
-                this.el.trigger('chatWindow:scroll');
+              this.$el.find('.commentsClip').scroll(_.bind(function(){
+                this.$el.trigger('chatWindow:scroll');
               }, this));
             }
 
             // draw the correct form, if needed
-            this.el.find('form, .archived').remove();
+            this.$el.find('form, .archived').remove();
             if(data.is_open){
               if(this.model.get('display_name')){
-                this.el.find('.tip').after(submitform(data));
+                this.$el.find('.tip').after(submitform(data));
               }else{
-                this.el.find('.tip').after(identityform(data));
+                this.$el.find('.tip').after(identityform(data));
               }
             }else{
-              this.el.find('.tip').remove();
+              this.$el.find('.tip').remove();
             }
             if(data.is_archived){
-              this.el.prepend('<p class="archived">This is an archived event, comments are no longer being accepted.</p>');
+              this.$el.prepend('<p class="archived">This is an archived event, comments are no longer being accepted.</p>');
             }
 
             // focus if focus is sticky
             if(this.model.get('_keep_focus')){
-              this.el.find('textarea, input[type=text]').focus();
+              this.$el.find('textarea, input[type=text]').focus();
             }
             this.delegateEvents();
             return this;
@@ -738,20 +716,20 @@
         , submit: function(evt){
             evt.preventDefault();
             // evt.stopPropagation();
-            this.el.find('form textarea').eq(0).focus();
-            if(this.el.find('form').eq(0).hasClass('disabled')){
+            this.$el.find('form textarea').eq(0).focus();
+            if(this.$el.find('form').eq(0).hasClass('disabled')){
               return;
             }
             var text;
-            text = this.el.find('textarea').val();
+            text = this.$el.find('textarea').val();
             if(text){
               this.disableSubmit();
-              message = new App.Models.Message({text: text});
+              message = new App.models.Message({text: text});
               message.url = this.model.get('_submit_url');
               message.save(null, {
                   dataType: 'json'
                 , success: _.bind(function(data){
-                    this.el.find('textarea').val('');
+                    this.$el.find('textarea').val('');
                     if(!data.is_public){
                       this.flash({type: 'info', message: 'Your message is awaiting moderation.'});
                     }else{
@@ -799,17 +777,18 @@
       });
   });
 })(define, require);
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
   define('chat/views/chat_controls', [
       'text!chat/templates/chat/controls.html'
-    , 'chat/common'
+    , 'chat/init'
     , 'chat/models/chat' ], function(controlstmpl){
 
     var $ = jQuery
       , App = Datajam.Chat
       ;
 
-      App.Views.ChatControls = Backbone.View.extend({
+      App.views.ChatControls = Backbone.View.extend({
           events: {
               "change select": "submit"
           }
@@ -817,14 +796,14 @@
             _.bindAll(this, 'submit'
                           , 'render'
                           );
-            this.el.data('chat-controls', this);
+            this.$el.data('chat-controls', this);
             this.statuses = [
                 {is_open: false, is_archived: false}
               , {is_open: true, is_archived: false}
               , {is_open: false, is_archived: true}
             ];
             try{
-              var modal = this.el.parents('.modal')
+              var modal = this.$el.parents('.modal')
                 , areaId = modal.attr('id').replace('modal-', '');
               this.model = $('#chat_area_' + areaId).data('chat').model;
               return this.render();
@@ -834,7 +813,7 @@
             }
           }
         , render: function(){
-            this.el.html(controlstmpl);
+            this.$el.html(controlstmpl);
             var status = {
                     is_open: this.model.get('is_open')
                   , is_archived: this.model.get('is_archived')
@@ -845,21 +824,24 @@
                 val = idx + 1;
               }
             }, this);
-            val && this.el.find('select').val(val);
+            val && this.$el.find('select').val(val);
             return this;
           }
         , submit: function(){
-            var select = this.el.find('select')
+            console.log(this.model.isNew());
+            var select = this.$el.find('select')
               , idx = (select.length) ? (select.first().val()) : null;
-            idx && this.model.save(this.statuses[idx-1], {data: this.statuses[idx-1]});
+            idx && this.model.save(this.statuses[idx-1]);
+            return this;
           }
       });
   });
 })(define, require);
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
   define('chat/views/incoming_message', [
       'text!chat/templates/message/incoming.html'
-    , 'chat/common'
+    , 'chat/init'
     , 'chat/views/message'
     , 'chat/models/message' ], function(showtmpl){
 
@@ -867,7 +849,7 @@
       , App = Datajam.Chat
       ;
 
-      App.Views.IncomingMessage = App.Views.Message.extend({
+      App.views.IncomingMessage = App.views.Message.extend({
           events: {
               "click .approve": "approve"
             , "click .reject": "reject"
@@ -885,7 +867,7 @@
                     , 'render'
                     , '_url');
 
-            this.model || (this.model = new App.Models.Message());
+            this.model || (this.model = new App.models.Message());
             this.model.bind('change', this.render);
           }
         , approve: function(evt){
@@ -895,7 +877,7 @@
             this.model.set({is_moderated:true, is_public: true}, {silent: true});
             this.model.save()
               .success(_.bind(function(){
-                $('#' + $(this.el).attr('id')).remove();
+                $('#' + this.$el.attr('id')).remove();
               }, this))
               .error(function(){
                 alert('There was an error approving this message.');
@@ -903,10 +885,10 @@
 
           }
         , empty: function(){
-            $(this.el).html('');
+            this.$el.html('');
           }
         , loading: function(){
-            $(this.el).addClass('loading');
+            this.$el.addClass('loading');
           }
         , reject: function(evt){
             evt.preventDefault();
@@ -915,7 +897,7 @@
             this.model.set({is_moderated:true, is_public: false}, {silent: true});
             this.model.save()
               .success(_.bind(function(){
-                $('#' + $(this.el).attr('id')).remove();
+                $('#' + this.$el.attr('id')).remove();
               }, this))
               .error(function(){
                 alert('There was an error rejecting this message.');
@@ -930,10 +912,10 @@
             data.text = this._spaceify(data.text);
             data.text = this._linebreaks(data.text);
             // set up the container element because replacing it is too painful
-            $(this.el).attr('id', 'message_' + data.id)
+            this.$el.attr('id', 'message_' + data._id)
                       .attr('data-timestamp', data.updated_at);
-            if(parent_model && parent_model.get('is_admin')) $(this.el).addClass('sunlight');
-            $(this.el).html(_.template(showtmpl, data));
+            if(parent_model && parent_model.get('is_admin')) this.$el.addClass('sunlight');
+            this.$el.html(_.template(showtmpl, data));
             this.delegateEvents();
             return this;
           }
@@ -941,10 +923,11 @@
 
   });
 })(define, require);
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
   define('chat/views/rejected_message', [
       'text!chat/templates/message/rejected.html'
-    , 'chat/common'
+    , 'chat/init'
     , 'chat/views/message'
     , 'chat/models/message' ], function(showtmpl){
 
@@ -952,7 +935,7 @@
       , App = Datajam.Chat
       ;
 
-      App.Views.RejectedMessage = App.Views.Message.extend({
+      App.views.RejectedMessage = App.views.Message.extend({
           className: 'message rejected'
         , events: {
               "click .approve": "approve"
@@ -971,7 +954,7 @@
                     , 'render'
                     , '_url');
 
-            this.model || (this.model = new App.Models.Message());
+            this.model || (this.model = new App.models.Message());
             this.model.bind('change', this.render);
           }
         , approve: function(evt){
@@ -981,7 +964,7 @@
             this.model.set({is_moderated:true, is_public: true}, {silent: true});
             this.model.save()
               .success(_.bind(function(){
-                $('#' + $(this.el).attr('id')).remove();
+                $('#' + this.$el.attr('id')).remove();
               }, this))
               .error(function(){
                 alert('There was an error approving this message.');
@@ -1020,10 +1003,10 @@
             }
           }
         , empty: function(){
-            $(this.el).html('');
+            this.$el.html('');
           }
         , loading: function(){
-            $(this.el).addClass('loading');
+            this.$el.addClass('loading');
           }
         , render: function(){
             var data = this.model.toJSON()
@@ -1034,10 +1017,10 @@
             data.text = this._spaceify(data.text);
             data.text = this._linebreaks(data.text);
             // set up the container element because replacing it is too painful
-            $(this.el).attr('id', 'message_' + data.id)
+            this.$el.attr('id', 'message_' + data._id)
                       .attr('data-timestamp', data.updated_at);
-            if(parent_model && parent_model.get('is_admin')) $(this.el).addClass('sunlight');
-            $(this.el).html(_.template(showtmpl, data));
+            if(parent_model && parent_model.get('is_admin')) this.$el.addClass('sunlight');
+            this.$el.html(_.template(showtmpl, data));
             this.delegateEvents();
             return this;
           }
@@ -1045,13 +1028,14 @@
 
   });
 })(define, require);
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
   define('chat/views/moderator_chat', [
       'text!chat/templates/chat/show.html'
     , 'text!chat/templates/chat/closed.html'
     , 'text!chat/templates/chat/error.html'
     , 'text!chat/templates/common/flash.html'
-    , 'chat/common'
+    , 'chat/init'
     , 'chat/models/moderator_chat'
     , 'chat/models/message'
     , 'chat/views/incoming_message'
@@ -1060,13 +1044,13 @@
 
     var $ = jQuery
       , App = Datajam.Chat
-      , message_klasses = {
-            'incoming': App.Views.IncomingMessage
-          , 'rejected': App.Views.RejectedMessage
+      , message_classes = {
+            'incoming': App.views.IncomingMessage
+          , 'rejected': App.views.RejectedMessage
         }
       ;
 
-      App.Views.ModeratorChat = Backbone.View.extend({
+      App.views.ModeratorChat = Backbone.View.extend({
           events: {
 
           }
@@ -1086,17 +1070,17 @@
 
             this.loading();
 
-            this.el.data('chat', this);
+            this.$el.data('chat', this);
 
-            this.model = new App.Models.ModeratorChat();
-            this.model.url = this.el.attr('data-url');
-            this.model.set({interval: this.el.attr('data-interval')
+            this.model = new App.models.ModeratorChat();
+            this.model.url = this.$el.attr('data-url');
+            this.model.set({interval: this.$el.attr('data-interval')
                           , _scroll_anchored: true
                           });
             this.model.bind('change', this.render);
 
-            this.collection  = new App.Collections.ModeratorMessage();
-            this.collection.url = this.model.url.replace('.json', '/messages.json') + '?status=' + this.el.attr('data-status');
+            this.collection  = new App.collections.ModeratorMessage();
+            this.collection.url = this.model.url.replace('.json', '/messages.json') + '?status=' + this.$el.attr('data-status');
             this.collection.view = this;
             this.collection.bind('reset', this.renderCollection);
 
@@ -1104,7 +1088,7 @@
             this.views = {};
 
             // reverse sort for rejected queue
-            if(this.el.attr('data-status') == 'rejected'){
+            if(this.$el.attr('data-status') == 'rejected'){
               _.extend(this.collection, {
                 comparator: function(obj){
                   return Date.parse(obj.get('updated_at')) * -1; // reverse chron
@@ -1115,7 +1099,7 @@
             this.model.fetch()
               .success(_.bind(function(model){
                 this.collection.ajaxOptions = _.extend({}, model.ajaxOptions, {});
-                this.model.set({name: _(this.el.attr('data-status')).capitalize()});
+                this.model.set({name: _(this.$el.attr('data-status')).capitalize()});
                 this.poll();
               }, this))
               .error(this.error)
@@ -1124,16 +1108,16 @@
           }
         , destroy: function(){
             this.pause(true);
-            this.el.html('');
+            this.$el.html('');
           }
         , error: function(){
-            this.el.html(_.template(errortmpl, {}));
+            this.$el.html(_.template(errortmpl, {}));
           }
         , loading: function(){
-            this.el.addClass('loading');
+            this.$el.addClass('loading');
           }
         , loaded: function(){
-            this.el.removeClass('loading');
+            this.$el.removeClass('loading');
           }
         , pause: function(){
             this.model.set({'paused': true}, {'silent': true});
@@ -1150,21 +1134,23 @@
           }
         , render: function(){
             var data = this.model.toJSON()
-              , html = _.template(showtmpl);
+              , tmpl = _.template(showtmpl);
 
-            $(this.el).html(html(data));
-            $(this.el).prepend('<h3>' + this.model.get('name') + '</h3>');
+            this.$el.html(tmpl(data));
+            this.$el.find('h3').eq(0)
+                    .html(this.model.get('name'));
+            this.$el.find('p.tip').eq(0).remove();
             return this;
           }
         , renderCollection: function(){
-            var scroller = this.el.find('.commentsClip')
+            var scroller = this.$el.find('.commentsClip')
               , content = scroller.find('.comments');
 
             content.empty();
             this.collection.each(_.bind(function(model, idx){
               var message = this.views[model.id];
               if(!message){
-                message = new message_klasses[this.el.attr('data-status')]({ model: model });
+                message = new message_classes[this.$el.attr('data-status')]({ model: model });
                 this.views[model.id] = message;
               }
               content.append(message.render().el);
@@ -1179,12 +1165,12 @@
             if(!this.collection.url.match('incoming')) return;
 
             var parentDoc = $(window.parent.document)
-              , modal = parentDoc.find('.chat-modal[data-chat-id=' + this.model.get('id') + ']');
+              , modal = parentDoc.find('.chat-modal[data-chat-id=' + this.model.id + ']');
             if(!modal.length) return;
 
             var navLink = parentDoc.find('.topbar-nav a[data-controls-modal=' + modal.attr('id') + ']').eq(0)
               , badge = navLink.find('.badge')
-              , count = $(this.el).find('li').length;
+              , count = this.$el.find('li').length;
             if(!badge.length){
               badge = navLink.append(' <span class="badge badge-warning"></span>').find('.badge');
             }
@@ -1198,37 +1184,30 @@
       });
   });
 })(define, require);
+/*jshint laxcomma:true, expr:true, evil:true */
+/**
+ * DataJam Chat
+ * Rails Messaging Engine
+ * @author Dan Drinkard <ddrinkard@sunlightfoundation.com>
+ */
+(function($, define, require){
 
-
-  require(['chat/common', 'chat/views/chat'], function(){
-
-    // Emulate HTTP via _method param
-    Backbone.emulateHTTP = true;
-    Backbone.emulateJSON = true;
+  // Bootstrap the app
+  require(['chat/init', 'chat/views/chat'], function(){
 
     $(function(){
       var App = Datajam.Chat;
       $('.datajamChatThread').not('.moderator').each(function(){
-        new App.Views.Chat({ el: $(this) });
+        new App.views.Chat({ el: $(this) });
       });
       $('.datajamChatThread.moderator').each(function(){
         require(['chat/views/moderator_chat'], _.bind(function(){
-          new App.Views.ModeratorChat({ el: $(this) });
+          new App.views.ModeratorChat({ el: $(this) });
         }, this));
-      });
-      $('body').delegate('a[data-controls-modal]', 'click.chat', function(){
-        $('.chat-modal').find('.modal-chat-controls').each(function(){
-          require(['chat/views/chat_controls'], _.bind(function(){
-            new App.Views.ChatControls({ el: $(this) });
-          }, this));
-          $('body').undelegate('a[data-controls-modal]', 'click.chat');
-        });
       });
     });
 
   });
 
-
-})(jQuery, curl.define, curl);
-  }
-})(jQuery, curl.define, curl);
+})(jQuery, define, require);
+})(jQuery, define, require);

@@ -22,7 +22,7 @@
       matcherName = "toHaveBeen" + sinonName.charAt(0).toUpperCase() + sinonName.slice(1);
 
     spyMatcherHash[matcherName] = getMatcherFunction(sinonName);
-  };
+  }
 
   for (var j in unusualMatchers) {
     spyMatcherHash[unusualMatchers[j]] = getMatcherFunction(j);

@@ -1,6 +1,10 @@
 class ChatArea < ContentArea
   include RendersTemplates
 
+  def self.modal_class
+    "Datajam.Chat.views.Modal"
+  end
+
   belongs_to :chat, class_name: "ChatThread", inverse_of: :area
 
   after_initialize :ensure_chat

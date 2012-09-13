@@ -1,5 +1,5 @@
 (function($){
-  curl(['chat/views/moderator_chat'], function(){
+  require(['chat/views/moderator_chat'], function(){
     describe('ModeratorChat view', function(){
       var _this = this
         , app = Datajam.Chat;
@@ -10,7 +10,7 @@
         _this.server = sinon.fakeServer.create();
         _this.server.respondWith('GET', _this.url, TestResponses.chat.open);
         _this.server.respondWith('GET', _this.messagesUrl + '?status=incoming', TestResponses.chat.moderator);
-        _this.view = new app.Views.ModeratorChat({ el: $('<div class="moderator" data-url="' + _this.url + '" data-interval="3000" data-status="incoming"></div>') });
+        _this.view = new app.views.ModeratorChat({ el: $('<div class="moderator" data-url="' + _this.url + '" data-interval="3000" data-status="incoming"></div>') });
       });
 
       afterEach(function(){
@@ -28,7 +28,7 @@
 
       it('adds messages to the dom when the collection\'s add event fires', function(){
         _this.server.respond();
-        expect(_this.view.el.find('.comments li').length).toEqual(2);
+        expect(_this.view.$el.find('.comments li').length).toEqual(2);
       });
 
       it('displays messages of the correct status', function(){
@@ -38,8 +38,8 @@
       it('appends messages to the dom in the right order', function(){
         _this.server.respond();
         // incoming is oldest first
-        expect(_this.view.el.find('.comments li').first().attr('id')).toEqual('message_4f1de2399e0d520008000001');
-        expect(_this.view.el.find('.comments li').last().attr('id')).toEqual('message_4f33e37c7c094f0007000001');
+        expect(_this.view.$el.find('.comments li').first().attr('id')).toEqual('message_4f1de2399e0d520008000001');
+        expect(_this.view.$el.find('.comments li').last().attr('id')).toEqual('message_4f33e37c7c094f0007000001');
       });
 
     });

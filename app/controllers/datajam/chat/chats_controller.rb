@@ -24,9 +24,10 @@ module Datajam
 
       def update
         @chat = ChatThread.find(params[:id])
-        @chat.update_attributes(params[:model])
+        attrs_to_set = JSON.parse(params[:model]).keep_if {|k, v| @chat.fields.keys.include? k }
+        @chat.update_attributes(attrs_to_set)
         @page = @chat.current_page
-        @page.save
+        @page.save rescue nil
 
         respond_to do |format|
           format.json { render :json => locals, :callback => params[:callback] }

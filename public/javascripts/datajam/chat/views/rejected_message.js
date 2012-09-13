@@ -1,7 +1,8 @@
+/*jshint laxcomma:true, evil:true, expr:true */
 (function(define, require){
   define([
       'text!chat/templates/message/rejected.html'
-    , 'chat/common'
+    , 'chat/init'
     , 'chat/views/message'
     , 'chat/models/message' ], function(showtmpl){
 
@@ -9,7 +10,7 @@
       , App = Datajam.Chat
       ;
 
-      App.Views.RejectedMessage = App.Views.Message.extend({
+      App.views.RejectedMessage = App.views.Message.extend({
           className: 'message rejected'
         , events: {
               "click .approve": "approve"
@@ -28,7 +29,7 @@
                     , 'render'
                     , '_url');
 
-            this.model || (this.model = new App.Models.Message());
+            this.model || (this.model = new App.models.Message());
             this.model.bind('change', this.render);
           }
         , approve: function(evt){
@@ -38,7 +39,7 @@
             this.model.set({is_moderated:true, is_public: true}, {silent: true});
             this.model.save()
               .success(_.bind(function(){
-                $('#' + $(this.el).attr('id')).remove();
+                $('#' + this.$el.attr('id')).remove();
               }, this))
               .error(function(){
                 alert('There was an error approving this message.');
@@ -77,10 +78,10 @@
             }
           }
         , empty: function(){
-            $(this.el).html('');
+            this.$el.html('');
           }
         , loading: function(){
-            $(this.el).addClass('loading');
+            this.$el.addClass('loading');
           }
         , render: function(){
             var data = this.model.toJSON()
@@ -91,10 +92,10 @@
             data.text = this._spaceify(data.text);
             data.text = this._linebreaks(data.text);
             // set up the container element because replacing it is too painful
-            $(this.el).attr('id', 'message_' + data.id)
+            this.$el.attr('id', 'message_' + data._id)
                       .attr('data-timestamp', data.updated_at);
-            if(parent_model && parent_model.get('is_admin')) $(this.el).addClass('sunlight');
-            $(this.el).html(_.template(showtmpl, data));
+            if(parent_model && parent_model.get('is_admin')) this.$el.addClass('sunlight');
+            this.$el.html(_.template(showtmpl, data));
             this.delegateEvents();
             return this;
           }

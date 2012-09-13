@@ -1,5 +1,5 @@
 (function($){
-  curl(['chat/collections/moderator_message'], function(){
+  require(['chat/collections/moderator_message'], function(){
     describe('ModeratorMessage collection', function(){
       var _this = this
         , app = Datajam.Chat;
@@ -8,9 +8,9 @@
         _this.server = sinon.fakeServer.create();
         _this.url = '/chats/1/pages/2.json?status=incoming';
         _this.server.respondWith('GET', _this.url, TestResponses.chat.moderator);
-        _this.collection = new App.Collections.ModeratorMessage();
+        _this.collection = new app.collections.ModeratorMessage();
         _this.collection.url = _this.url;
-        _this.collection.model = app.Models.Message;
+        _this.collection.model = app.models.Message;
         _this.collection.fetch({add: true});
         _this.server.respond();
       });

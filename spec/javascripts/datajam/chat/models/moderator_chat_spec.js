@@ -1,13 +1,12 @@
 (function($){
-  curl(['chat/models/moderator_chat'], function(){
-    var _this = this
-      , app = Datajam.Chat;
-
+  require(['chat/models/moderator_chat'], function(){
     describe('ModeratorChat model', function(){
+      var _this = this
+        , app = Datajam.Chat;
 
       beforeEach(function(){
         _this.server = sinon.fakeServer.create();
-        _this.chat = new App.Models.ModeratorChat();
+        _this.chat = new app.models.ModeratorChat();
       });
 
       afterEach(function(){

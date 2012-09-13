@@ -2,21 +2,14 @@
 <html>
 <head>
   <title>Datajam</title>
-  <%= javascript_include_tag :head %>
-  <%= javascript_include_tag :body %>
-  <script type="text/javascript">
-    require.paths.chat || (require.paths.chat = '/static/javascripts/datajam/chat');
-  </script>
-  <%= render :partial => 'shared/script_id', :locals => { event: nil } %>
+  <%= render :partial => 'shared/script_id', :locals => { event: Hashie::Mash.new(id: nil) } %>
+  <%= render :partial => 'shared/head_assets' %>
   <%= csrf_meta_tag %>
-
   <%= yield :head %>
-
 </head>
 <body class="bare">
-
   <%= yield %>
+  <%= javascript_include_tag :body %>
   <%= yield :body %>
-
 </body>
 </html>

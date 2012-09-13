@@ -1,11 +1,11 @@
 <form action="#" name="new_message" class="new-message clearfix">
     <div class="inputArea well clearfix">
         <p class="clearfix">
-            <label for="<%= id %>_message" class="clearfix">Posting as <strong><%= display_name %></strong> (<a href="#" class="destroyIdentity">change</a>)</label>
+            <label for="<%= _id %>_message" class="clearfix">Posting as <strong><%= display_name %></strong> (<a href="#" class="destroyIdentity">change</a>)</label>
             <% if(typeof is_admin != 'undefined' && is_admin){ %>
             <a class="attachFile" href="#chat_asset">Attach a file</a>
             <% } %>
-            <textarea name="" id="<%= id %>_message" cols="30" rows="10" maxlength="1000"></textarea>
+            <textarea name="" id="<%= _id %>_message" cols="30" rows="10" maxlength="1000"></textarea>
             <% if(typeof csrf_token != 'undefined'){ %>
             <input type="hidden" name="<%= csrf_param %>" value="<%= csrf_token %>" />
             <% } %>

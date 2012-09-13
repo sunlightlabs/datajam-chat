@@ -1,20 +1,20 @@
 (function($){
-  curl(['chat/collections/message'], function(){
+  require(['chat/collections/message'], function(){
     describe('Message collection', function(){
       var _this = this
         , app = _.extend({}, Datajam.Chat);
 
       beforeEach(function(){
         _this.server = sinon.fakeServer.create();
-        _this.collection = new App.Collections.Message();
+        _this.collection = new app.collections.Message();
         _this.collection.view = {
             archive: function(){}
           , close: function(){}
           , model: {
               toJSON: function(){ return 'null'; }
             }
-        }
-        _this.collection.model = app.Models.Message;
+        };
+        _this.collection.model = app.models.Message;
       });
 
       afterEach(function(){
@@ -36,7 +36,8 @@
         });
 
         it("sets models' timestamps correctly", function(){
-          expect(_this.collection.get('4f1b73fa340942000100001c').get('timestamp').toDate()).toEqual(new Date(2012,00,22,02,28,06))
+          expect(_this.collection.get('4f1b73fa340942000100001c').get('timestamp').toDate() -
+                 new Date(2012,0,22,2,28,6)).toEqual(0);
         });
 
         it("sorts messages by timestamp", function(){
@@ -100,7 +101,7 @@
 
           afterEach(function(){
             _this.collection.view.close.restore();
-          })
+          });
 
           it("sets the chat to closed when the polling results indicate a closed status", function(){
             expect(_this.collection.view.close).toHaveBeenCalled();
