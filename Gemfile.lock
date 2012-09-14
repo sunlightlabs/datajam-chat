@@ -19,6 +19,7 @@ PATH
       bitly (~> 0.6)
       facets (~> 2.9)
       formatize (~> 1.0)
+      hashie
 
 GEM
   remote: http://rubygems.org/
@@ -125,6 +126,7 @@ GEM
       thor (>= 0.14.6)
     guard-rspec (0.7.3)
       guard (>= 0.10.0)
+    hashie (1.2.0)
     hbs (0.1.2)
       therubyracer (~> 0.9.4)
     highline (1.6.13)
