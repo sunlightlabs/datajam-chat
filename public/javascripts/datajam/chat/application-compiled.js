@@ -1186,7 +1186,7 @@
 })(define, require);
 /*jshint laxcomma:true, expr:true, evil:true */
 /**
- * DataJam Chat
+ * Datajam Chat
  * Rails Messaging Engine
  * @author Dan Drinkard <ddrinkard@sunlightfoundation.com>
  */
