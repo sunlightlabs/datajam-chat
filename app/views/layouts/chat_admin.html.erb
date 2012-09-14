@@ -2,7 +2,7 @@
 <html>
 <head>
   <title>Datajam</title>
-  <%= render :partial => 'shared/script_id', :locals => { event: Hashie::Mash.new(id: nil) } %>
+  <%= render :partial => 'shared/script_id', :locals => { event: ::Hashie::Mash.new(id: nil) } %>
   <%= render :partial => 'shared/head_assets' %>
   <%= csrf_meta_tag %>
   <%= yield :head %>

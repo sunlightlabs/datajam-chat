@@ -1,9 +1,7 @@
 $:.push File.expand_path("../lib", __FILE__)
 
-# Maintain your gem's version:
 require "datajam/chat/version"
 
-# Describe your gem and declare its dependencies:
 Gem::Specification.new do |gem|
   gem.name          = "datajam-chat"
   gem.version       = Datajam::Chat::VERSION

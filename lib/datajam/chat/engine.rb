@@ -1,6 +1,5 @@
 require 'rails/engine'
 require 'bitly'
-require 'hashie'
 
 module Datajam
   module Chat

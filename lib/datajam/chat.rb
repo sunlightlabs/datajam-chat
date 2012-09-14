@@ -1,6 +1,7 @@
 require "active_support/dependencies"
 require "datajam/chat/version"
 require "datajam/chat/engine"
+require "hashie/mash"
 
 module Datajam
   module Chat
