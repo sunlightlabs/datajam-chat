@@ -20,6 +20,7 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'facets', '~> 2.9'
   gem.add_dependency 'bitly', '~> 0.6'
   gem.add_dependency 'formatize', '~> 1.0'
+  gem.add_dependency 'hashie'
   gem.add_development_dependency 'vcr', '~> 1.6.0'
   gem.add_development_dependency 'fakeweb', '~> 1.3.0'
   gem.add_development_dependency 'debugger'
