@@ -38,6 +38,7 @@ div#content{width:100%;}
 .liveFilter .last, .discussionFilter .last { margin-right: 0; }
 
 .datajamChatThread .commentsClip{ position:relative; overflow-x:hidden; word-wrap:break-word; }
+.datajamChatThread.archived div.commentsClip{ border-top: 1px solid #eee; }
 .datajamChatThread.loading .comments:before{ content:'loading...';display:block;text-align:center;color:#444;padding:1em;background:#d9d9d9 url('/static/images/datajam/chat/loading.gif') no-repeat 38% 50%;border-bottom:1px solid #d0d0d0;text-shadow:0 1px 1px #fff;position:absolute;bottom:0; }
 .datajamChatThread p.archived,
 .datajamChatThread form{ position:relative;padding:1.5em 0 0.5em;margin-bottom:0; }
