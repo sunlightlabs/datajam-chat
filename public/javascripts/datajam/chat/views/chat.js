@@ -285,7 +285,6 @@
             this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')));
 
             // before requeuing, make sure we have rendered something by now
-            Datajam.debug(this.$el);
             if(this.$el.children().length === 0){
               Datajam.debug('something went wrong. rescuing...');
               this.render().collection.reset();
@@ -346,7 +345,6 @@
             // if the model doesn't have an id, skip for now
             if(!data._id){
               Datajam.debug('No chat id found, returning from render...');
-              Datajam.debug(data);
               return this;
             }
 
