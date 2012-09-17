@@ -618,6 +618,7 @@
             }
           }
         , pollForOpenness: function(){
+            Datajam.debug('polling for openness');
             if(this._timeout){
               clearTimeout(this._timeout);
               this._timeout = null;
