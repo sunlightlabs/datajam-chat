@@ -610,10 +610,12 @@
               this._request = null;
             }
             this._request = this.collection.fetch($.extend({'add':true}, this.model.get('ajaxOptions')));
-            // // trigger scroll if we opened to a blank page
-            // if(!this.$el.children('ul.comments > li').length){
-            //   this.$el.children('.commentsClip').trigger('scroll');
-            // }
+
+            // before requeuing, make sure we have rendered something by now
+            if(this.$el.children.length === 0){
+              Datajam.debug('something went wrong. rescuing...');
+              this.render().collection.reset();
+            }
             if(!this.model.get('paused')){
               this._timeout = setTimeout(this.pollForContent, this.model.get('interval'));
             }
