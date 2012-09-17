@@ -273,6 +273,7 @@
             this.model.set({'paused': true}, {'silent': true});
           }
         , pollForContent: function(){
+            Datajam.debug('polling...');
             if(this._timeout){
               clearTimeout(this._timeout);
               this._timeout = null;
@@ -340,7 +341,11 @@
               , submitform = _.template(newmessagetmpl);
 
             // if the model doesn't have an id, skip for now
-            if(!data._id) return this;
+            if(!data._id){
+              Datajam.debug('No chat id found, returning from render...');
+              Datajam.debug(data);
+              return this;
+            }
 
             // if the model is closed, render the closed message
             if(!data.is_open && !data.is_archived){
