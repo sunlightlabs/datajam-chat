@@ -78,7 +78,7 @@
                 this.model.set({
                     'display_name': data.display_name
                   , 'is_admin': data.is_admin
-                }, {silent: true});
+                });
               }
             }, this));
 
