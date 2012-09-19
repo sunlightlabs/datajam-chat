@@ -104,3 +104,4 @@ body.bare{ margin:0;padding:0;height:100%; overflow:hidden; }
 .datajamChatAdmin .liveComment{ width:auto; }
 .datajamChatAdmin .discussionComments li a.picto{ color:#acacac;font-family:'ModernPictogramsNormal';font-size:22px;display:inline;text-decoration:none; }
 .datajamChatAdmin .discussionComments li a.picto:hover{ color:#0c9ac7 }
+.datajamChatAdmin .discussionComments [contenteditable="true"]{ background:#fff; border:1px solid #ddd; border-radius: 5px; padding:3px; }

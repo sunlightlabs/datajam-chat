@@ -245,20 +245,33 @@
           }
         , edit: function(evt){
             var parent_model = this.parentModel();
+            Datajam.debug(parent_model);
             if(parent_model && parent_model.get('is_admin') && this.$el.parents('.datajamChatAdmin').length){
               evt.preventDefault();
-              var text = prompt("Enter the new text", this.model.get('text'));
-              Datajam.debug(text);
-              if(text && text != this.model.get('text')){
-                this.model.url = this._url();
-                this.model.set({text: text});
-                this.model.save().success(_.bind(function(){
-                  // delete if deleted
-                  if(text == App.constants.deleted_message_text){
-                    parent_model.collection.remove(this.model);
+              $(evt.target).parent('.commentDetails').nextAll('.liveComment').find('p').eq(0)
+                .attr('contenteditable', true).blur(_.bind(function(evt){
+                  var elem = $(evt.target),
+                      html = elem.html();
+                  // convert divs to newlines
+                  html = html.replace(/<(?:div|br) ?\/?>/g, "\r\n")
+                             .replace("</div>", "");
+                  // strip other html
+                  text = $('<div>' + html + '</div>').text();
+                  elem.attr('contenteditable', false);
+                  Datajam.debug(text);
+                  if(text && text != this.model.get('text')){
+                    this.model.url = this._url();
+                    this.model.set({text: text});
+                    this.model.save().success(_.bind(function(){
+                      // unbind the blur event
+                      elem.unbind('blur');
+                      // delete if deleted
+                      if(text == App.constants.deleted_message_text){
+                        parent_model.collection.remove(this.model);
+                      }
+                    }, this));
                   }
                 }, this));
-              }
             }
           }
         , getLinks: function(){
