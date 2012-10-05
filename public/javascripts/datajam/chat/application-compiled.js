@@ -848,7 +848,6 @@
             return this;
           }
         , submit: function(){
-            console.log(this.model.isNew());
             var select = this.$el.find('select')
               , idx = (select.length) ? (select.first().val()) : null;
             idx && this.model.save(this.statuses[idx-1]);
