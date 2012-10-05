@@ -73,4 +73,18 @@ describe ChatThread do
     @redis.get(@chat.cache_path).should_not include('"page":{')
   end
 
+  it "recaches all pages when status is changed" do
+    @chat.update_attributes!(:is_open => true)
+    first_page = @chat.current_page
+    (@chat.page_size * 3 + 1).times do
+      @chat.messages.create(approved_message)
+    end
+    @redis.get(@chat.pages.last.cache_path).should include({ :is_open => true }.to_json.gsub(/(^\{|\}$)/, ''))
+    @redis.get(@chat.pages.first.cache_path).should include({ :is_open => true }.to_json.gsub(/(^\{|\}$)/, ''))
+    @chat.update_attributes!(:is_open => false, :is_archived => true)
+    @redis.get(@chat.pages.last.cache_path).should include({ :is_open => false }.to_json.gsub(/(^\{|\}$)/, ''))
+    @redis.get(@chat.pages.first.cache_path).should include({ :is_open => false }.to_json.gsub(/(^\{|\}$)/, ''))
+    @redis.get(@chat.cache_path).should include({ :is_open => false }.to_json.gsub(/(^\{|\}$)/, ''))
+  end
+
 end

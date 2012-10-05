@@ -12,7 +12,7 @@ class ChatThread
 
   validates_numericality_of :page_size, :greater_than => 0
 
-  after_save :cache_instance
+  after_save :cache_instance, :cache_pages
 
   def current_page
     save unless persisted?
@@ -62,7 +62,9 @@ class ChatThread
     super.merge({ :closed_chat_message => closed_chat_message })
   end
 
-  protected
+  def cache_pages
+    pages.each(&:cache_instance)
+  end
 
   def cache_instance
     ChatThread.skip_callback(:save, :after, :cache_instance)

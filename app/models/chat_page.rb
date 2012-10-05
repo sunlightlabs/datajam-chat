@@ -43,9 +43,6 @@ class ChatPage
     chat_page_path(:chat_id => self.chat.id, :id => self.id, :format => :json)
   end
 
-
-  protected
-
   def cache_instance
     content = { :chat => chat, :page => as_json }.to_json
     path = cache_path
