@@ -16,6 +16,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_dependency 'facets', '~> 2.9'
+  # force bitly to use a newer version of crack: https://support.cloud.engineyard.com/entries/22915701-january-14-2013-security-vulnerabilities-httparty-extlib-crack-nori-update-these-gems-immediately
+  gem.add_dependency 'crack', '~> 0.3.2'
   gem.add_dependency 'bitly', '~> 0.6'
   gem.add_dependency 'formatize', '~> 1.0'
   gem.add_dependency 'hashie'
@@ -23,6 +25,6 @@ Gem::Specification.new do |gem|
   gem.add_development_dependency 'fakeweb', '~> 1.3.0'
   gem.add_development_dependency 'debugger'
   gem.add_development_dependency 'jasmine'
-  gem.add_development_dependency 'httparty'
+  gem.add_development_dependency 'httparty', '~> 0.10.0'
   gem.add_development_dependency 'fuubar'
 end
