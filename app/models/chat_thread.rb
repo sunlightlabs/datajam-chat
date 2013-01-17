@@ -12,7 +12,8 @@ class ChatThread
 
   validates_numericality_of :page_size, :greater_than => 0
 
-  after_save :cache_instance, :cache_pages
+  after_save :cache_instance
+  after_save :cache_pages
 
   def current_page
     save unless persisted?

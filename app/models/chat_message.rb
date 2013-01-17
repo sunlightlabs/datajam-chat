@@ -18,7 +18,8 @@ class ChatMessage
   validates_length_of :text,  allow_blank: false,  maximum: 1000
   validate :chat_is_open?
 
-  before_save :shorten_urls, :paginate
+  before_save :shorten_urls
+  before_save :paginate
 
   def approve
     update_attributes(:is_public => true, :is_moderated => true)
